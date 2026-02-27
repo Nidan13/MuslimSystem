@@ -1,0 +1,98 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Outfit', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-serif: 'Cinzel', serif;
+    
+    --color-primary-teal: #0f4c5c;
+    --color-accent-cyan: #22d3ee;
+    --color-royal-gold: #d4af37;
+}
+
+@layer components {
+    .bg-login-fixed {
+        background: 
+            linear-gradient(rgba(15, 76, 92, 0.85), rgba(15, 76, 92, 0.95)),
+            url('/brain/7567d5de-8518-4e17-aab7-2759c9fc9969/islamic_futurism_login_bg_1770870262934.png');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+
+    .glass-blob {
+        position: absolute;
+        background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 10;
+    }
+
+    .mihrab-card {
+        background: rgba(255, 255, 255, 0.07);
+        backdrop-filter: blur(40px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 
+            0 40px 100px -20px rgba(0, 0, 0, 0.5),
+            inset 0 0 40px rgba(255, 255, 255, 0.05);
+        color: white;
+    }
+
+    .mihrab-header {
+        background: rgba(255, 255, 255, 0.05);
+        border-bottom: 2px solid var(--color-royal-gold);
+    }
+
+    .input-divine {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: white;
+        transition: all 0.3s ease;
+    }
+    .input-divine:focus {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: var(--color-royal-gold);
+        box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+        outline: none;
+    }
+
+    .ornament-line {
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--color-royal-gold), transparent);
+        width: 140px;
+    }
+
+    .btn-divine {
+        background: var(--color-royal-gold);
+        color: #0f4c5c;
+        font-weight: 800;
+        transition: all 0.4s ease;
+    }
+    .btn-divine:hover {
+        background: #e5c158;
+        transform: translateY(-2px);
+        box-shadow: 0 15px 30px rgba(212, 175, 55, 0.4);
+    }
+
+    .text-imperial {
+        font-family: 'Cinzel', serif;
+        letter-spacing: 0.3em;
+        text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+    }
+}
+
+@layer utilities {
+    @keyframes float {
+        0%, 100% { transform: translate(0, 0) rotate(0deg); }
+        33% { transform: translate(10px, -20px) rotate(2deg); }
+        66% { transform: translate(-15px, 15px) rotate(-1deg); }
+    }
+    .animate-float { animation: float 10s ease-in-out infinite; }
+}

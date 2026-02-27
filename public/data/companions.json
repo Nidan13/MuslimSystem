@@ -1,0 +1,242 @@
+[
+  {
+    "id": 1,
+    "name": "Abu Bakar Ash-Shiddiq",
+    "title": "Khalifah Pertama",
+    "arabic_name": "أبو بكر الصديق",
+    "snippet": "Sahabat terdekat Rasulullah yang membenarkan Isra' Mi'raj tanpa ragu.",
+    "story": "Abu Bakar Ash-Shiddiq adalah orang pertama dari kalangan laki-laki dewasa yang memeluk Islam. Beliau dikenal karena kejujuran, kelembutan hati, dan kedermawanannya. Gelar 'Ash-Shiddiq' diberikan Rasulullah karena beliau selalu membenarkan ucapan Nabi, termasuk peristiwa Isra' Mi'raj yang saat itu sulit diterima akal. Setelah wafatnya Rasulullah, beliau dibaiat menjadi Khalifah pertama dan berhasil menyatukan kembali umat Islam yang sempat goyah serta memerangi nabi-nabi palsu."
+  },
+  {
+    "id": 2,
+    "name": "Umar bin Khattab",
+    "title": "Al-Faruq (Pembeda)",
+    "arabic_name": "عمر بن الخطاب",
+    "snippet": "Khalifah kedua yang tegas dan memperluas wilayah Islam secara masif.",
+    "story": "Umar bin Khattab dikenal sebagai sosok yang sangat tegas dan berani. Sebelum masuk Islam, ia adalah penentang keras dakwah Nabi, namun hatinya luluh setelah mendengar lantunan ayat Al-Quran. Di masa kepemimpinannya sebagai Khalifah kedua, Islam mengalami ekspansi wilayah yang luar biasa, menaklukkan Persia dan Romawi. Beliau juga yang menginisiasi pengumpulan kalender Hijriah dan pembentukan baitul mal."
+  },
+  {
+    "id": 3,
+    "name": "Utsman bin Affan",
+    "title": "Dzun Nurain (Dua Cahaya)",
+    "arabic_name": "عثمان بن عفان",
+    "snippet": "Khalifah ketiga yang mengumpulkan Al-Quran dalam satu mushaf.",
+    "story": "Utsman bin Affan adalah saudagar kaya yang sangat dermawan. Beliau dijuluki 'Dzun Nurain' karena menikahi dua putri Rasulullah SAW secara berurutan. Jasa terbesarnya bagi umat Islam adalah standarisasi pembacaan Al-Quran dan menyatukannya dalam satu mushaf (Mushaf Utsmani) yang kita baca hingga hari ini. Beliau juga yang membeli sumur air Raumah untuk diwakafkan kepada kaum muslimin saat Madinah kekeringan."
+  },
+  {
+    "id": 4,
+    "name": "Ali bin Abi Thalib",
+    "title": "Babul Ilmu (Pintu Ilmu)",
+    "arabic_name": "علي بن أبي طالب",
+    "snippet": "Sepupu Nabi dan pemuda pertama yang masuk Islam.",
+    "story": "Ali bin Abi Thalib adalah sepupu sekaligus menantu Rasulullah (suami Fatimah Az-Zahra). Beliau dikenal sangat cerdas, pemberani di medan perang, dan zuhud. Rasulullah pernah bersabda, 'Aku adalah kota ilmu, dan Ali adalah pintunya.' Ali menjadi Khalifah keempat di masa yang penuh gejolak fitnah, namun tetap teguh memegang prinsip keadilan."
+  },
+  {
+    "id": 5,
+    "name": "Abdurrahman bin Auf",
+    "title": "Saudagar Dermawan",
+    "arabic_name": "عبد الرحمن بن عوف",
+    "snippet": "Pebisnis sukses yang dijamin masuk surga.",
+    "story": "Abdurrahman bin Auf adalah salah satu dari delapan orang pertama yang masuk Islam dan termasuk sepuluh sahabat yang dijamin masuk surga. Beliau hijrah ke Madinah tanpa membawa harta, namun berkat kepiawaiannya berdagang, ia kembali menjadi kaya raya dalam waktu singkat. Hartanya tak membuatnya kikir; ia pernah menyumbangkan seluruh barang dagangan dari 700 unta untuk penduduk Madinah."
+  },
+  {
+    "id": 6,
+    "name": "Sa'ad bin Abi Waqqash",
+    "title": "Pemanah Ulung",
+    "arabic_name": "سعد بن أبي وقاص",
+    "snippet": "Orang pertama yang melepaskan anak panah di jalan Allah.",
+    "story": "Sa'ad bin Abi Waqqash adalah paman Nabi dari garis ibu. Beliau dikenal sebagai pemanah yang doanya mustajab (selalu dikabulkan). Sa'ad memimpin pasukan Islam dalam perang Qadisiyah yang berhasil meruntuhkan kekaisaran Persia. Beliau juga termasuk salah satu dari enam orang yang ditunjuk Umar dalam majelis syura pemilihan khalifah."
+  },
+  {
+    "id": 7,
+    "name": "Zubair bin Awwam",
+    "title": "Hawari (Penolong Setia)",
+    "arabic_name": "الزبير بن العوام",
+    "snippet": "Pembela Nabi yang selalu siap sedia dengan pedangnya.",
+    "story": "Zubair bin Awwam adalah sepupu Nabi. Rasulullah bersabda, 'Setiap nabi memiliki hawari (penolong setia), dan hawariku adalah Zubair.' Ia masuk Islam di usia 15 tahun dan selalu berada di barisan depan dalam setiap peperangan bersama Rasulullah. Istrinya adalah Asma binti Abu Bakar."
+  },
+  {
+    "id": 8,
+    "name": "Thalhah bin Ubaidillah",
+    "title": "Burung Elang Uhud",
+    "arabic_name": "طلحة بن عبيدالله",
+    "snippet": "Pelindung Nabi saat perang Uhud hingga tubuhnya penuh luka.",
+    "story": "Dalam perang Uhud, saat pasukan muslim terdesak, Thalhah menjadikan tubuhnya tameng hidup bagi Rasulullah. Ia menangkis anak panah dan tebasan pedang hingga jari-jarinya putus dan tubuhnya mendapatkan lebih dari 70 luka. Rasulullah menjulukinya 'Syahid yang berjalan di muka bumi'."
+  },
+  {
+    "id": 9,
+    "name": "Abu Ubaidah bin Jarrah",
+    "title": "Kepercayaan Umat",
+    "arabic_name": "أبو عبيدة بن الجراح",
+    "snippet": "Sosok amanah yang memimpin pasukan di Syam.",
+    "story": "Rasulullah bersabda, 'Sesungguhnya setiap umat memiliki orang kepercayaan (amin), dan kepercayaan umat ini adalah Abu Ubaidah bin Jarrah.' Beliau dikenal sangat tawadhu (rendah hati). Di masa Khalifah Umar, ia ditunjuk sebagai panglima tertinggi pasukan di Syam, menggantikan Khalid bin Walid, dan berhasil membebaskan wilayah Palestina dan sekitarnya."
+  },
+  {
+    "id": 10,
+    "name": "Said bin Zaid",
+    "title": "Doa yang Mustajab",
+    "arabic_name": "سعيد بن زيد",
+    "snippet": "Adik ipar Umar bin Khattab yang menjadi sebab Umar masuk Islam.",
+    "story": "Said bin Zaid adalah suami dari Fatimah binti Khattab (adik Umar). Di rumah merekalah Umar bin Khattab pertama kali mendengar ayat Al-Quran (Surat Thaha) yang menggetarkan hatinya. Said termasuk sepuluh sahabat yang dijamin masuk surga. Ia dikenal sebagai sosok yang zuhud dan doanya sangat ditakuti karena selalu dikabulkan Allah."
+  },
+  {
+    "id": 11,
+    "name": "Bilal bin Rabah",
+    "title": "Muadzin Rasulullah",
+    "arabic_name": "بلال بن رباح",
+    "snippet": "Budak yang dimerdekakan, pemilik suara emas.",
+    "story": "Bilal adalah mantan budak dari Ethiopia yang disiksa tuannya di bawah terik matahari namun tetap teguh mengucapkan 'Ahad, Ahad' (Allah Maha Esa). Abu Bakar memerdekakannya. Bilal memiliki suara yang lantang dan indah, sehingga Rasulullah menunjuknya sebagai muadzin pertama dalam Islam. Setelah wafatnya Nabi, Bilal sempat berhenti adzan karena tak kuasa menahan kesedihan."
+  },
+  {
+    "id": 12,
+    "name": "Khalid bin Walid",
+    "title": "Pedang Allah (Saifullah)",
+    "arabic_name": "خالد بن الوليد",
+    "snippet": "Panglima perang tak terkalahkan.",
+    "story": "Awalnya Khalid adalah panglima Quraisy yang memukul mundur pasukan muslim di Uhud. Namun setelah masuk Islam, ia menjadi pedang Allah yang terhunus. Beliau memimpin ratusan pertempuran tanpa pernah kalah sekalipun, baik melawan kaum murtad, Persia, maupun Romawi. Taktik militernya jenius dan melegenda hingga kini."
+  },
+  {
+    "id": 13,
+    "name": "Hamzah bin Abdul Muthalib",
+    "title": "Singa Allah",
+    "arabic_name": "حمزة بن عبد المطلب",
+    "snippet": "Paman Nabi yang menjadi syuhada di Uhud.",
+    "story": "Hamzah adalah paman sekaligus saudara sepersusuan Nabi. Ia dikenal sebagai pemburu singa yang gagah berani. Masuk Islamnya Hamzah menjadi pukulan telak bagi Quraisy dan perlindungan besar bagi Nabi. Ia gugur sebagai syahid dalam perang Uhud akibat tombak Wahsyi, dan Rasulullah sangat berduka atas wafatnya 'Singa Allah' ini."
+  },
+  {
+    "id": 14,
+    "name": "Mus'ab bin Umair",
+    "title": "Duta Islam Pertama",
+    "arabic_name": "مصعب بن عمير",
+    "snippet": "Pemuda kaya raya yang meninggalkan kemewahan demi Islam.",
+    "story": "Mus'ab adalah pemuda paling tampan dan wangi di Mekkah, hidup dalam kemewahan. Demi Islam, ia rela diusir ibunya dan hidup miskin. Rasulullah mengutusnya ke Madinah sebelum hijrah untuk mengajarkan Islam, menjadikannya 'duta besar' pertama. Ia gugur di Uhud sambil memegang bendera Islam; saat dikafani, kainnya tak sampa menutup seluruh tubuhnya."
+  },
+  {
+    "id": 15,
+    "name": "Salman Al-Farisi",
+    "title": "Pencari Kebenaran",
+    "arabic_name": "سلمان الفارسي",
+    "snippet": "Pencetus ide parit dalam Perang Khandaq.",
+    "story": "Salman berasal dari Persia, menempuh perjalanan panjang mencari agama yang benar hingga akhirnya bertemu Rasulullah di Madinah. Ia adalah sahabat yang mengusulkan strategi menggali parit (khandaq) untuk menahan pasukan sekutu Quraisy, strategi yang belum pernah dikenal bangsa Arab sebelumnya."
+  },
+  {
+    "id": 16,
+    "name": "Ammar bin Yasir",
+    "title": "Penghuni Surga",
+    "arabic_name": "عمار بن ياسر",
+    "snippet": "Keluarganya adalah syuhada pertama dalam Islam.",
+    "story": "Ammar dan orang tuanya (Yasir dan Sumayyah) disiksa dengan kejam oleh kafir Quraisy. Ibunya, Sumayyah, adalah syahidah pertama dalam Islam. Rasulullah bersabda kepada keluarga ini, 'Bersabarlah wahai keluarga Yasir, sesungguhnya tempat kembali kalian adalah surga.' Ammar wafat di usia senja dalam perang Shiffin."
+  },
+  {
+    "id": 17,
+    "name": "Abu Hurairah",
+    "title": "Bapak Kucing Kecil",
+    "arabic_name": "أبو هريرة",
+    "snippet": "Perawi hadits terbanyak.",
+    "story": "Abu Hurairah masuk Islam agak belakangan (tahun 7 H), namun beliau memiliki ingatan luar biasa. Ia menghabiskan waktunya menyertai Nabi (Ahlu Suffah) untuk menyerap ilmu. Beliau meriwayatkan lebih dari 5.000 hadits, menjadi rujukan utama sunnah Nabi."
+  },
+  {
+    "id": 18,
+    "name": "Ibnu Abbas",
+    "title": "Tinta Umat (Habrul Ummah)",
+    "arabic_name": "Abdullah bin Abbas",
+    "snippet": "Ahli tafsir Al-Quran terbaik.",
+    "story": "Sepupu Nabi ini didoakan khusus oleh Rasulullah: 'Ya Allah, pahamkanlah ia dalam agama dan ajarkanlah ia tafsir.' Doa itu terkabul; Ibnu Abbas menjadi rujukan utama tafsir Al-Quran dan fiqih. Ia memiliki wawasan yang sangat luas meski usianya masih muda saat Nabi wafat."
+  },
+  {
+    "id": 19,
+    "name": "Zaid bin Tsabit",
+    "title": "Penulis Wahyu",
+    "arabic_name": "زيد بن ثابت",
+    "snippet": "Ketua tim pengumpulan Al-Quran.",
+    "story": "Zaid adalah pemuda cerdas yang menjadi sekretaris Rasulullah dan penulis wahyu. Di masa Abu Bakar dan Utsman, ia ditunjuk memimpin proyek agung pengumpulan dan kodifikasi mushaf Al-Quran karena hafalannya yang kuat dan kecermatannya."
+  },
+  {
+    "id": 20,
+    "name": "Usamah bin Zaid",
+    "title": "Kekasih Putra Kekasih",
+    "arabic_name": "أسامة بن زيد",
+    "snippet": "Panglima perang termuda.",
+    "story": "Usamah adalah putra Zaid bin Haritsah (anak angkat Nabi). Ia sangat disayangi Rasulullah. Di usia belum 20 tahun, Rasulullah mengangkatnya menjadi panglima pasukan (yang di dalamnya ada Abu Bakar dan Umar) untuk melawan Romawi. Ini menunjukkan dalam Islam, kapasitas lebih utama daripada usia."
+  },
+  {
+    "id": 21,
+    "name": "Ja'far bin Abi Thalib",
+    "title": "Ja'far At-Thayyar",
+    "arabic_name": "جعفر بن أبي طالب",
+    "snippet": "Burung surga yang memiliki dua sayap.",
+    "story": "Kakak Ali bin Abi Thalib ini memimpin hijrah ke Habasyah dan mahir berdiplomasi di depan Raja Najasyi. Ia gugur di perang Mu'tah setelah kedua tangannya putus menebas musuh. Rasulullah bersabda bahwa Allah mengganti kedua tangannya dengan dua sayap untuk terbang di surga."
+  },
+  {
+    "id": 22,
+    "name": "Abdullah bin Mas'ud",
+    "title": "Pakar Al-Quran",
+    "arabic_name": "عبد الله بن مسعود",
+    "snippet": "Orang pertama yang berani membaca Al-Quran lantang di Mekkah.",
+    "story": "Ibnu Mas'ud adalah sahabat yang bertubuh kecil namun berjiwa besar. Ia adalah orang pertama yang berani melantunkan Al-Quran secara terbuka di depan Ka'bah, yang membuatnya dipukuli kaum Quraisy. Beliau salah satu pembaca Al-Quran terbaik; Nabi suka mendengarkan bacaannya."
+  },
+  {
+    "id": 23,
+    "name": "Abu Dzar Al-Ghifari",
+    "title": "Zuhud Sejati",
+    "arabic_name": "أبو ذر الغفاري",
+    "snippet": "Sahabat yang hidup sendiri dan mati sendiri.",
+    "story": "Abu Dzar berasal dari suku Ghifar (suku perampok), namun hatinya suci. Ia dikenal sangat zuhud dan keras mengkritik penumpukan harta. Rasulullah pernah bersabda, 'Bumi tidak pernah membawa dan langit tidak pernah menaungi orang yang lebih jujur dari Abu Dzar.'"
+  },
+  {
+    "id": 24,
+    "name": "Amr bin Ash",
+    "title": "Politisi Ulung & Penakluk Mesir",
+    "arabic_name": "عمرو بن العاص",
+    "snippet": "Diplomat cerdik yang membuka Mesir untuk Islam.",
+    "story": "Amr adalah politisi dan panglima perang yang sangat cerdik. Awalnya musuh Islam, namun kemudian menjadi pembela Islam yang gigih. Ia yang memimpin penaklukan Mesir dan mendirikan kota Fustat (cikal bakal Kairo)."
+  },
+  {
+    "id": 25,
+    "name": "Anas bin Malik",
+    "title": "Pelayan Rasulullah",
+    "arabic_name": "أنس بن مالك",
+    "snippet": "Melayani Nabi sejak kecil selama 10 tahun.",
+    "story": "Ibu Anas menyerahkannya kepada Nabi saat masih kecil untuk menjadi pelayan. Anas tumbuh dalam asuhan Nabi dan belajar banyak akhlak beliau. Ia didoakan Nabi agar panjang umur dan banyak harta/keturunan. Anas hidup hingga usia 103 tahun dan memiliki lebih dari 100 anak cucu."
+  },
+    {
+    "id": 26,
+    "name": "Hasan bin Ali",
+    "title": "Pemimpin Pemuda Surga",
+    "arabic_name": "الحسن بن علي",
+    "snippet": "Cucu kesayangan Nabi yang mendamaikan dua kubu umat Islam.",
+    "story": "Hasan adalah cucu pertama Rasulullah. Beliau sangat mirip dengan Nabi secara fisik. Hasan dikenal sangat dermawan dan lembut. Jasa terbesarnya adalah menyerahkan kekhalifahan kepada Muawiyah demi persatuan umat Islam (Tahun Jama'ah), membuktikan sabda Nabi bahwa ia akan mendamaikan dua kelompok besar muslim."
+  },
+  {
+    "id": 27,
+    "name": "Husein bin Ali",
+    "title": "Pemimpin Pemuda Surga",
+    "arabic_name": "الحسين بن علي",
+    "snippet": "Cucu nabi yang syahid di Karbala.",
+    "story": "Husein adalah adik Hasan, juga cucu kesayangan Nabi. Ia dikenal teguh pendirian melawan kedzaliman. Husein gugur secara tragis di Karbala dalam mempertahankan prinsip tidak tunduk pada penguasa yang dianggap menyimpang. Pengorbanannya menjadi simbol perjuangan melawan ketidakadilan."
+  },
+  {
+    "id": 28,
+    "name": "Fatimah Az-Zahra",
+    "title": "Pemimpin Wanita Surga",
+    "arabic_name": "فاطمة الزهراء",
+    "snippet": "Putri tercinta Rasulullah.",
+    "story": "Fatimah adalah putri bungsu Rasulullah yang paling dicintai. Beliau sangat mirip ayahnya dalam bicara dan berjalan. Fatimah adalah istri Ali bin Abi Thalib dan ibu dari Hasan & Husein. Ia wafat 6 bulan setelah Nabi wafat, menjadi keluarga pertama yang menyusul beliau ke surga."
+  },
+  {
+    "id": 29,
+    "name": "Aisyah binti Abu Bakar",
+    "title": "Humaira",
+    "arabic_name": "عائشة بنت أبي بكر",
+    "snippet": "Istri Nabi yang paling alim dan banyak meriwayatkan hadits.",
+    "story": "Aisyah adalah istri Nabi yang paling cerdas. Seperempat hukum syariat Islam bersumber dari riwayatnya. Rumah tangganya bersama Nabi penuh dengan kisah romantis dan pelajaran bagi umat. Ia menjadi rujukan para sahabat senior dalam masalah fiqih dan agama sepeninggal Nabi."
+  },
+  {
+    "id": 30,
+    "name": "Khadijah binti Khuwailid",
+    "title": "Istri Pertama & Penopang Dakwah",
+    "arabic_name": "خديجة بنت خويلد",
+    "snippet": "Orang pertama yang beriman kepada Nabi.",
+    "story": "Khadijah adalah cinta pertama Rasulullah yang tak tergantikan. Ia mengorbankan seluruh harta kekayaannya demi dakwah Islam di masa-masa sulit (boikot Mekkah). Dialah yang menenangkan Nabi saat pertama kali menerima wahyu. Salam dari Allah dan Jibril pernah disampaikan khusus untuknya."
+  }
+]
