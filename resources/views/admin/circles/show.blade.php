@@ -33,8 +33,10 @@
         <div class="lg:col-span-2 space-y-8">
             <div class="glass-panel p-6 rounded-[40px] relative overflow-hidden group">
                 <div class="w-full h-64 bg-teal-900 rounded-[32px] flex items-center justify-center relative overflow-hidden shadow-2xl">
-                    @if($circle->icon_path)
-                        <img src="{{ asset('storage/' . $circle->icon_path) }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    @if($circle->icon)
+                        <img src="{{ asset('storage/' . $circle->icon) }}" 
+                             onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name={{ urlencode($circle->name) }}&background=134e4a&color=22d3ee';" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                     @else
                         <i class="fas fa-users-rays text-7xl text-cyan-400 opacity-20 icon-glow transition-transform group-hover:scale-110"></i>
                     @endif

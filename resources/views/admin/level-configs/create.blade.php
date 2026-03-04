@@ -1,61 +1,87 @@
 @extends('layouts.admin')
 
-@section('title', 'Extend Progres Matrix')
+@section('title', 'Ekspansi Matriks Progres')
 
 @section('content')
-<div class="max-w-4xl mx-auto">
-    <div class="flex items-center gap-6 mb-10">
-        <a href="{{ route('admin.level-configs.index') }}" class="group p-4 rounded-2xl border-2 border-slate-100 bg-white hover:border-cyan-400 transition-all shadow-sm">
-            <svg class="w-6 h-6 text-slate-400 group-hover:text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"/></svg>
+<div class="max-w-5xl mx-auto animate-fadeIn">
+    <!-- Breadcrumb & Title -->
+    <div class="flex items-center gap-6 mb-12">
+        <a href="{{ route('admin.level-configs.index') }}" class="group p-4 rounded-2xl border-2 border-slate-100 bg-white hover:border-cyan-400 transition-all shadow-sm active:scale-95">
+            <i class="fas fa-chevron-left text-slate-400 group-hover:text-cyan-500 transition-colors"></i>
         </a>
         <div>
-            <h1 class="text-4xl font-serif font-black text-teal-900 tracking-wide uppercase">Extend Horizon</h1>
+            <h2 class="text-4xl font-serif font-black text-teal-900 tracking-wide uppercase">Ekspansi Evolusi</h2>
             <p class="text-slate-500 text-[10px] font-bold uppercase tracking-[0.4em] mt-2 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-                Defining New Evolution Threshold
+                <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_10px_#22d3ee]"></span>
+                Mendefinisikan Batas Pertumbuhan Baru
             </p>
         </div>
     </div>
 
-    <div class="glass-panel p-12 rounded-[40px] relative overflow-hidden">
-        <div class="absolute -right-20 -top-20 w-80 h-80 bg-cyan-400/5 rounded-full blur-[100px] pointer-events-none"></div>
+    <div class="glass-panel p-12 rounded-[40px] relative overflow-hidden bg-white border-2 border-slate-50 shadow-2xl shadow-slate-200/50">
+        <div class="absolute -right-20 -top-20 w-96 h-96 bg-cyan-400/5 rounded-full blur-[100px] pointer-events-none"></div>
         
-        <form action="{{ route('admin.level-configs.store') }}" method="POST" class="space-y-10 relative z-10">
+        <form action="{{ route('admin.level-configs.store') }}" method="POST" class="space-y-12 relative z-10">
             @csrf
             
-            <div class="space-y-8">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                    <div>
-                        <label class="block text-[10px] font-black text-teal-900/40 uppercase mb-3 tracking-[0.3em] ml-1">Evolution Level</label>
-                        <input type="number" name="level" value="{{ old('level') }}" required 
-                            class="w-full bg-slate-50 border-2 border-slate-200 rounded-[24px] text-teal-900 p-6 focus:border-cyan-400 focus:bg-white outline-none transition-all font-mono font-black text-xl shadow-inner">
+            <div class="space-y-10">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <!-- Level -->
+                    <div class="group">
+                        <label class="block text-[10px] font-black text-teal-900/40 uppercase mb-4 tracking-[0.3em] ml-2 group-focus-within:text-cyan-500 transition-colors">Level Evolusi</label>
+                        <div class="relative">
+                            <input type="number" name="level" value="{{ old('level') }}" required 
+                                class="w-full bg-slate-50 border-2 border-slate-200 rounded-[28px] text-teal-900 p-7 focus:border-cyan-400 focus:bg-white outline-none transition-all font-mono font-black text-2xl shadow-inner group-hover:border-slate-300">
+                            <i class="fas fa-layer-group absolute right-8 top-1/2 -translate-y-1/2 text-slate-200 text-xl pointer-events-none transition-colors group-focus-within:text-cyan-400"></i>
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-[10px] font-black text-gold-500 uppercase mb-3 tracking-[0.3em] ml-1">Stat points yield (AP)</label>
-                        <input type="number" name="stat_points_reward" value="{{ old('stat_points_reward', 5) }}" required 
-                            class="w-full bg-slate-50 border-2 border-slate-200 rounded-[24px] text-gold-600 p-6 focus:border-gold-400 focus:bg-white outline-none transition-all font-mono font-black text-xl shadow-inner">
+
+                    <!-- Stat Points -->
+                    <div class="group">
+                        <label class="block text-[10px] font-black text-gold-500 uppercase mb-4 tracking-[0.3em] ml-2 group-focus-within:text-amber-500 transition-colors">Hadiah Poin Atribut (AP)</label>
+                        <div class="relative">
+                            <input type="number" name="stat_points_reward" value="{{ old('stat_points_reward', 5) }}" required 
+                                class="w-full bg-slate-50 border-2 border-slate-200 rounded-[28px] text-gold-600 p-7 focus:border-gold-400 focus:bg-white outline-none transition-all font-mono font-black text-2xl shadow-inner group-hover:border-slate-300">
+                            <i class="fas fa-plus-circle absolute right-8 top-1/2 -translate-y-1/2 text-slate-200 text-xl pointer-events-none transition-colors group-focus-within:text-gold-400"></i>
+                        </div>
                     </div>
                 </div>
 
-                <div>
-                    <label class="block text-[10px] font-black text-teal-900/40 uppercase mb-3 tracking-[0.3em] ml-1">Experience required (XP)</label>
+                <!-- XP Required -->
+                <div class="group">
+                    <label class="block text-[10px] font-black text-teal-900/40 uppercase mb-4 tracking-[0.3em] ml-2 group-focus-within:text-cyan-500 transition-colors">XP Dibutuhkan untuk Evolusi</label>
                     <div class="relative">
                         <input type="number" name="xp_required" value="{{ old('xp_required') }}" required 
-                            class="w-full bg-slate-50 border-2 border-slate-200 rounded-[24px] text-cyan-600 p-6 focus:border-cyan-400 focus:bg-white outline-none transition-all font-mono font-black text-xl shadow-inner">
-                        <span class="absolute right-8 top-1/2 -translate-y-1/2 text-[10px] font-black text-slate-400 uppercase">Points</span>
+                            class="w-full bg-slate-50 border-2 border-slate-200 rounded-[28px] text-cyan-600 p-7 focus:border-cyan-400 focus:bg-white outline-none transition-all font-mono font-black text-2xl shadow-inner group-hover:border-slate-300">
+                        <div class="absolute right-8 top-1/2 -translate-y-1/2 flex items-center gap-3">
+                            <span class="text-[10px] font-black text-slate-300 uppercase tracking-widest">XP GROWTH</span>
+                            <i class="fas fa-bolt text-cyan-400 text-xl icon-glow"></i>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="pt-6">
-                <button type="submit" class="w-full group relative overflow-hidden bg-teal-900 hover:bg-teal-800 py-6 rounded-[24px] font-serif font-black text-white uppercase tracking-[0.3em] shadow-2xl shadow-teal-950/30 transition-all active:scale-[0.99] border-t border-white/10">
+            <!-- Submit Button -->
+            <div class="pt-8">
+                <button type="submit" class="w-full group relative overflow-hidden bg-teal-900 hover:bg-teal-800 py-7 rounded-[30px] font-serif font-black text-white uppercase tracking-[0.4em] text-xs shadow-2xl shadow-teal-950/30 transition-all active:scale-[0.98] border-t border-white/10">
+                    <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                     <span class="relative flex items-center justify-center gap-4">
-                        RATIFY EVOLUTION STEP
-                        <i class="fas fa-arrow-trend-up text-cyan-400 icon-glow transition-all group-hover:translate-x-1 group-hover:-translate-y-1"></i>
+                        RATIFIKASI NODE EVOLUSI
+                        <i class="fas fa-chess-king text-cyan-400 icon-glow transition-all group-hover:scale-110"></i>
                     </span>
                 </button>
             </div>
         </form>
     </div>
 </div>
+
+<style>
+    .animate-fadeIn { animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .icon-glow { filter: drop-shadow(0 0 5px rgba(34, 211, 238, 0.6)); }
+    .glass-panel { backdrop-filter: blur(16px); }
+</style>
 @endsection

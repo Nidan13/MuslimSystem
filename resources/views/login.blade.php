@@ -1,118 +1,266 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Muslim System | Divine Access</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <style>
+        :root {
+            --primary-accent: #14b8a6;
+            --secondary-cyan: #22d3ee;
+            --glass-card: rgba(0, 0, 0, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Outfit', sans-serif;
+            background-color: #020b0d;
+        }
+
+        /* 1. Full Image Background */
+        .viewport-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+        }
+
+        .img-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('{{ asset('images/bg/login-bg-final.jpg') }}');
+            background-size: cover;
+            background-position: center bottom;
+            background-repeat: no-repeat;
+            filter: brightness(0.85) contrast(1.1);
+        }
+
+        /* 2. Premium Content Wrapper */
+        .page-wrapper {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background: radial-gradient(circle at center, transparent 40%, rgba(2, 11, 13, 0.4) 100%);
+        }
+
+        /* 3. The "Ultra-Compact" Card */
+        .compact-card {
+            background: var(--glass-card);
+            backdrop-filter: blur(30px) saturate(150%);
+            border: 1px solid var(--glass-border);
+            border-radius: 2.25rem;
+            padding: 2.5rem 2.25rem;
+            width: 100%;
+            max-width: 380px; /* Reduced width even more */
+            box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.7);
+            animation: card-slide 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes card-slide {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .brand-header { text-align: center; margin-bottom: 3rem; }
+
+        .logo-box {
+            display: inline-flex;
+            background: #fff;
+            padding: 0.85rem;
+            border-radius: 1.25rem;
+            margin-bottom: 1.25rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .sys-logo { width: 55px; height: 55px; object-fit: contain; }
+
+        .brand-title {
+            font-family: 'Cinzel', serif;
+            color: #fff;
+            font-size: 1.8rem; /* Balanced size */
+            font-weight: 700;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+        }
+
+        .brand-subtitle {
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: var(--primary-accent);
+            letter-spacing: 0.8em;
+            margin-top: 0.4rem;
+            opacity: 0.8;
+            text-transform: uppercase;
+        }
+
+        /* Standard Input Styling */
+        .form-unit { margin-bottom: 2.5rem; }
+
+        .form-label {
+            display: block;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            margin-bottom: 1rem;
+            padding-left: 0.5rem;
+        }
+
+        .input-wrap {
+            position: relative;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1.25rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-wrap:focus-within {
+            border-color: var(--secondary-cyan);
+            background: rgba(34, 211, 238, 0.04);
+            box-shadow: 0 0 20px rgba(34, 211, 238, 0.1);
+        }
+
+        .form-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            padding: 1.15rem 1.75rem;
+            color: white;
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .form-input::placeholder { color: rgba(255, 255, 255, 0.15); }
+
+        .icon-wrap {
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.15);
+            font-size: 0.85rem;
+        }
+
+        .input-wrap:focus-within .icon-wrap { color: var(--secondary-cyan); }
+
+        /* Sleek Submit Button */
+        .btn-divine {
+            width: 100%;
+            padding: 1.4rem;
+            background: linear-gradient(135deg, var(--primary-accent) 0%, #0d9488 100%);
+            border: none;
+            border-radius: 1.25rem;
+            color: white;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.4em;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 15px 30px -5px rgba(20, 184, 166, 0.4);
+        }
+
+        .btn-divine:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px -5px rgba(20, 184, 166, 0.5);
+            filter: brightness(1.1);
+        }
+
+        .footer-text {
+            margin-top: 3.5rem;
+            text-align: center;
+            opacity: 0.2;
+            letter-spacing: 0.5em;
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: #fff;
+            text-transform: uppercase;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 2rem;
+        }
+    </style>
 </head>
-<body class="bg-login-fixed h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden font-sans">
-
-    <!-- Decorative Elements -->
-    <div class="glass-blob animate-float w-64 h-64 -top-20 -left-20 opacity-30"></div>
-    <div class="glass-blob animate-float w-48 h-48 -bottom-10 -right-10 opacity-20" style="animation-delay: -2s;"></div>
-
-    <div class="w-full max-w-[380px] relative z-20">
-        <!-- Main Layout Wrapper -->
-        <div class="flex flex-col gap-5">
-            <!-- Brand Identity -->
-            <div class="text-center">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-2 shadow-xl">
-                     <span class="w-1.5 h-1.5 rounded-full bg-royal-gold animate-ping"></span>
-                     <span class="text-[8px] font-black text-white/50 tracking-[0.4em] uppercase">Gateway Active</span>
+<body>
+    <div class="viewport-bg">
+        <div class="img-canvas"></div>
+    </div>
+    
+    <div class="page-wrapper">
+        <div class="compact-card">
+            <div class="brand-header">
+                <div class="logo-box">
+                    <img src="{{ asset('images/logo.png') }}" alt="Logo" class="sys-logo">
                 </div>
-                <h1 class="text-3xl font-serif font-black text-white tracking-[0.15em] uppercase leading-none">
-                    MUSLIM<br><span class="text-royal-gold text-xl tracking-[0.5em]">SYSTEM</span>
-                </h1>
+                <h1 class="brand-title">MUSLIM</h1>
+                <p class="brand-subtitle">SYSTEM</p>
             </div>
 
-            <!-- Login Card -->
-            <div class="mihrab-card rounded-[28px] shadow-2xl overflow-hidden">
-                <!-- Header -->
-                <div class="mihrab-header h-24 flex flex-col items-center justify-center relative">
-                    <div class="absolute inset-0 opacity-5 bg-[url('https://www.transparenttextures.com/patterns/arabesque.png')] scale-150 invert"></div>
-                    <div class="relative z-10 flex flex-col items-center">
-                        <div class="w-8 h-8 rounded-lg bg-royal-gold/10 flex items-center justify-center mb-1 border border-royal-gold/20">
-                            <svg class="w-4 h-4 text-royal-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                            </svg>
-                        </div>
-                        <h2 class="text-imperial text-lg font-black text-white">LOGIN</h2>
-                        <div class="ornament-line mt-1.5 opacity-30 w-20"></div>
+            @if($errors->any())
+                <div class="mb-8 p-4 bg-red-400/10 border border-red-400/20 rounded-2xl flex items-center gap-4 text-red-400 text-[10px] font-black uppercase">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div class="tracking-widest">{{ $errors->first() }}</div>
+                </div>
+            @endif
+
+            <form action="{{ route('login') }}" method="POST">
+                @csrf
+                
+                <div class="form-unit">
+                    <label class="form-label">Hunter Identity</label>
+                    <div class="input-wrap">
+                        <input type="email" name="email" required class="form-input" placeholder="Masukkan ID Hunter" autocomplete="email">
+                        <div class="icon-wrap"><i class="fas fa-id-badge"></i></div>
                     </div>
                 </div>
 
-                <!-- Form Content -->
-                <div class="p-6 pb-6">
-                    @if($errors->any())
-                        <div class="mb-4 p-2.5 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center gap-3 text-red-400 text-[8px] font-bold">
-                             <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                             {{ $errors->first() }}
-                        </div>
-                    @endif
-
-                    <form action="{{ route('login') }}" method="POST" class="space-y-4">
-                        @csrf
-                        
-                        <div class="space-y-1.5">
-                            <label class="text-[8px] font-black text-white/30 uppercase tracking-[0.3em] ml-1">Identity Node</label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-white/20">
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.206"></path></svg>
-                                </div>
-                                <input type="email" name="email" required 
-                                    class="input-divine w-full rounded-xl pl-10 pr-4 py-3 placeholder-white/10 text-[11px] font-semibold tracking-wide"
-                                    placeholder="your-id@system.node">
-                            </div>
-                        </div>
-
-                        <div class="space-y-1.5">
-                            <div class="flex justify-between items-center px-1">
-                                <label class="text-[8px] font-black text-white/30 uppercase tracking-[0.3em]">Security Key</label>
-                                <a href="#" class="text-[7px] font-bold text-accent-cyan hover:text-cyan-300 tracking-wider">RECOVER</a>
-                            </div>
-                            <div class="relative">
-                                 <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-white/20">
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                                </div>
-                                <input type="password" name="password" required 
-                                    class="input-divine w-full rounded-xl pl-10 pr-4 py-3 placeholder-white/10 text-[11px] font-semibold tracking-[0.3em]"
-                                    placeholder="••••••••">
-                            </div>
-                        </div>
-
-                        <div class="pt-1">
-                            <button type="submit" 
-                                class="btn-divine w-full py-3.5 rounded-xl relative overflow-hidden group shadow-2xl">
-                                <span class="relative z-10 flex items-center justify-center gap-3 text-[9px] tracking-[0.5em]">
-                                    INITIALIZE
-                                    <svg class="w-3.5 h-3.5 text-primary-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                                </span>
-                                <div class="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
-                            </button>
-                        </div>
-                    </form>
-
-                    <!-- Quote -->
-                    <div class="mt-6 text-center border-t border-white/5 pt-4">
-                        <p class="text-[8px] font-serif italic text-white/40 tracking-wider leading-relaxed px-4">
-                            "And seek help through patience and prayer..."
-                        </p>
+                <div class="form-unit">
+                    <div class="flex justify-between items-center mb-1 px-3">
+                        <label class="form-label m-0">Security Key</label>
+                        <a href="#" class="text-[9px] font-bold text-white/30 hover:text-teal-400 transition-colors uppercase tracking-widest">Forgot?</a>
+                    </div>
+                    <div class="input-wrap">
+                        <input type="password" name="password" required class="form-input" placeholder="••••••••" autocomplete="current-password">
+                        <div class="icon-wrap"><i class="fas fa-lock"></i></div>
                     </div>
                 </div>
-            </div>
-            
-            <!-- Branding Status Footer -->
-            <div class="flex justify-between items-center px-4">
-                <span class="text-[7px] font-black text-white/20 tracking-[0.4em] uppercase">Node CORE v4.0.2</span>
-                <div class="flex gap-1">
-                    <span class="w-1 h-1 rounded-full bg-accent-cyan opacity-20"></span>
-                    <span class="w-1 h-1 rounded-full bg-accent-cyan opacity-20"></span>
-                    <span class="w-1 h-1 rounded-full bg-accent-cyan opacity-20"></span>
+
+                <div class="mb-10 flex justify-center">
+                    <label class="flex items-center gap-4 group cursor-pointer">
+                        <input type="checkbox" name="remember" class="hidden peer">
+                        <div class="w-2.5 h-2.5 rounded-full border border-white/20 peer-checked:bg-teal-500 peer-checked:border-teal-500 transition-all"></div>
+                        <span class="text-[10px] font-bold text-white/20 uppercase tracking-[0.2em] group-hover:text-white/40 transition-colors">Remember Session</span>
+                    </label>
                 </div>
+
+                <button type="submit" class="btn-divine">
+                    ACCESS LOGIN
+                </button>
+            </form>
+
+            <div class="footer-text">
+                FAITH • GROWTH • PRECISION
             </div>
         </div>
     </div>

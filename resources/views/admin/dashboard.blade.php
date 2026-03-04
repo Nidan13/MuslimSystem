@@ -1,79 +1,79 @@
 @extends('layouts.admin')
 
-@section('title', 'Grand Sanctuary Command')
+@section('title', 'Komando Sanctuary Agung')
 
 @section('content')
 <!-- High-Tech Stats Grid -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
     
     <!-- Registered Hunters -->
-    <div class="glass-panel p-8 rounded-[32px] relative overflow-hidden group hover:-translate-y-2 transition-all duration-500">
+    <div class="glass-panel p-6 rounded-[32px] relative overflow-hidden group hover:-translate-y-2 transition-all duration-500">
         <div class="absolute -right-6 -top-6 w-32 h-32 bg-teal-500/5 rounded-full blur-2xl group-hover:bg-teal-500/10 transition-colors"></div>
-        <div class="flex justify-between items-start mb-6">
-            <div class="w-14 h-14 rounded-2xl bg-teal-900 border border-teal-800 flex items-center justify-center text-cyan-400 shadow-lg shadow-teal-950/40 group-hover:scale-110 transition-transform">
-                <i class="fas fa-users-cog text-xl icon-glow"></i>
+        <div class="flex justify-between items-start mb-5">
+            <div class="w-12 h-12 rounded-2xl bg-teal-900 border border-teal-800 flex items-center justify-center text-cyan-400 shadow-lg shadow-teal-950/40 group-hover:scale-110 transition-transform">
+                <i class="fas fa-users-cog text-lg icon-glow"></i>
             </div>
-            <span class="text-[9px] font-black text-teal-900/40 uppercase tracking-[0.3em] bg-slate-100 px-3 py-1.5 rounded-full">Registry</span>
+            <span class="text-[8px] font-black text-teal-900/40 uppercase tracking-[0.2em] bg-slate-100 px-3 py-1.5 rounded-full">Registri</span>
         </div>
         <div>
-            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Hunter Population</p>
-            <h3 class="text-4xl font-serif font-black text-teal-900 tracking-tight leading-none">
+            <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Populasi Hunter</p>
+            <h3 class="text-3xl font-serif font-black text-teal-900 tracking-tight leading-none">
                 {{ number_format($stats['total_users']) }}
-                <span class="text-xs font-black text-cyan-400 align-top ml-1 tracking-tighter">SOULS</span>
+                <span class="text-[10px] font-black text-cyan-400 align-top ml-1 tracking-tighter">JIWA</span>
             </h3>
         </div>
     </div>
 
     <!-- Active Missions -->
-    <div class="glass-panel p-8 rounded-[32px] relative overflow-hidden group hover:-translate-y-2 transition-all duration-500">
+    <div class="glass-panel p-6 rounded-[32px] relative overflow-hidden group hover:-translate-y-2 transition-all duration-500">
         <div class="absolute -right-6 -top-6 w-32 h-32 bg-cyan-500/5 rounded-full blur-2xl group-hover:bg-cyan-500/10 transition-colors"></div>
-        <div class="flex justify-between items-start mb-6">
-            <div class="w-14 h-14 rounded-2xl bg-teal-900 border border-teal-800 flex items-center justify-center text-cyan-400 shadow-lg shadow-teal-950/40 group-hover:scale-110 transition-transform">
-                <i class="fas fa-scroll text-xl icon-glow"></i>
+        <div class="flex justify-between items-start mb-5">
+            <div class="w-12 h-12 rounded-2xl bg-teal-900 border border-teal-800 flex items-center justify-center text-cyan-400 shadow-lg shadow-teal-950/40 group-hover:scale-110 transition-transform">
+                <i class="fas fa-scroll text-lg icon-glow"></i>
             </div>
-            <span class="text-[9px] font-black text-teal-900/40 uppercase tracking-[0.3em] bg-slate-100 px-3 py-1.5 rounded-full">Protocols</span>
+            <span class="text-[8px] font-black text-teal-900/40 uppercase tracking-[0.2em] bg-slate-100 px-3 py-1.5 rounded-full">Protokol</span>
         </div>
         <div>
-            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Active Mandates</p>
-            <h3 class="text-4xl font-serif font-black text-teal-900 tracking-tight leading-none">
+            <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Misi Aktif</p>
+            <h3 class="text-3xl font-serif font-black text-teal-900 tracking-tight leading-none">
                 {{ number_format($stats['active_quests']) }}
-                <span class="text-xs font-black text-cyan-400 align-top ml-1 tracking-tighter">NODES</span>
+                <span class="text-[10px] font-black text-cyan-400 align-top ml-1 tracking-tighter">NODE</span>
             </h3>
         </div>
     </div>
 
     <!-- Rift Management -->
-    <div class="glass-panel p-8 rounded-[32px] relative overflow-hidden group hover:-translate-y-2 transition-all duration-500">
+    <div class="glass-panel p-6 rounded-[32px] relative overflow-hidden group hover:-translate-y-2 transition-all duration-500">
         <div class="absolute -right-6 -top-6 w-32 h-32 bg-red-500/5 rounded-full blur-2xl group-hover:bg-red-500/10 transition-colors"></div>
-        <div class="flex justify-between items-start mb-6">
-            <div class="w-14 h-14 rounded-2xl bg-teal-900 border border-teal-800 flex items-center justify-center text-red-400 shadow-lg shadow-teal-950/40 group-hover:scale-110 transition-transform">
-                <i class="fas fa-dungeon text-xl icon-glow"></i>
+        <div class="flex justify-between items-start mb-5">
+            <div class="w-12 h-12 rounded-2xl bg-teal-900 border border-teal-800 flex items-center justify-center text-red-400 shadow-lg shadow-teal-950/40 group-hover:scale-110 transition-transform">
+                <i class="fas fa-dungeon text-lg icon-glow"></i>
             </div>
-            <span class="text-[9px] font-black text-teal-900/40 uppercase tracking-[0.3em] bg-slate-100 px-3 py-1.5 rounded-full">Anomalies</span>
+            <span class="text-[8px] font-black text-teal-900/40 uppercase tracking-[0.2em] bg-slate-100 px-3 py-1.5 rounded-full">Anomali</span>
         </div>
         <div>
-            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Detected Gates</p>
-            <h3 class="text-4xl font-serif font-black text-teal-900 tracking-tight leading-none">
+            <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Gerbang Terdeteksi</p>
+            <h3 class="text-3xl font-serif font-black text-teal-900 tracking-tight leading-none">
                 {{ number_format($stats['total_dungeons']) }}
-                <span class="text-xs font-black text-red-500 align-top ml-1 tracking-tighter">RIFTS</span>
+                <span class="text-[10px] font-black text-red-500 align-top ml-1 tracking-tighter">RIFT</span>
             </h3>
         </div>
     </div>
 
     <!-- Economy Matrix -->
-    <div class="glass-panel p-8 rounded-[32px] relative overflow-hidden group hover:-translate-y-2 transition-all duration-500">
+    <div class="glass-panel p-6 rounded-[32px] relative overflow-hidden group hover:-translate-y-2 transition-all duration-500">
         <div class="absolute -right-6 -top-6 w-32 h-32 bg-gold-500/5 rounded-full blur-2xl group-hover:bg-gold-500/10 transition-colors"></div>
-        <div class="flex justify-between items-start mb-6">
-            <div class="w-14 h-14 rounded-2xl bg-teal-900 border border-teal-800 flex items-center justify-center text-gold-400 shadow-lg shadow-teal-950/40 group-hover:scale-110 transition-transform">
-                <i class="fas fa-coins text-xl icon-glow"></i>
+        <div class="flex justify-between items-start mb-5">
+            <div class="w-12 h-12 rounded-2xl bg-teal-900 border border-teal-800 flex items-center justify-center text-gold-400 shadow-lg shadow-teal-950/40 group-hover:scale-110 transition-transform">
+                <i class="fas fa-coins text-lg icon-glow"></i>
             </div>
-            <span class="text-[9px] font-black text-teal-900/40 uppercase tracking-[0.3em] bg-gold-50 px-3 py-1.5 rounded-full">Economy</span>
+            <span class="text-[8px] font-black text-teal-900/40 uppercase tracking-[0.2em] bg-gold-50 px-3 py-1.5 rounded-full">Ekonomi</span>
         </div>
         <div>
-            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Soul Points Flow</p>
+            <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Aliran Soul Points</p>
             <div class="flex items-baseline gap-2">
-                <h3 class="text-4xl font-serif font-black text-teal-900 tracking-tight leading-none italic uppercase">8.4k</h3>
-                <span class="text-[10px] font-black text-gold-600 tracking-widest uppercase">Steady</span>
+                <h3 class="text-3xl font-serif font-black text-teal-900 tracking-tight leading-none italic uppercase">8.4k</h3>
+                <span class="text-[9px] font-black text-gold-600 tracking-widest uppercase">Stabil</span>
             </div>
         </div>
     </div>
@@ -89,13 +89,13 @@
             
             <div class="flex justify-between items-center mb-10 relative z-10">
                 <div>
-                    <h4 class="text-3xl font-serif font-black text-teal-900 tracking-wide uppercase">Raid Monitor <span class="text-cyan-400 font-sans tracking-normal ml-2">Active</span></h4>
+                    <h4 class="text-3xl font-serif font-black text-teal-900 tracking-wide uppercase">Monitor Raid <span class="text-cyan-400 font-sans tracking-normal ml-2">Aktif</span></h4>
                     <p class="text-slate-500 text-[10px] font-bold uppercase tracking-[0.4em] mt-2 flex items-center gap-2">
                         <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping"></span>
-                        Scanning system for ongoing anomalies
+                        Memindai sistem untuk anomali yang sedang berlangsung
                     </p>
                 </div>
-                <button class="px-6 py-2 rounded-xl bg-slate-50 border-2 border-slate-100 text-[10px] font-black text-teal-900 hover:border-cyan-400 transition-all uppercase tracking-widest">Global Scan</button>
+                <button class="px-6 py-2 rounded-xl bg-slate-50 border-2 border-slate-100 text-[10px] font-black text-teal-900 hover:border-cyan-400 transition-all uppercase tracking-widest">Pindai Global</button>
             </div>
             
             <div class="relative py-20 bg-slate-50/50 rounded-[32px] border-2 border-dashed border-slate-200 flex flex-col items-center justify-center text-center group overflow-hidden">
@@ -107,8 +107,8 @@
                     <div class="w-20 h-20 rounded-full bg-white shadow-xl flex items-center justify-center mb-6 text-slate-300 group-hover:text-cyan-400 group-hover:scale-110 transition-all duration-500">
                         <i class="fas fa-satellite-dish text-3xl animate-pulse"></i>
                     </div>
-                    <p class="text-teal-950 font-serif font-black text-xl italic uppercase tracking-wider mb-2">Omni-Silent State</p>
-                    <p class="text-[9px] text-slate-400 uppercase font-black tracking-[0.5em]">No active combat nodes detected</p>
+                    <p class="text-teal-950 font-serif font-black text-xl italic uppercase tracking-wider mb-2">Status Omni-Hening</p>
+                    <p class="text-[9px] text-slate-400 uppercase font-black tracking-[0.5em]">Tidak ada node tempur aktif yang terdeteksi</p>
                 </div>
             </div>
         </div>
@@ -117,19 +117,19 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
             <a href="{{ route('admin.hunters.create') }}" class="glass-panel p-6 rounded-3xl text-center group transition-all hover:bg-teal-900 active:scale-95">
                 <i class="fas fa-user-plus text-teal-900 text-xl mb-3 group-hover:text-cyan-400 transition-colors"></i>
-                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest group-hover:text-white transition-colors">New Hunter</p>
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest group-hover:text-white transition-colors">Hunter Baru</p>
             </a>
             <a href="{{ route('admin.quests.create') }}" class="glass-panel p-6 rounded-3xl text-center group transition-all hover:bg-teal-900 active:scale-95">
                 <i class="fas fa-scroll text-teal-900 text-xl mb-3 group-hover:text-cyan-400 transition-colors"></i>
-                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest group-hover:text-white transition-colors">Initialize Quest</p>
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest group-hover:text-white transition-colors">Awal Quest</p>
             </a>
             <a href="{{ route('admin.shop.create') }}" class="glass-panel p-6 rounded-3xl text-center group transition-all hover:bg-teal-900 active:scale-95">
                 <i class="fas fa-plus-circle text-teal-900 text-xl mb-3 group-hover:text-cyan-400 transition-colors"></i>
-                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest group-hover:text-white transition-colors">Add Item</p>
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest group-hover:text-white transition-colors">Tambah Item</p>
             </a>
             <a href="{{ route('admin.activity-logs.index') }}" class="glass-panel p-6 rounded-3xl text-center group transition-all hover:bg-teal-900 active:scale-95">
                 <i class="fas fa-terminal text-teal-900 text-xl mb-3 group-hover:text-cyan-400 transition-colors"></i>
-                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest group-hover:text-white transition-colors">Access Logs</p>
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest group-hover:text-white transition-colors">Log Akses</p>
             </a>
         </div>
     </div>

@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Reforge Artifact Protocol')
+@section('title', 'Protokol Tempa Ulang Artefak')
 
 @section('content')
 <div class="max-w-4xl mx-auto">
@@ -9,10 +9,10 @@
             <svg class="w-6 h-6 text-slate-400 group-hover:text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"/></svg>
         </a>
         <div>
-            <h1 class="text-4xl font-serif font-black text-teal-900 tracking-wide uppercase">Reforge Artifact</h1>
+            <h1 class="text-4xl font-serif font-black text-teal-900 tracking-wide uppercase">Tempa Ulang Artefak</h1>
             <p class="text-slate-500 text-[10px] font-bold uppercase tracking-[0.4em] mt-2 flex items-center gap-2">
                 <span class="w-2 h-2 rounded-full bg-gold-400 shadow-[0_0_10px_#fbbf24]"></span>
-                Calibrating {{ $item->name }} Protocol
+                Kalibrasi Protokol {{ $item->name }}
             </p>
         </div>
     </div>
@@ -25,14 +25,14 @@
             
             <div class="space-y-8">
                 <div>
-                    <label class="block text-[10px] font-black text-teal-900/40 uppercase mb-3 tracking-[0.3em] ml-1">Artifact Designation (Name)</label>
+                    <label class="block text-[10px] font-black text-teal-900/40 uppercase mb-3 tracking-[0.3em] ml-1">Designasi Artefak (Nama)</label>
                     <input type="text" name="name" value="{{ $item->name }}" required 
                         class="w-full bg-slate-50 border-2 border-slate-200 rounded-[24px] text-teal-900 p-6 focus:border-cyan-400 focus:bg-white outline-none transition-all font-serif font-black text-xl uppercase tracking-wider shadow-inner">
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                     <div>
-                        <label class="block text-[10px] font-black text-teal-900/40 uppercase mb-3 tracking-[0.3em] ml-1">Class Category</label>
+                        <label class="block text-[10px] font-black text-teal-900/40 uppercase mb-3 tracking-[0.3em] ml-1">Kategori Kelas</label>
                         <div class="relative">
                             <select name="category" required class="w-full bg-slate-50 border-2 border-slate-200 rounded-[24px] text-teal-900 p-6 focus:border-cyan-400 focus:bg-white outline-none appearance-none cursor-pointer font-black text-sm uppercase tracking-widest shadow-inner">
                                 @foreach(['potion', 'equipment', 'skill_book', 'misc'] as $cat)
@@ -48,7 +48,7 @@
                     </div>
 
                     <div>
-                        <label class="block text-[10px] font-black text-gold-500 uppercase mb-3 tracking-[0.3em] ml-1">Market Valuation (SP)</label>
+                        <label class="block text-[10px] font-black text-gold-500 uppercase mb-3 tracking-[0.3em] ml-1">Valuasi Pasar (SP)</label>
                         <div class="relative">
                             <input type="number" name="price" value="{{ $item->price }}" required 
                                 class="w-full bg-slate-50 border-2 border-slate-200 rounded-[24px] text-gold-600 p-6 focus:border-gold-400 focus:bg-white outline-none transition-all font-mono font-black text-xl shadow-inner">
@@ -58,7 +58,7 @@
                 </div>
 
                 <div>
-                    <label class="block text-[10px] font-black text-teal-900/40 uppercase mb-3 tracking-[0.3em] ml-1">Update Manifestation (Visuals)</label>
+                    <label class="block text-[10px] font-black text-teal-900/40 uppercase mb-3 tracking-[0.3em] ml-1">Perbarui Manifestasi (Visual)</label>
                     <div class="flex items-center gap-8 p-4 bg-slate-50/50 border-2 border-slate-100 rounded-[32px]">
                         @if($item->image_path)
                             <div class="w-24 h-24 rounded-2xl bg-white p-1 shadow-md overflow-hidden shrink-0">
@@ -69,14 +69,14 @@
                             <input type="file" name="image" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20">
                             <div class="w-full bg-white border-2 border-dashed border-slate-200 rounded-[24px] p-6 text-center group-hover:border-cyan-400 transition-all">
                                 <i class="fas fa-sync-alt text-xl text-slate-300 mb-1"></i>
-                                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Swap Visual Data</p>
+                                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Tukar Data Visual</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-[10px] font-black text-teal-900/40 uppercase mb-3 tracking-[0.3em] ml-1">Artifact Lore & Directives</label>
+                    <label class="block text-[10px] font-black text-teal-900/40 uppercase mb-3 tracking-[0.3em] ml-1">Lore & Direktif Artefak</label>
                     <textarea name="description" rows="4" required
                         class="w-full bg-slate-50 border-2 border-slate-200 rounded-[32px] text-slate-700 p-8 outline-none focus:border-cyan-400 focus:bg-white transition-all font-medium shadow-inner leading-relaxed">{{ $item->description }}</textarea>
                 </div>
@@ -85,7 +85,7 @@
             <div class="pt-6">
                 <button type="submit" class="w-full group relative overflow-hidden bg-teal-900 hover:bg-teal-800 py-6 rounded-[24px] font-serif font-black text-white uppercase tracking-[0.3em] shadow-2xl shadow-teal-950/30 transition-all active:scale-[0.99] border-t border-white/10">
                     <span class="relative flex items-center justify-center gap-4">
-                        RE-FINALIZE ARTIFACT
+                        FINALISASI ULANG ARTEFAK
                         <i class="fas fa-magic text-cyan-400 icon-glow transition-all group-hover:rotate-12"></i>
                     </span>
                 </button>

@@ -122,11 +122,17 @@
         <!-- Logo Area -->
         <div class="px-8 py-10 relative z-10 border-b border-white/5">
             <div class="absolute -top-10 -left-10 w-40 h-40 bg-cyan-400/5 rounded-full blur-3xl -z-10"></div>
-            <div class="flex items-center gap-4">
-                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-400 to-teal-600 flex items-center justify-center shadow-lg shadow-cyan-400/20 group cursor-pointer transition-transform hover:scale-105 active:scale-95">
-                    <i class="fas fa-mosque text-white text-xl icon-glow"></i>
+            <div class="flex items-center gap-5">
+                <div class="relative group cursor-pointer transition-all duration-500">
+                    <!-- Soft Ambient Glow -->
+                    <div class="absolute -inset-1 bg-cyan-400/10 rounded-full blur-lg opacity-40 group-hover:opacity-100 transition-opacity"></div>
+                    
+                    <!-- Soft Glass Container for Logo -->
+                    <div class="w-16 h-16 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 p-2.5 flex items-center justify-center relative z-10 shadow-xl shadow-black/20 group-hover:border-cyan-400/30 transition-all duration-500">
+                        <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500">
+                    </div>
                 </div>
-                <div>
+                <div class="flex flex-col">
                     <h1 class="text-xl font-serif font-black text-white tracking-widest uppercase leading-none">Muslim</h1>
                     <p class="text-[8px] text-cyan-400 uppercase tracking-[0.5em] font-bold mt-1">System Node</p>
                 </div>
@@ -136,7 +142,7 @@
         <!-- Navigation -->
         <nav id="sidebar-nav" class="flex-1 space-y-1 overflow-y-auto pb-6 custom-scrollbar">
             
-            <div class="sidebar-group-label">Core Access</div>
+            <div class="sidebar-group-label">Main Access</div>
             
             <a href="{{ route('admin.dashboard') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                 <i class="fas fa-th-large w-5 {{ request()->routeIs('admin.dashboard') ? 'icon-glow' : '' }}"></i>
@@ -147,7 +153,7 @@
 
             <a href="{{ route('admin.quests.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.quests.*') ? 'active' : '' }}">
                 <i class="fas fa-scroll w-5 {{ request()->routeIs('admin.quests.*') ? 'icon-glow' : '' }}"></i>
-                <span>Active Missions</span>
+                <span>Active Quests</span>
             </a>
 
             <a href="{{ route('admin.dungeons.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.dungeons.*') ? 'active' : '' }}">
@@ -157,12 +163,12 @@
 
             <a href="{{ route('admin.shop.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.shop.*') ? 'active' : '' }}">
                 <i class="fas fa-store w-5 {{ request()->routeIs('admin.shop.*') ? 'icon-glow' : '' }}"></i>
-                <span>Marketplace</span>
+                <span>Market</span>
             </a>
 
             <a href="{{ route('admin.islamic-videos.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.islamic-videos.*') ? 'active' : '' }}">
                 <i class="fas fa-video w-5 {{ request()->routeIs('admin.islamic-videos.*') ? 'icon-glow' : '' }}"></i>
-                <span>Media Archives</span>
+                <span>Media Archive</span>
             </a>
 
             <div class="sidebar-group-label">Community</div>
@@ -174,7 +180,7 @@
 
             <a href="{{ route('admin.circles.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.circles.*') ? 'active' : '' }}">
                 <i class="fas fa-circle-nodes w-5 {{ request()->routeIs('admin.circles.*') ? 'icon-glow' : '' }}"></i>
-                <span>Circles Management</span>
+                <span>Circle Management</span>
             </a>
 
             <a href="{{ route('admin.daily-tasks.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.daily-tasks.*') ? 'active' : '' }}">
@@ -194,23 +200,23 @@
                 <span>Withdrawal Requests</span>
             </a>
 
-            <div class="sidebar-group-label">Divine Protocols</div>
+            <div class="sidebar-group-label">Divine Protocol</div>
 
             <a href="{{ route('admin.prayers.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.prayers.*') ? 'active' : '' }}">
                 <i class="fas fa-pray w-5 {{ request()->routeIs('admin.prayers.*') ? 'icon-glow' : '' }}"></i>
-                <span>Salat Config</span>
+                <span>Prayer Config</span>
             </a>
 
             <a href="{{ route('admin.prayer-logs.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.prayer-logs.*') ? 'active' : '' }}">
                 <i class="fas fa-history w-5 {{ request()->routeIs('admin.prayer-logs.*') ? 'icon-glow' : '' }}"></i>
-                <span>Divine Logs</span>
+                <span>Worship Log</span>
             </a>
 
              <div class="sidebar-group-label">System Architecture</div>
 
             <a href="{{ route('admin.rank-tiers.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.rank-tiers.*') ? 'active' : '' }}">
                 <i class="fas fa-id-badge w-5 {{ request()->routeIs('admin.rank-tiers.*') ? 'icon-glow' : '' }}"></i>
-                <span>Rank Protocols</span>
+                <span>Rank Protocol</span>
             </a>
 
             <a href="{{ route('admin.dungeon-types.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.dungeon-types.*') ? 'active' : '' }}">
@@ -220,17 +226,17 @@
 
             <a href="{{ route('admin.quest-types.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.quest-types.*') ? 'active' : '' }}">
                 <i class="fas fa-layer-group w-5 {{ request()->routeIs('admin.quest-types.*') ? 'icon-glow' : '' }}"></i>
-                <span>Quest Archives</span>
+                <span>Quest Archive</span>
             </a>
 
             <a href="{{ route('admin.level-configs.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.level-configs.*') ? 'active' : '' }}">
                 <i class="fas fa-bolt w-5 {{ request()->routeIs('admin.level-configs.*') ? 'icon-glow' : '' }}"></i>
-                <span>Power Scaling</span>
+                <span>Power Scale</span>
             </a>
 
             <a href="{{ route('admin.activity-logs.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.activity-logs.*') ? 'active' : '' }}">
                 <i class="fas fa-terminal w-5 {{ request()->routeIs('admin.activity-logs.*') ? 'icon-glow' : '' }}"></i>
-                <span>System Logs</span>
+                <span>System Log</span>
             </a>
 
         </nav>
@@ -241,7 +247,7 @@
                 @csrf
                 <button class="w-full flex items-center justify-center gap-3 px-4 py-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 font-black text-[10px] tracking-widest hover:bg-red-500 hover:text-white transition-all shadow-lg hover:shadow-red-500/40 group">
                     <i class="fas fa-power-off transition-transform group-hover:rotate-90"></i>
-                    TERMINATE SESSION
+                    LOGOUT
                 </button>
             </form>
         </div>
@@ -262,7 +268,7 @@
                 <!-- Search Mockup -->
                 <div class="hidden xl:flex items-center gap-3 bg-slate-50 px-5 py-3 rounded-2xl border-2 border-slate-100 w-80 group focus-within:border-cyan-400 transition-all">
                     <i class="fas fa-search text-slate-300"></i>
-                    <span class="text-sm text-slate-400 font-medium">Find a node...</span>
+                    <span class="text-sm text-slate-400 font-medium">Search node...</span>
                 </div>
 
                 <div class="flex items-center gap-6">
