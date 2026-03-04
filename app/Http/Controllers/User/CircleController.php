@@ -101,17 +101,12 @@ class CircleController extends Controller {
 
         $user = Auth::user();
 
-        // 👮 Check Requirement: 1000 EXP Cost
-        if ($user->current_exp < 1000) {
-            return response()->json([
-                'success' => false,
-                'message' => 'EXP tidak mencukupi! Butuh 1000 EXP untuk membuat Circle.'
-            ], 403);
-        }
+
 
         return \Illuminate\Support\Facades\DB::transaction(function() use ($request, $user) {
             // 🔥 Burn 1000 EXP
-            $user->decrement('current_exp', 1000);
+            $user->removeExp(1000);
+
             
             // 📝 Log Activity
             \App\Models\ActivityLog::create([

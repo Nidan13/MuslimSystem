@@ -20,17 +20,19 @@ class PaymentController extends Controller
             'key_id'      => config('services.prisma.key_id'),
             'secret_key'  => config('services.prisma.secret_key'),
             'base_url'    => config('services.prisma.api_url', 'https://api-staging.plink.co.id/gateway/v2'),
+            'backend_callback'  => config('services.prisma.backend_callback'),
+            'frontend_callback' => config('services.prisma.frontend_callback'),
         ];
     }
 
     private function generateMac(string $rawJson, string $secretKey): string
     {
-        return hash_hmac('sha256', $rawJson, $secretKey);
+        return strtoupper(hash_hmac('sha256', $rawJson, trim($secretKey)));
     }
 
     private function getTimestamp(): string
     {
-        return now('Asia/Jakarta')->format('Y-m-d H:i:s.v +0700');
+        return now('Asia/Jakarta')->format('Y-m-d H:i:s.v O');
     }
 
     private function formatPhone(?string $phone): string
@@ -42,7 +44,7 @@ class PaymentController extends Controller
         } elseif (!str_starts_with($cleaned, '62')) {
             $cleaned = '62' . $cleaned;
         }
-        return '+' . $cleaned;
+        return $cleaned;
     }
 
     public function createLink(Request $request)
@@ -81,12 +83,12 @@ class PaymentController extends Controller
             'merchant_key_id'        => $cfg['key_id'],
             'merchant_id'            => $cfg['merchant_id'],
             'merchant_ref_no'        => $refNo,
-            'backend_callback_url'   => env('PLINK_BACKEND_CALLBACK', $appUrl . '/api/prismalink/webhook'),
-            'frontend_callback_url'  => env('PLINK_FRONTEND_CALLBACK', $appUrl . '/api/payments/callback'),
+            'backend_callback_url'   => $cfg['backend_callback'],
+            'frontend_callback_url'  => $cfg['frontend_callback'],
             'transaction_date_time'  => $timestamp,
             'transmission_date_time' => $timestamp,
             'transaction_currency'   => 'IDR',
-            'transaction_amount'     => $amount,
+            'transaction_amount'     => (int) $amount,
             'product_details'        => json_encode($items),
             'user_id'                => (string) $user->id,
             'user_name'              => substr($user->username ?? $user->name ?? $user->email, 0, 50),
@@ -113,15 +115,15 @@ class PaymentController extends Controller
         }
 
         $rawJson = json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-        \Log::info('Plink Payment Request', ['merchant_ref_no' => $refNo, 'mac' => $this->generateMac($rawJson, $cfg['secret_key']), 'payload' => $payload]);
         $mac = $this->generateMac($rawJson, $cfg['secret_key']);
+        \Log::info('Plink Payment Request', ['merchant_ref_no' => $refNo, 'mac' => $mac, 'payload' => $payload]);
 
         try {
             $endpoint = $cfg['base_url'] . '/payment/integration/transaction/api/submit-trx';
             $response = Http::timeout(20)->withHeaders([
                 'Content-Type' => 'application/json',
                 'mac'          => $mac,
-            ])->withBody($rawJson, 'application/json')->send('POST', $endpoint);
+            ])->withBody($rawJson, 'application/json')->post($endpoint);
 
             $respData = $response->json();
             \Log::info('Plink Payment Response', ['body' => $respData]);
@@ -161,7 +163,11 @@ class PaymentController extends Controller
             }
             
             $errDetail = $respData['response_description'] ?? $respData['response_message'] ?? 'Error';
-            return response()->json(['success' => false, 'message' => 'Plink error: ' . $errDetail], 500);
+            return response()->json([
+                'success' => false, 
+                'message' => 'Plink error: ' . $errDetail,
+                'sent_payload' => $payload
+            ], 400);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
@@ -248,8 +254,9 @@ class PaymentController extends Controller
             // Note: Don't use PL000 alone here because it's just the inquiry request status
             if ($status === 'SETTLED' || $status === 'SUCCESS' || $status === 'SETLD') {
                 \Log::info('Match Found - Activating User', ['ref' => $payment->external_id]);
-                $this->markAsPaid($payment);
+                $payment->markAsPaid();
             }
+
         } catch (\Exception $e) {
             \Log::error('Inquiry failed', ['msg' => $e->getMessage()]);
         }
@@ -258,7 +265,7 @@ class PaymentController extends Controller
     public function webhook(Request $request)
     {
         $payload = $request->all();
-        \Log::info('Plink Webhook Received', $payload);
+        \Log::info('Plink Webhook Received at /prismalink/webhook', $payload);
 
         $refNo = $payload['merchant_ref_no'] ?? null;
         $paymentStatus = $payload['payment_status'] ?? '';
@@ -267,56 +274,44 @@ class PaymentController extends Controller
             $payment = Payment::where('external_id', $refNo)->where('status', 'pending')->first();
             if ($payment) {
                 \Log::info('Webhook Match - Activating User', ['ref' => $refNo]);
-                $payment->update(['payload' => json_encode($payload)]); // Update payload with webhook data
-                $this->markAsPaid($payment);
+                $payment->update(['payload' => json_encode($payload)]); 
+                $payment->markAsPaid();
             }
         }
         return response()->json(['message' => 'OK']);
     }
 
-    private function markAsPaid($payment)
+    public function notifyManual(Request $request)
     {
-        DB::transaction(function() use ($payment) {
-            // 1. Update status pembayaran
-            $payment->update(['status' => 'paid', 'paid_at' => now()]);
-            
-            $u = User::find($payment->user_id);
-            if ($u) {
-                \Log::info('Activating User ID: ' . $u->id);
-                
-                // 2. Aktifkan akun user baru
-                $u->update(['is_active' => 1]);
-                
-                // 3. Logic Komisi Referral (10%)
-                if ($u->referred_by_id) {
-                    $commissionAmount = $payment->amount * 0.1;
-                    \Log::info("Giving Commission to Referrer: {$u->referred_by_id}. Amount: {$commissionAmount}");
+        $request->validate([
+            'amount' => 'required|numeric|min:1000',
+        ]);
 
-                    // Catat histori komisi
-                    Commission::create([
-                        'recipient_id'      => $u->referred_by_id,
-                        'referred_user_id'  => $u->id,
-                        'payment_id'        => $payment->id,
-                        'amount'            => $commissionAmount,
-                        'tier'              => 1,
-                        'status'            => 'Success' // Langsung sukses biar cair
-                    ]);
+        $user = $request->user();
+        
+        $payment = Payment::create([
+            'user_id' => $user->id,
+            'external_id' => 'MANUAL-' . $user->id . '-' . time(),
+            'amount' => $request->amount,
+            'payment_method' => 'MANUAL',
+            'status' => 'pending',
+            'payload' => json_encode(['note' => 'User reported manual transfer']),
+        ]);
 
-                    // 4. Update SALDO si pengajak secara REAL
-                    $referrer = User::find($u->referred_by_id);
-                    if ($referrer) {
-                        $referrer->increment('balance', $commissionAmount);
-                        \Log::info("User ID {$referrer->id} balance updated. New balance: {$referrer->balance}");
-                    }
-                }
-            }
-        });
+        return response()->json([
+            'success' => true,
+            'message' => 'Manual payment notification sent to admin.',
+            'data' => $payment
+        ]);
     }
 
     public function callback(Request $request)
     {
-        // Redirect balik ke App (Deep Link) atau Web Page Sukses
-        // Karena ini mobile app, biasanya kita redirect ke URL yang dihandle Flutter
+        // Debugging: If this is actually being hit as a webhook
+        if ($request->isMethod('post')) {
+            return $this->webhook($request);
+        }
+
         return "<html><body onload=\"window.location='muslimapp://payment/success'\">
                 <h3>Pembayaran Berhasil!</h3>
                 <p>Silakan kembali ke aplikasi...</p>

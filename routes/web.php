@@ -72,6 +72,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/withdrawals', [WithdrawalController::class, 'index'])->name('withdrawals.index');
         Route::patch('/withdrawals/{withdrawal}', [WithdrawalController::class, 'update'])->name('withdrawals.update');
 
+        // Manual Payments
+        Route::get('/payments/manual', [\App\Http\Controllers\Admin\ManualPaymentController::class, 'index'])->name('payments.manual.index');
+        Route::post('/payments/manual/{payment}/approve', [\App\Http\Controllers\Admin\ManualPaymentController::class, 'approve'])->name('payments.manual.approve');
+        Route::post('/payments/manual/{payment}/reject', [\App\Http\Controllers\Admin\ManualPaymentController::class, 'reject'])->name('payments.manual.reject');
+
         // Master Data Sholat
         Route::resource('prayers', AdminMasterPrayerController::class)->except(['create', 'store', 'show', 'destroy']);
     });

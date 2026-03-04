@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Public routes (no authentication required)
-Route::post('/prismalink/webhook', [\App\Http\Controllers\User\PaymentController::class, 'webhook']);
-Route::get('/payments/callback', [\App\Http\Controllers\User\PaymentController::class, 'callback']);
+Route::match(['get', 'post'], '/prismalink/webhook', [\App\Http\Controllers\User\PaymentController::class, 'webhook']);
+Route::match(['get', 'post'], '/payments/callback', [\App\Http\Controllers\User\PaymentController::class, 'callback']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/auth/google', [AuthController::class, 'googleLogin']);
@@ -37,6 +37,8 @@ Route::get('/islamic-videos', [\App\Http\Controllers\User\IslamicVideoController
         Route::post('/payments/create-link', [\App\Http\Controllers\User\PaymentController::class, 'createLink']);
         Route::get('/payments/status', [\App\Http\Controllers\User\PaymentController::class, 'status']);
         Route::post('/payments/inquiry', [\App\Http\Controllers\User\PaymentController::class, 'inquiry']);
+        Route::post('/payments/manual-notify', [\App\Http\Controllers\User\PaymentController::class, 'notifyManual']);
+
 
         // Routes requiring ACTIVE account
         Route::middleware(\App\Http\Middleware\ActiveUser::class)->group(function () {
@@ -51,6 +53,8 @@ Route::get('/islamic-videos', [\App\Http\Controllers\User\IslamicVideoController
             // Quran Progress
             Route::get('/quran/progress', [\App\Http\Controllers\User\QuranController::class, 'index']);
             Route::post('/quran/progress/toggle', [\App\Http\Controllers\User\QuranController::class, 'toggle']);
+            Route::get('/quran/history', [\App\Http\Controllers\User\QuranController::class, 'getHistory']);
+            Route::post('/quran/history/save', [\App\Http\Controllers\User\QuranController::class, 'saveHistory']);
 
             // Daily Tasks API for Flutter
             Route::prefix('daily-tasks')->group(function () {

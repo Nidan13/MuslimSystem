@@ -59,11 +59,8 @@ class DailyTaskController extends Controller
         $totalPoints = $mappedTasks->sum('soul_points');
         
         // --- MISSING TASK PENALTY ---
-        // Refactored to check Prayer Logs for mandatory activities
-        if ($date === $today) {
-            $this->applyMissedPrayerPenalty($user);
-            $user->refresh();
-        }
+        // Handled centrally by PrayerController triggerPunishment
+
 
         return response()->json([
             'success' => true,
@@ -84,40 +81,7 @@ class DailyTaskController extends Controller
     /**
      * Deduct 2 HP for each missed obligatory prayer yesterday
      */
-    private function applyMissedPrayerPenalty($user)
-    {
-        // 🚺 Skip penalty if currently menstruating
-        if ($user->is_menstruating) {
-            return;
-        }
 
-        $yesterday = now()->subDay()->toDateString();
-        
-        if ($user->created_at->startOfDay()->gt(Carbon::parse($yesterday)->startOfDay())) {
-            return;
-        }
-        
-        $cacheKey = "prayer_penalty_check_{$user->id}_{$yesterday}";
-        if (cache()->has($cacheKey)) {
-            return;
-        }
-
-        $prayers = ['subuh', 'dzuhur', 'ashar', 'maghrib', 'isya'];
-        $completedPrayers = PrayerLog::where('user_id', $user->id)
-            ->where('date', $yesterday)
-            ->where('is_completed', true)
-            ->count();
-        
-        $missedCount = count($prayers) - $completedPrayers;
-
-        if ($missedCount > 0) {
-            // Deduct 5 HP per missed prayer as requested by user
-            $newHp = max(0, $user->hp - ($missedCount * 5));
-            $user->update(['hp' => $newHp]);
-        }
-
-        cache()->put($cacheKey, true, now()->addDays(2));
-    }
 
     /**
      * Store new custom task

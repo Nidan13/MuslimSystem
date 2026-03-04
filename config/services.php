@@ -2,18 +2,6 @@
 
 return [
 
-    /*
-    |--------------------------------------------------------------------------
-    | Third Party Services
-    |--------------------------------------------------------------------------
-    |
-    | This file is for storing the credentials for third party services such
-    | as Mailgun, Postmark, AWS and more. This file provides the de facto
-    | location for this type of information, allowing packages to have
-    | a conventional file to locate the various service credentials.
-    |
-    */
-
     'postmark' => [
         'key' => env('POSTMARK_API_KEY'),
     ],
@@ -36,10 +24,12 @@ return [
     ],
 
     'prisma' => [
-        'merchant_id' => env('PRISMA_MERCHANT_ID'),
-        'key_id'      => env('PRISMA_KEY_ID'),
-        'secret_key'  => env('PRISMA_SECRET_KEY'),
+        'merchant_id' => env('PRISMALINK_MERCHANT_ID'),
+        'key_id'      => env('PRISMALINK_KEY_ID'),
+        'secret_key'  => env('PRISMALINK_SECRET_KEY'),
         'api_url'     => env('PRISMA_API_URL', 'https://api-staging.plink.co.id/gateway/v2'),
+        'backend_callback'  => env('PLINK_BACKEND_CALLBACK'),
+        'frontend_callback' => env('PLINK_FRONTEND_CALLBACK'),
     ],
 
 ];

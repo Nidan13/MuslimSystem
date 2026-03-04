@@ -28,9 +28,8 @@ class ProfileController extends Controller
         $startWindow = Carbon::now()->subDays(6)->startOfDay();
         $endWindow = Carbon::now()->endOfDay();
 
-        $salahTaskIds = DailyTask::where('name', 'like', 'Sholat%')->pluck('id');
-        $salahCompletedCount = UserDailyTask::where('user_id', $user->id)
-            ->whereIn('daily_task_id', $salahTaskIds)
+        $salahCompletedCount = \App\Models\PrayerLog::where('user_id', $user->id)
+            ->where('is_completed', true)
             ->whereBetween('date', [$startWindow, $endWindow])
             ->count();
         
@@ -39,13 +38,11 @@ class ProfileController extends Controller
         $salahConsistency = $totalSalahOpportunities > 0 ? round(($salahCompletedCount / $totalSalahOpportunities) * 100) : 0;
 
         // Calculate Quran Progress (Total Sessions)
-        $quranTaskId = DailyTask::where('name', 'like', '%Al-Quran%')->value('id');
-        $quranSessions = 0;
-        if ($quranTaskId) {
-            $quranSessions = UserDailyTask::where('user_id', $user->id)
-                ->where('daily_task_id', $quranTaskId)
-                ->count();
-        }
+        $quranHistories = \App\Models\QuranReadingHistory::where('user_id', $user->id)->count();
+        $quranSessions = \DB::table('user_quran_progress')
+            ->where('user_id', $user->id)
+            ->where('is_completed', true)
+            ->count() + $quranHistories;
 
         // Calculate Next Level XP from LevelConfig
         $levelConfig = \App\Models\LevelConfig::find($user->level);
@@ -75,8 +72,8 @@ class ProfileController extends Controller
                         'attributes' => [
                             'sholat' => $user->sholat_count,
                             'ilmu' => $user->ilmu_count,
-                            'adab' => $user->adab_count,
-                            'istiqomah' => $user->streak, // Simplified for now
+                            'adab' => \App\Models\UserQuest::where('user_id', $user->id)->where('status', 'completed')->count(),
+                            'istiqomah' => $user->streak, 
                         ],
                     ],
                     'hp' => [
@@ -109,9 +106,8 @@ class ProfileController extends Controller
         $startWindow = Carbon::now()->subDays(6)->startOfDay();
         $endWindow = Carbon::now()->endOfDay();
 
-        $salahTaskIds = DailyTask::where('name', 'like', 'Sholat%')->pluck('id');
-        $salahCompletedCount = UserDailyTask::where('user_id', $user->id)
-            ->whereIn('daily_task_id', $salahTaskIds)
+        $salahCompletedCount = \App\Models\PrayerLog::where('user_id', $user->id)
+            ->where('is_completed', true)
             ->whereBetween('date', [$startWindow, $endWindow])
             ->count();
         
@@ -119,13 +115,11 @@ class ProfileController extends Controller
         $salahConsistency = $totalSalahOpportunities > 0 ? round(($salahCompletedCount / $totalSalahOpportunities) * 100) : 0;
 
         // Calculate Quran Progress
-        $quranTaskId = DailyTask::where('name', 'like', '%Al-Quran%')->value('id');
-        $quranSessions = 0;
-        if ($quranTaskId) {
-            $quranSessions = UserDailyTask::where('user_id', $user->id)
-                ->where('daily_task_id', $quranTaskId)
-                ->count();
-        }
+        $quranHistories = \App\Models\QuranReadingHistory::where('user_id', $user->id)->count();
+        $quranSessions = \DB::table('user_quran_progress')
+            ->where('user_id', $user->id)
+            ->where('is_completed', true)
+            ->count() + $quranHistories;
 
         $activities = \App\Models\ActivityLog::where('user_id', $user->id)
             ->orderBy('created_at', 'desc')
@@ -155,7 +149,7 @@ class ProfileController extends Controller
                         'attributes' => [
                             'sholat' => $user->sholat_count,
                             'ilmu' => $user->ilmu_count,
-                            'adab' => $user->adab_count,
+                            'adab' => \App\Models\UserQuest::where('user_id', $user->id)->where('status', 'completed')->count(),
                             'istiqomah' => $user->streak,
                         ],
                     ],
@@ -172,6 +166,29 @@ class ProfileController extends Controller
                 'activities' => $activities
             ]
         ]);
+    }
+
+    public function checkDailyRestore($user)
+    {
+        $cacheKey = "last_hp_restore_" . $user->id;
+        $today = now()->toDateString();
+        
+        if (cache()->get($cacheKey) !== $today) {
+            $user->hp = $user->max_hp;
+            $user->save();
+            
+            cache()->put($cacheKey, $today, now()->addDay());
+            
+            \App\Models\ActivityLog::create([
+                'user_id' => $user->id,
+                'type' => 'hp_restore',
+                'amount' => $user->max_hp,
+                'description' => "Pemulihan Darah Harian (Full HP)"
+            ]);
+            
+            return true;
+        }
+        return false;
     }
 
     public function penalty(Request $request)
@@ -326,6 +343,12 @@ class ProfileController extends Controller
                 'amount' => $user->max_hp,
                 'description' => "Darah dipulihkan (Full HP) - Semangat Hunter Baru!"
             ]);
+        }
+
+        // --- NEW: Trigger Prayer Penalties (Strict) ---
+        if (class_exists(\App\Http\Controllers\User\PrayerController::class)) {
+            app(\App\Http\Controllers\User\PrayerController::class)->triggerPunishment($user);
+            $user->refresh();
         }
 
         // Always check rank repair

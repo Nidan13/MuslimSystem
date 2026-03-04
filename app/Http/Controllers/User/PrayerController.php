@@ -59,13 +59,17 @@ class PrayerController extends Controller
         $schedules = $request->schedules;
 
         foreach ($schedules as $prayerName => $time) {
-            // Combine date and time
-            $scheduledAt = Carbon::parse("$date $time");
-
+            $scheduledAt = Carbon::parse($date . ' ' . $time);
+            
+            // Normalize prayer name slug (avoid case sensitivity or spacing issues)
+            $slug = strtolower(trim($prayerName));
+            
+            // Check if log already exists for this prayer/date combo to avoid duplicates
+            // We only update scheduled_at, NEVER touch is_completed here
             PrayerLog::updateOrCreate(
                 [
                     'user_id' => $user->id,
-                    'prayer_name' => $prayerName,
+                    'prayer_name' => $slug,
                     'date' => $date,
                 ],
                 [
@@ -188,62 +192,65 @@ class PrayerController extends Controller
         if (!$user || $user->is_menstruating) return;
 
         $now = now();
+        \Log::info("Global Punishment Triggered for User {$user->id} at " . $now->toDateTimeString());
         
-        // Cek sholat yang belum selesai dan belum dihukum
-        $missedPrayers = PrayerLog::where('user_id', $user->id)
+        // 1. Dapatkan sholat yang terjadwal namun belum selesai dan belum dihukum
+        $missedLogs = PrayerLog::where('user_id', $user->id)
             ->where('is_completed', false)
             ->where('is_punished', false)
             ->whereNotNull('scheduled_at')
             ->where('scheduled_at', '<', $now)
             ->get();
 
-        foreach ($missedPrayers as $log) {
+        if ($missedLogs->isEmpty()) {
+            \Log::info("No missed logs found for User {$user->id}");
+            return;
+        }
+
+        foreach ($missedLogs as $log) {
             $scheduledAt = Carbon::parse($log->scheduled_at);
+            $shouldPunish = false;
+
+            // --- Logika Hukuman (Original Values) ---
             
-            // Kriteria Hukuman:
-            // 1. Sudah masuk waktu sholat berikutnya (paling akurat)
+            // 1. Cek sholat berikutnya (jika ada)
             $nextPrayer = PrayerLog::where('user_id', $user->id)
                 ->where('scheduled_at', '>', $log->scheduled_at)
                 ->orderBy('scheduled_at', 'asc')
                 ->first();
 
-            $shouldPunish = false;
-
             if ($nextPrayer && $now->gt($nextPrayer->scheduled_at)) {
+                // Sudah lewat waktu sholat berikutnya, pasti kena hukum.
                 $shouldPunish = true;
-                \Log::info("Punishing: Next prayer has started.", ['prayer' => $log->prayer_name]);
+                \Log::info("Punishing: Next prayer time reached.", ['prayer' => $log->prayer_name, 'next' => $nextPrayer->prayer_name]);
             } 
-            // 2. ATAU sudah lewat 2 jam (biar Isya/Subuh yang ga ada 'berikutnya' cepet kena)
+            // 2. ATAU sudah lewat selisih 120 menit (2 jam) - untuk antisipasi Isya atau jika next belum sinkron
             elseif ($now->diffInMinutes($scheduledAt) >= 120) {
                 $shouldPunish = true;
-                \Log::info("Punishing: More than 120 mins passed.", ['prayer' => $log->prayer_name]);
-            }
-            // 3. Khusus Subuh kalau udah jam 7 pagi (Syuruq/Dhuha)
-            elseif ($log->prayer_name === 'subuh' && $now->hour >= 7) {
-                $shouldPunish = true;
+                \Log::info("Punishing: Over 120 minutes grace period.", ['prayer' => $log->prayer_name]);
             }
 
             if ($shouldPunish) {
                 DB::transaction(function () use ($user, $log) {
-                    // Penalty: 20% dari HP SEKARANG (min 10)
-                    $penaltyAmount = round($user->hp * 0.20);
-                    if ($penaltyAmount < 10) $penaltyAmount = 10;
-
-                    $user->hp = max(0, $user->hp - $penaltyAmount);
+                    $user->hp = max(0, $user->hp - 20);
                     $user->save();
 
                     $log->update([
                         'is_punished' => true,
-                        'punished_at' => now()
+                        'punished_at' => now(),
                     ]);
 
                     \App\Models\ActivityLog::create([
                         'user_id' => $user->id,
                         'type' => 'sholat_penalty',
-                        'amount' => -$penaltyAmount,
-                        'description' => "Penalti Melewatkan Sholat " . ucfirst($log->prayer_name)
+                        'amount' => -20,
+                        'description' => "Penalti Sholat " . ucfirst($log->prayer_name) . " (-20 HP)"
                     ]);
                 });
+            } else {
+                \Log::info("Skip punishment for {$log->prayer_name}: still within grace period.", [
+                    'mins_diff' => $now->diffInMinutes($scheduledAt)
+                ]);
             }
         }
     }

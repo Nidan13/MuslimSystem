@@ -56,78 +56,125 @@
     </div>
 
     <!-- Profile Tab Content -->
+    <!-- Profile Tab Content -->
     <div id="content-profile" class="tab-content space-y-10 animate-slideUp">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-            <!-- Attributes Board -->
-            <div class="glass-panel p-12 rounded-[50px] bg-white border-2 border-slate-50 shadow-xl">
-                <h3 class="text-[10px] font-black text-slate-900/30 uppercase tracking-[0.5em] mb-10 border-b border-slate-50 pb-6 flex items-center gap-3">
-                    <i class="fas fa-bolt text-nu-teal"></i> Core Attributes
+        
+        <!-- Quick Stats Matrix (Updated) -->
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+            <div class="glass-panel p-6 rounded-[35px] bg-white border border-slate-100 flex flex-col items-center justify-center text-center group hover:border-cyan-400 transition-all hover:-translate-y-1 shadow-sm hover:shadow-xl">
+                <div class="w-12 h-12 rounded-2xl bg-cyan-50 text-cyan-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <i class="fas fa-quran text-xl"></i>
+                </div>
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Surah</p>
+                <p class="text-2xl font-serif font-black text-slate-900">{{ number_format($stats['totalSurah']) }}</p>
+            </div>
+            
+            <div class="glass-panel p-6 rounded-[35px] bg-white border border-slate-100 flex flex-col items-center justify-center text-center group hover:border-emerald-400 transition-all hover:-translate-y-1 shadow-sm hover:shadow-xl">
+                <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <i class="fas fa-pray text-xl"></i>
+                </div>
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Sholat</p>
+                <p class="text-2xl font-serif font-black text-slate-900">{{ number_format($stats['totalSholat']) }}</p>
+            </div>
+
+            <div class="glass-panel p-6 rounded-[35px] bg-white border border-slate-100 flex flex-col items-center justify-center text-center group hover:border-amber-400 transition-all hover:-translate-y-1 shadow-sm hover:shadow-xl">
+                <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <i class="fas fa-scroll text-xl"></i>
+                </div>
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Ambil Misi</p>
+                <p class="text-2xl font-serif font-black text-slate-900">{{ number_format($stats['totalMisi']) }}</p>
+            </div>
+
+            <div class="glass-panel p-6 rounded-[35px] bg-white border border-slate-100 flex flex-col items-center justify-center text-center group hover:border-indigo-400 transition-all hover:-translate-y-1 shadow-sm hover:shadow-xl">
+                <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <i class="fas fa-video text-xl"></i>
+                </div>
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Kajian</p>
+                <p class="text-2xl font-serif font-black text-slate-900">{{ number_format($stats['totalKajian']) }}</p>
+            </div>
+
+            <div class="glass-panel p-6 rounded-[35px] bg-white border border-slate-100 flex flex-col items-center justify-center text-center group hover:border-rose-400 transition-all hover:-translate-y-1 shadow-sm hover:shadow-xl">
+                <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <i class="fas fa-fingerprint text-xl"></i>
+                </div>
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Habit Matrix</p>
+                <p class="text-2xl font-serif font-black text-slate-900">{{ number_format($stats['totalHabit']) }}</p>
+            </div>
+
+            <div class="glass-panel p-6 rounded-[35px] bg-slate-900 border border-slate-800 flex flex-col items-center justify-center text-center group hover:bg-nu-teal transition-all hover:-translate-y-1 shadow-lg hover:shadow-nu-teal/30 relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-3">
+                    <span class="px-2 py-0.5 rounded-lg bg-white/10 text-[7px] font-black text-white/50 uppercase tracking-widest">Today: {{ number_format($stats['dailyTaskToday']) }}</span>
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-white/10 text-nu-teal flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <i class="fas fa-calendar-check text-xl"></i>
+                </div>
+                <p class="text-[9px] font-black text-white/40 uppercase tracking-widest mb-1">Daily Task</p>
+                <p class="text-2xl font-serif font-black text-white">{{ number_format($stats['totalDailyTask']) }}</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+            <!-- Pentagon Stats Board (Radar Chart) -->
+            <div class="glass-panel p-10 rounded-[50px] bg-white border-2 border-slate-50 shadow-xl overflow-hidden relative">
+                <div class="absolute top-0 left-0 w-32 h-32 bg-nu-teal/5 rounded-full -ml-16 -mt-16 pointer-events-none"></div>
+                <h3 class="text-[10px] font-black text-slate-900/30 uppercase tracking-[0.5em] mb-6 border-b border-slate-50 pb-6 flex items-center gap-3 relative z-10">
+                    <i class="fas fa-hexagon-nodes text-nu-teal"></i> Ability Matrix
                 </h3>
-                <div class="grid gap-8">
-                    @php
-                        $s = $user->userStat;
-                        $attrs = [
-                            ['name' => 'STR', 'val' => $s->str ?? 10, 'icon' => '⚔️'],
-                            ['name' => 'AGI', 'val' => $s->wis ?? 10, 'icon' => '⚡'],
-                            ['name' => 'INT', 'val' => $s->int ?? 10, 'icon' => '🧠'],
-                            ['name' => 'VIT', 'val' => $s->vit ?? 10, 'icon' => '🛡️'],
-                        ];
-                    @endphp
-                    @foreach($attrs as $a)
-                    <div class="group/attr">
-                        <div class="flex justify-between items-end mb-3">
-                            <div class="flex items-center gap-4">
-                                <span class="text-xl">{{ $a['icon'] }}</span>
-                                <span class="text-[10px] font-black uppercase tracking-widest text-slate-400 group-hover/attr:text-nu-indigo transition-colors">{{ $a['name'] }}</span>
-                            </div>
-                            <span class="text-xl font-serif font-black text-nu-indigo">{{ $a['val'] }}</span>
-                        </div>
-                        <div class="h-1.5 bg-slate-50 border border-slate-100 rounded-full overflow-hidden shadow-inner">
-                            <div class="h-full bg-nu-indigo rounded-full transition-all duration-1000 shadow-sm" style="width: {{ min(($a['val'] / 100) * 100, 100) }}%"></div>
-                        </div>
+                
+                <div class="relative h-[300px] w-full flex items-center justify-center">
+                    <canvas id="radarChart"></canvas>
+                </div>
+
+                <div class="grid grid-cols-5 gap-2 mt-8">
+                    @foreach($radarData['labels'] as $index => $label)
+                    <div class="text-center">
+                        <p class="text-[8px] font-black text-slate-400 uppercase mb-1">{{ $label }}</p>
+                        <p class="text-xs font-bold text-nu-indigo">{{ round($radarData['values'][$index]) }}%</p>
                     </div>
                     @endforeach
                 </div>
             </div>
 
             <!-- Progression & Level -->
-            <div class="glass-panel p-12 rounded-[50px] bg-slate-900 border-2 border-slate-800 text-white relative overflow-hidden shadow-2xl shadow-slate-950/50">
+            <div class="glass-panel p-12 rounded-[50px] bg-slate-900 border-2 border-slate-800 text-white relative overflow-hidden shadow-2xl shadow-slate-950/50 flex flex-col justify-between">
                 <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-nu-teal/10 rounded-full blur-[100px] pointer-events-none"></div>
-                <h3 class="text-[10px] font-black text-nu-teal/40 uppercase tracking-[0.5em] mb-10 border-b border-white/5 pb-6 flex items-center gap-3">
-                    <i class="fas fa-chart-line text-nu-teal"></i> Evolution Progress
-                </h3>
-                <div class="grid gap-10 relative z-10">
-                    <div class="flex items-center gap-8 group">
-                        <div class="w-16 h-16 bg-white/5 border border-white/10 rounded-[25px] flex items-center justify-center text-nu-teal shadow-inner group-hover:scale-110 transition-transform">
-                            <i class="fas fa-layer-group text-2xl"></i>
+                <div>
+                    <h3 class="text-[10px] font-black text-nu-teal/40 uppercase tracking-[0.5em] mb-10 border-b border-white/5 pb-6 flex items-center gap-3">
+                        <i class="fas fa-chart-line text-nu-teal"></i> Evolution Progress
+                    </h3>
+                    <div class="grid gap-10 relative z-10">
+                        <div class="flex items-center gap-8 group">
+                            <div class="w-20 h-20 bg-white/5 border border-white/10 rounded-[30px] flex items-center justify-center text-nu-teal shadow-inner group-hover:scale-110 transition-all duration-500">
+                                <i class="fas fa-layer-group text-3xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-5xl font-black font-serif leading-none tracking-tighter">LVL {{ $user->level }}</p>
+                                <p class="text-[10px] font-black text-white/30 uppercase tracking-[0.3em] mt-3">Current Manifestation</p>
+                            </div>
                         </div>
-                        <div>
-                            <p class="text-4xl font-black font-serif leading-none tracking-tighter">LVL {{ $user->level }}</p>
-                            <p class="text-[9px] font-black text-white/30 uppercase tracking-[0.3em] mt-2">Current Manifestation</p>
+                        
+                        <div class="space-y-6">
+                            <div class="flex justify-between text-[11px] font-black uppercase tracking-widest">
+                                <span class="text-white/40">XP Progression</span>
+                                <span class="text-nu-teal font-mono tracking-tighter">{{ number_format($user->current_exp) }} <span class="text-white/20 mx-1">/</span> {{ number_format($user->next_level_exp ?: 1000) }}</span>
+                            </div>
+                            <div class="h-4 bg-white/5 rounded-full border border-white/5 p-1 shadow-inner overflow-hidden relative">
+                                @php $expPercent = min(($user->current_exp / ($user->next_level_exp ?: 1000)) * 100, 100); @endphp
+                                <div class="h-full bg-gradient-to-r from-nu-indigo via-nu-teal to-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.3)] transition-all duration-1000" style="width:{{ $expPercent }}%"></div>
+                                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent w-20 h-full animate-progress-shine"></div>
+                            </div>
                         </div>
                     </div>
-                    
-                    <div class="space-y-4">
-                        <div class="flex justify-between text-[10px] font-black uppercase tracking-widest">
-                            <span class="text-white/40">XP Progression</span>
-                            <span class="text-nu-teal font-mono">{{ number_format($user->current_exp) }} / {{ number_format($user->next_level_exp ?: 1000) }}</span>
-                        </div>
-                        <div class="h-3 bg-white/5 rounded-full border border-white/5 p-0.5 shadow-inner overflow-hidden">
-                            @php $expPercent = min(($user->current_exp / ($user->next_level_exp ?: 1000)) * 100, 100); @endphp
-                            <div class="h-full bg-gradient-to-r from-nu-indigo to-nu-teal rounded-full shadow-sm transition-all duration-1000" style="width:{{ $expPercent }}%"></div>
-                        </div>
-                        <p class="text-[8px] font-black text-white/20 uppercase tracking-[0.2em] italic text-right">System Synchronization In Progress...</p>
-                    </div>
+                </div>
 
-                    <div class="flex flex-wrap gap-4 mt-4">
-                        <div class="flex-1 p-4 bg-white/5 border border-white/5 rounded-2xl text-center">
-                            <p class="text-[8px] font-black text-white/30 uppercase tracking-widest mb-1">Quest Cleared</p>
-                            <p class="text-xl font-black font-mono">{{ array_sum($questStats) }}</p>
-                        </div>
-                        <div class="flex-1 p-4 bg-nu-teal/10 border border-nu-teal/20 rounded-2xl text-center">
-                            <p class="text-[8px] font-black text-nu-teal uppercase tracking-widest mb-1">Class Rank</p>
-                            <p class="text-xl font-serif italic">{{ $user->rankTier->name ?? 'None' }}</p>
-                        </div>
+                <div class="flex gap-4 mt-10 relative z-10">
+                    <div class="flex-1 p-6 bg-white/5 border border-white/10 rounded-3xl text-center backdrop-blur-sm group hover:bg-white/10 transition-all">
+                        <p class="text-[9px] font-black text-white/30 uppercase tracking-widest mb-2">Quest Cleared</p>
+                        <p class="text-3xl font-black font-mono text-white">{{ array_sum($questStats) }}</p>
+                    </div>
+                    <div class="flex-1 p-6 bg-nu-teal/20 border border-nu-teal/30 rounded-3xl text-center backdrop-blur-sm group hover:bg-nu-teal/30 transition-all">
+                        <p class="text-[9px] font-black text-nu-teal uppercase tracking-widest mb-2">Class Rank</p>
+                        <p class="text-2xl font-serif italic text-white leading-none mt-1">{{ $user->rankTier->name ?? 'None' }}</p>
                     </div>
                 </div>
             </div>
@@ -258,7 +305,12 @@
 </div>
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
+    :root {
+        --nu-teal-rgb: 34, 211, 238;
+        --nu-indigo-rgb: 13, 45, 53;
+    }
     .glass-panel {
         backdrop-filter: blur(20px);
     }
@@ -287,6 +339,14 @@
         animation: slideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     }
 
+    @keyframes progress-shine {
+        0% { transform: translateX(-100%) skewX(-15deg); }
+        100% { transform: translateX(500%) skewX(-15deg); }
+    }
+    .animate-progress-shine {
+        animation: progress-shine 3s infinite ease-in-out;
+    }
+
     .icon-glow {
         filter: drop-shadow(0 0 5px rgba(34, 211, 238, 0.4));
     }
@@ -295,6 +355,51 @@
 </style>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // --- RADAR CHART (PENTAGON) ---
+        const radarCtx = document.getElementById('radarChart').getContext('2d');
+        const radarData = @json($radarData);
+
+        new Chart(radarCtx, {
+            type: 'radar',
+            data: {
+                labels: radarData.labels,
+                datasets: [{
+                    label: 'Mastery',
+                    data: radarData.values,
+                    backgroundColor: 'rgba(34, 211, 238, 0.2)',
+                    borderColor: '#22d3ee',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#22d3ee',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#22d3ee',
+                    pointRadius: 4,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { color: 'rgba(0,0,0,0.05)' },
+                        grid: { color: 'rgba(0,0,0,0.05)' },
+                        pointLabels: {
+                            font: { family: 'Cinzel', size: 10, weight: '900' },
+                            color: '#0d2d35'
+                        },
+                        ticks: { display: false },
+                        suggestedMin: 0,
+                        suggestedMax: 100
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+    });
+
     function switchTab(tabId) {
         document.querySelectorAll('.tab-content').forEach(content => {
             content.classList.add('hidden');

@@ -140,24 +140,19 @@ class User extends Authenticatable
      */
     public function getSholatCountAttribute()
     {
-        $dailyCount = $this->userDailyTasks()->whereHas('dailyTask', function($q) {
-            $q->where('name', 'like', 'Sholat%');
-        })->count();
-
-        // Count from mandatory quests (sholat_5_waktu)
-        $questProgress = $this->userQuests()->where('status', 'completed')->get()->sum(function($uq) {
-            if (empty($uq->progress)) return 0;
-            return $uq->progress['sholat_5_waktu'] ?? 0;
-        });
-
-        return $dailyCount + $questProgress;
+        return \App\Models\PrayerLog::where('user_id', $this->id)
+            ->where('is_completed', true)
+            ->count();
     }
 
     public function getIlmuCountAttribute()
     {
-        return $this->userDailyTasks()->whereHas('dailyTask', function($q) {
-            $q->where('name', 'like', '%Al-Quran%')->orWhere('name', 'like', '%Ilmu%');
+        $quranHistory = \App\Models\QuranReadingHistory::where('user_id', $this->id)->count();
+        $quranSurah = \DB::table('user_quran_progress')->where('user_id', $this->id)->where('is_completed', true)->count();
+        $dailyCount = $this->userDailyTasks()->whereHas('dailyTask', function($q) {
+            $q->where('name', 'like', '%Ilmu%')->orWhere('name', 'like', '%Quran%');
         })->count();
+        return $quranHistory + $quranSurah + $dailyCount;
     }
 
     public function getAdabCountAttribute()
@@ -289,4 +284,55 @@ class User extends Authenticatable
 
         return $leveledUp;
     }
+
+    /**
+     * Deduct Experience with Level Down handling.
+     */
+    public function removeExp($amount)
+    {
+        if ($amount <= 0) return false;
+
+        $leveledDown = false;
+        
+        DB::transaction(function () use ($amount, &$leveledDown) {
+            $this->current_exp -= $amount;
+
+            // Level Down Loop
+            while ($this->current_exp < 0) {
+                if ($this->level > 1) {
+                    $this->level -= 1;
+                    $leveledDown = true;
+                    
+                    // Get required XP of the NEW (lower) level to calculate remaining negative balance
+                    $levelConfig = LevelConfig::where('level', $this->level)->first();
+                    $required = $levelConfig ? $levelConfig->xp_required : ($this->level * 1000);
+                    
+                    if ($required <= 0) $required = 1000; // Safety
+                    
+                    $this->current_exp += $required; // e.g. -10 + 1000 = 990
+
+                    ActivityLog::create([
+                        'user_id' => $this->id,
+                        'type' => 'level_down',
+                        'amount' => $this->level,
+                        'description' => "Turun ke Level {$this->level} karena penalti"
+                    ]);
+                } else {
+                    $this->current_exp = 0;
+                    break;
+                }
+            }
+            
+            $this->save();
+            $this->refresh();
+
+            // Rank Demotion check
+            if ($leveledDown) {
+                $this->updateRankTier();
+            }
+        });
+
+        return $leveledDown;
+    }
+
 }

@@ -24,6 +24,10 @@ class HomeController extends Controller
         // We ensure we load relationships needed for the header/avatar
         $user->load(['rankTier', 'userStat']);
         
+        // --- NEW: Trigger Daily HP Reset (Full HP every day) ---
+        app(\App\Http\Controllers\User\ProfileController::class)->checkDailyRestore($user);
+        $user->refresh();
+        
         // 2. Daily Tasks & Summary
         // Reusing logic from DailyTaskController::index but optimized
         $date = $request->query('date', now()->toDateString());
