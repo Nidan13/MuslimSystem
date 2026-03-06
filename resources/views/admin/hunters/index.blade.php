@@ -109,9 +109,9 @@
                         <td class="py-6 px-6 text-right">
                             <div class="inline-flex flex-col items-end">
                                 <p class="text-xl font-serif font-black text-teal-900 tracking-tighter leading-none mb-2">
-                                    {{ number_format($user->soul_points) }}
+                                    {{ number_format($user->current_exp) }}
                                 </p>
-                                <span class="text-[8px] font-black text-slate-300 uppercase tracking-widest">Soul Points</span>
+                                <span class="text-[8px] font-black text-slate-300 uppercase tracking-widest">EXP</span>
                             </div>
                         </td>
                         <td class="py-6 text-right px-4">

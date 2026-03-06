@@ -23,7 +23,7 @@ class SocialController extends Controller
             ->where('id', '!=', Auth::id())
             ->where('id', '!=', 1) // Exclude Admin
             ->limit(20)
-            ->get(['id', 'username', 'level', 'job_class']);
+            ->get(['id', 'username', 'level']);
 
         // Append if current user is following them
         $followingIds = Auth::user()->following()->pluck('following_id')->toArray();
@@ -102,7 +102,7 @@ class SocialController extends Controller
     public function followers($id)
     {
         $user = User::findOrFail($id);
-        $followers = $user->followers()->get(['users.id', 'username', 'level', 'job_class', 'avatar']);
+        $followers = $user->followers()->get(['users.id', 'username', 'level', 'avatar']);
         
         $followingIds = Auth::user()->following()->pluck('following_id')->toArray();
         $followers->map(function ($follower) use ($followingIds) {
@@ -122,7 +122,7 @@ class SocialController extends Controller
     public function following($id)
     {
         $user = User::findOrFail($id);
-        $following = $user->following()->get(['users.id', 'username', 'level', 'job_class', 'avatar']);
+        $following = $user->following()->get(['users.id', 'username', 'level', 'avatar']);
 
         $followingIds = Auth::user()->following()->pluck('following_id')->toArray();
         $following->map(function ($follow) use ($followingIds) {

@@ -217,16 +217,14 @@ class DailyTaskController extends Controller
                 'date' => $today,
             ]);
             
-            $user->increment('soul_points', $dailyTask->soul_points);
             $user->gainExp($dailyTask->soul_points);
         });
         
         return response()->json([
             'success' => true,
-            'message' => "Jurnal selesai! +{$dailyTask->soul_points} SP",
+            'message' => "Jurnal selesai! +{$dailyTask->soul_points} EXP",
             'data' => [
-                'soul_points_earned' => $dailyTask->soul_points,
-                'total_soul_points' => $user->refresh()->soul_points,
+                'xp_gained' => $dailyTask->soul_points,
             ],
         ]);
     }

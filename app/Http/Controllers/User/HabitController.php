@@ -67,10 +67,10 @@ class HabitController extends Controller
 
         // Reward/Penalty values based on difficulty
         $rewards = [
-            'trivial' => ['xp' => 5, 'sp' => 2, 'hp_loss' => 1],
-            'easy'    => ['xp' => 10, 'sp' => 5, 'hp_loss' => 2],
-            'medium'  => ['xp' => 20, 'sp' => 10, 'hp_loss' => 4],
-            'hard'    => ['xp' => 40, 'sp' => 20, 'hp_loss' => 8],
+            'trivial' => ['xp' => 5, 'hp_loss' => 1],
+            'easy'    => ['xp' => 10, 'hp_loss' => 2],
+            'medium'  => ['xp' => 20, 'hp_loss' => 4],
+            'hard'    => ['xp' => 40, 'hp_loss' => 8],
         ];
 
         $currentReward = $rewards[$habit->difficulty];
@@ -82,15 +82,12 @@ class HabitController extends Controller
         DB::transaction(function () use ($user, $habit, $direction, $currentReward, &$msg, &$xpGained, &$spGained, &$hpLost) {
             if ($direction === 'up' && $habit->is_positive) {
                 $xpGained = $currentReward['xp'];
-                $spGained = $currentReward['sp'];
-                
-                $user->increment('soul_points', $spGained);
                 $habit->count += 1;
                 
                 // Use gainExp to handle XP, Level, Rank, and Circle XP
                 $user->gainExp($xpGained);
 
-                $msg = "Kebiasaan positif! +$xpGained XP, +$spGained SP" . ($user->joinedCircles()->exists() ? " & +$xpGained Clan XP 🛡️" : "");
+                $msg = "Kebiasaan positif! +$xpGained XP" . ($user->joinedCircles()->exists() ? " & +$xpGained Clan XP 🛡️" : "");
             } elseif ($direction === 'down' && $habit->is_negative) {
                 $hpLost = $currentReward['hp_loss'];
                 $user->hp = max(0, $user->hp - $hpLost);
@@ -101,6 +98,11 @@ class HabitController extends Controller
 
             $user->save();
             $habit->save();
+
+            // Trigger Rift Gate Progress
+            if ($direction === 'up') {
+                $user->updateRiftGateProgress('habit', 1);
+            }
         });
 
         return response()->json([
@@ -109,10 +111,8 @@ class HabitController extends Controller
             'data' => [
                 'current_hp' => $user->hp,
                 'current_xp' => $user->current_exp,
-                'current_sp' => $user->soul_points,
                 'habit_count' => $habit->count,
                 'xp_gained' => $xpGained,
-                'sp_gained' => $spGained,
                 'hp_lost' => $hpLost,
             ]
         ]);

@@ -119,7 +119,7 @@ class QuestController extends Controller
                 'id' => $quest->id,
                 'title' => $quest->title,
                 'description' => $quest->description,
-                'rank' => $quest->rankTier->name ?? 'Novice', // Changed from 'F' to 'Novice'
+                'rank' => $quest->rankTier->name ?? 'OPEN', 
                 'type' => $typeSlug, // Changed from $quest->questType->slug ?? 'daily' to $typeSlug
                 'reward_exp' => $quest->reward_exp,
                 'reward_soul_points' => $quest->reward_soul_points,
@@ -350,8 +350,7 @@ class QuestController extends Controller
                 'completed_at' => now('Asia/Jakarta'),
             ]);
 
-            // Give Soul Points Reward
-            $user->increment('soul_points', $quest->reward_soul_points);
+            // Give Soul Points Reward removed
 
             // Use gainExp to handle XP, Level, Rank, and Circle XP
             $leveledUp = $user->gainExp($quest->reward_exp);
@@ -365,12 +364,10 @@ class QuestController extends Controller
             'leveled_up' => $leveledUp,
             'rewards' => [
                 'exp' => $quest->reward_exp,
-                'soul_points' => $quest->reward_soul_points,
             ],
             'user_stats' => [
                 'level' => $user->level,
                 'current_exp' => $user->current_exp,
-                'soul_points' => $user->soul_points,
                 'fatigue' => $user->fatigue,
             ]
         ]);

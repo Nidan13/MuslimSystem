@@ -155,10 +155,11 @@ class QuranController extends Controller
                     $task = \App\Models\DailyTask::find($quranTaskId);
                     $exp = $task ? ($task->reward_exp ?? 20) : 20;
                     $user->gainExp($exp);
-                    
-                    // Award some Soul Points/Gold logic can also go here if needed
                 }
             }
+
+            // Trigger Rift Gate Progress
+            $user->updateRiftGateProgress('quran', 1);
         }
 
         return response()->json([

@@ -46,7 +46,8 @@
                 <div>
                     <label class="block text-[10px] font-black text-teal-900/40 uppercase mb-2 tracking-[0.3em] ml-1">Rentang Otoritas</label>
                     <div class="relative group">
-                        <select name="rank_tier_id" required class="w-full bg-slate-50 border-2 border-slate-200 rounded-[16px] text-teal-900 p-4 focus:border-cyan-400 focus:bg-white outline-none appearance-none cursor-pointer font-black text-sm transition-all shadow-inner">
+                        <select name="rank_tier_id" class="w-full bg-slate-50 border-2 border-slate-200 rounded-[16px] text-teal-900 p-4 focus:border-cyan-400 focus:bg-white outline-none appearance-none cursor-pointer font-black text-sm transition-all shadow-inner">
+                            <option value="">-- SEMUA RANK (OPEN) --</option>
                             @foreach($rankTiers as $tier)
                             <option value="{{ $tier->id }}" {{ old('rank_tier_id') == $tier->id ? 'selected' : '' }}>TIER {{ $tier->slug }} - {{ $tier->name }}</option>
                             @endforeach
@@ -64,11 +65,40 @@
                 </div>
 
                 <div>
-                    <label class="block text-[10px] font-bold text-gold-600 uppercase mb-2 tracking-[0.3em] ml-1">Manifestasi Soul Points</label>
+                    <label class="block text-[10px] font-black text-teal-900/40 uppercase mb-2 tracking-[0.3em] ml-1">Kapasitas Raid (Personel)</label>
+                    <input type="number" name="required_players" value="{{ old('required_players', 1) }}" required 
+                        class="w-full bg-slate-50 border-2 border-slate-200 rounded-[16px] text-teal-900 p-4 focus:border-cyan-400 focus:bg-white outline-none transition-all font-mono font-black text-sm shadow-inner">
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-black text-teal-900/40 uppercase mb-2 tracking-[0.3em] ml-1">Tipe Objektif (Misi Raid)</label>
+                    <div class="relative group">
+                        <select name="objective_type" required class="w-full bg-slate-50 border-2 border-slate-200 rounded-[16px] text-teal-900 p-4 focus:border-cyan-400 focus:bg-white outline-none appearance-none cursor-pointer font-black text-sm transition-all shadow-inner">
+                            <option value="">-- PILIH TIPE MISI --</option>
+                            <option value="quran" {{ old('objective_type') == 'quran' ? 'selected' : '' }}>📖 Tadaruz Qur'an (Halaman)</option>
+                            <option value="prayer" {{ old('objective_type') == 'prayer' ? 'selected' : '' }}>🕌 Sholat Berjamaah (Waktu)</option>
+                            <option value="kajian" {{ old('objective_type') == 'kajian' ? 'selected' : '' }}>🎧 Kajian Bersama (Menit)</option>
+                            <option value="habit" {{ old('objective_type') == 'habit' ? 'selected' : '' }}>🌙 Kebiasaan Baik (Count)</option>
+                            <option value="journal" {{ old('objective_type') == 'journal' ? 'selected' : '' }}>📝 Jurnal Harian (Count)</option>
+                        </select>
+                        <div class="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-teal-500">
+                           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-black text-teal-900/40 uppercase mb-2 tracking-[0.3em] ml-1">Target Objektif (Total HP Boss)</label>
+                    <input type="number" name="objective_target" value="{{ old('objective_target', 0) }}" required 
+                        class="w-full bg-slate-50 border-2 border-slate-200 rounded-[16px] text-teal-900 p-4 focus:border-cyan-400 focus:bg-white outline-none transition-all font-mono font-black text-sm shadow-inner" placeholder="Contoh: 500">
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-bold text-amber-500 uppercase mb-2 tracking-[0.3em] ml-1">Manifestasi EXP</label>
                     <div class="relative">
-                         <span class="absolute left-5 top-1/2 -translate-y-1/2 text-gold-500 text-lg font-black">★</span>
-                        <input type="number" name="reward_soul_points" value="{{ old('reward_soul_points', 500) }}" required 
-                            class="w-full bg-slate-50 border-2 border-slate-200 rounded-[16px] text-teal-900 p-4 pl-10 focus:border-gold-400 focus:bg-white outline-none transition-all font-mono font-black text-sm shadow-inner">
+                         <span class="absolute left-5 top-1/2 -translate-y-1/2 text-amber-400 text-lg font-black">⬆️</span>
+                        <input type="number" name="reward_exp" value="{{ old('reward_exp', 500) }}" required 
+                            class="w-full bg-slate-50 border-2 border-slate-200 rounded-[16px] text-teal-900 p-4 pl-12 focus:border-amber-400 focus:bg-white outline-none transition-all font-mono font-black text-sm shadow-inner">
                     </div>
                 </div>
             </div>

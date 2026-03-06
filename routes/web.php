@@ -20,6 +20,12 @@ use App\Http\Controllers\Admin\AffiliateController;
 use App\Http\Controllers\Admin\WithdrawalController;
 use Illuminate\Support\Facades\Route;
 
+// Public Routes (tanpa login)
+Route::get('/download', fn() => inertia('LandingPage', [
+    'appName'     => config('app.name'),
+    'downloadUrl' => env('APK_DOWNLOAD_URL', '#'),
+]))->name('download');
+
 // Guest Routes
 Route::get('/', fn() => redirect('/login'));
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');

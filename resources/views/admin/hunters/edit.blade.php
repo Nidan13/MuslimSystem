@@ -64,19 +64,6 @@
                     </div>
                 </div>
 
-                <!-- Job Class -->
-                <div>
-                    <label class="block text-[10px] font-black text-slate-400 uppercase mb-3 tracking-widest ml-1">Node Spesialisasi (Kelas)</label>
-                    <div class="relative group">
-                        <select name="job_class" required class="w-full bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 p-5 focus:border-nu-teal focus:ring-4 focus:ring-nu-teal/5 outline-none appearance-none cursor-pointer font-bold transition-all shadow-inner">
-                            @foreach($jobClasses as $job)
-                            <option value="{{ $job->id }}" {{ (old('job_class', $user->job_class) == $job->id) ? 'selected' : '' }}>{{ $job->name }}</option>
-                            @endforeach
-                        </select>
-                        <i class="fas fa-chevron-down absolute right-6 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none group-hover:text-nu-teal transition-colors"></i>
-                    </div>
-                </div>
-
                 <!-- Soul Points -->
                 <div>
                     <label class="block text-[10px] font-black text-nu-teal uppercase mb-3 tracking-widest ml-1">Cadangan Modal (SP)</label>

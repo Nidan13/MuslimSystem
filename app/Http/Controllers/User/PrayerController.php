@@ -153,19 +153,21 @@ class PrayerController extends Controller
             $soulPoints = (int) $prayer->soul_points;
             $expGained = $soulPoints; 
             
-            DB::transaction(function () use ($user, $soulPoints, $expGained, $prayer) {
-                $user->increment('soul_points', $soulPoints);
+            DB::transaction(function () use ($user, $expGained, $prayer) {
                 $user->gainExp($expGained);
 
                 \App\Models\ActivityLog::create([
                     'user_id' => $user->id,
                     'type' => 'sholat_completion',
-                    'amount' => $soulPoints,
+                    'amount' => $expGained,
                     'description' => "Menyelesaikan Sholat " . $prayer->name . " Tepat Waktu"
                 ]);
+
+                // Trigger Rift Gate Progress
+                $user->updateRiftGateProgress('prayer', 1);
             });
         } else {
-            $message = "Berhasil checklist " . $prayer->name . ", tapi kamu telat atau belum sinkron jadwal. Tidak ada hadiah EXP/SP.";
+            $message = "Berhasil checklist " . $prayer->name . ", tapi kamu telat atau belum sinkron jadwal. Tidak ada hadiah EXP.";
             
             \App\Models\ActivityLog::create([
                 'user_id' => $user->id,
@@ -179,10 +181,8 @@ class PrayerController extends Controller
             'success' => true,
             'message' => $message,
             'data' => [
-                'soul_points_earned' => $soulPoints,
                 'exp_earned' => $expGained,
                 'is_late' => $isLate,
-                'total_soul_points' => $user->soul_points,
             ]
         ]);
     }
@@ -200,6 +200,7 @@ class PrayerController extends Controller
             ->where('is_punished', false)
             ->whereNotNull('scheduled_at')
             ->where('scheduled_at', '<', $now)
+            ->where('scheduled_at', '>=', $user->created_at) // Prevent punishing for prayers before account creation
             ->get();
 
         if ($missedLogs->isEmpty()) {

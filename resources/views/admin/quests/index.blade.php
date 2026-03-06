@@ -15,6 +15,18 @@
         </div>
         
         <div class="flex flex-col md:flex-row items-center gap-4">
+            <!-- Rank Filtration Tabs -->
+            <div class="flex items-center bg-slate-100 p-1.5 rounded-2xl border-2 border-slate-50 shadow-inner overflow-x-auto no-scrollbar max-w-[500px]">
+                <button onclick="filterByRank('ALL')" class="rank-tab-quest px-5 py-2 rounded-xl text-[10px] font-black tracking-widest transition-all whitespace-nowrap bg-teal-900 text-white shadow-lg active-tab">ALL</button>
+                <button onclick="filterByRank('OPEN')" class="rank-tab-quest px-4 py-2 rounded-xl text-[10px] font-black tracking-widest transition-all whitespace-nowrap text-slate-400 hover:text-teal-900">OPEN</button>
+                <button onclick="filterByRank('E')" class="rank-tab-quest px-4 py-2 rounded-xl text-[10px] font-black tracking-widest transition-all whitespace-nowrap text-slate-400 hover:text-teal-900">E-RANK</button>
+                <button onclick="filterByRank('D')" class="rank-tab-quest px-4 py-2 rounded-xl text-[10px] font-black tracking-widest transition-all whitespace-nowrap text-slate-400 hover:text-teal-900">D-RANK</button>
+                <button onclick="filterByRank('C')" class="rank-tab-quest px-4 py-2 rounded-xl text-[10px] font-black tracking-widest transition-all whitespace-nowrap text-slate-400 hover:text-teal-900">C-RANK</button>
+                <button onclick="filterByRank('B')" class="rank-tab-quest px-4 py-2 rounded-xl text-[10px] font-black tracking-widest transition-all whitespace-nowrap text-slate-400 hover:text-teal-900">B-RANK</button>
+                <button onclick="filterByRank('A')" class="rank-tab-quest px-4 py-2 rounded-xl text-[10px] font-black tracking-widest transition-all whitespace-nowrap text-slate-400 hover:text-teal-900">A-RANK</button>
+                <button onclick="filterByRank('S')" class="rank-tab-quest px-4 py-2 rounded-xl text-[10px] font-black tracking-widest transition-all whitespace-nowrap text-slate-400 hover:text-teal-900">S-RANK</button>
+            </div>
+
             <!-- Row Limit Controls -->
                 @php $currentLimit = request('limit', 16); @endphp
                 <div class="flex gap-1" id="row-limit-container">
@@ -71,7 +83,7 @@
                         $slug = $quest->questType->slug ?? 'default';
                         $colorClass = $typeColors[$slug] ?? 'text-slate-700 bg-slate-50 border-slate-100';
                     @endphp
-                    <tr class="quest-row group hover:bg-slate-50/50 transition-colors">
+                    <tr class="quest-row group hover:bg-slate-50/50 transition-colors" data-rank="{{ $quest->rankTier->slug ?? 'OPEN' }}">
                         <td class="py-6 px-4">
                             <span class="text-[10px] font-black text-slate-300 font-mono tracking-tighter uppercase whitespace-nowrap">#QST-{{ str_pad($quest->id, 4, '0', STR_PAD_LEFT) }}</span>
                         </td>
@@ -188,6 +200,29 @@
     }
 
     let sortOrders = { 1: 'asc', 2: 'asc', 4: 'asc' };
+
+    function filterByRank(rank) {
+        const rows = document.querySelectorAll('.quest-row');
+        const tabs = document.querySelectorAll('.rank-tab-quest');
+        
+        tabs.forEach(tab => {
+            if (tab.innerText.includes(rank)) {
+                tab.classList.remove('text-slate-400', 'hover:text-teal-900');
+                tab.classList.add('bg-teal-900', 'text-white', 'shadow-lg');
+            } else {
+                tab.classList.add('text-slate-400', 'hover:text-teal-900');
+                tab.classList.remove('bg-teal-900', 'text-white', 'shadow-lg');
+            }
+        });
+
+        rows.forEach(row => {
+            if (rank === 'ALL' || row.dataset.rank === rank) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
 
     function applyDisplay() {
         // Obsolete

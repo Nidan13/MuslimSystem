@@ -36,9 +36,9 @@ class CircleController extends Controller {
 
     public function show(Circle $circle) {
         $circle->load(['members' => function($query) {
-            $query->select('users.id', 'users.username', 'users.job_class', 'users.level')
+            $query->select('users.id', 'users.username', 'users.level')
                   ->withPivot('role', 'joined_at', 'xp_contribution');
-        }, 'leader:id,username,job_class,level']);
+        }, 'leader:id,username,level']);
 
         $user = Auth::user();
         if ($user) {
@@ -151,7 +151,7 @@ class CircleController extends Controller {
         $users = \App\Models\User::where('username', 'LIKE', "%{$query}%")
             ->where('id', '!=', Auth::id())
             ->limit(10)
-            ->get(['id', 'username', 'job_class', 'level']);
+            ->get(['id', 'username', 'level']);
 
         return response()->json([
             'success' => true,

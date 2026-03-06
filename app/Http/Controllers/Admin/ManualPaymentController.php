@@ -22,7 +22,7 @@ class ManualPaymentController extends Controller
 
         $payments = $query->paginate(10);
 
-        return view('admin.payments.manual.index', compact('payments'));
+        return view('admin.payments-manual.index', compact('payments'));
     }
 
     public function approve(Payment $payment)

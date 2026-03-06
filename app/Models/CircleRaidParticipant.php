@@ -11,6 +11,8 @@ class CircleRaidParticipant extends Model
         'dungeon_id',
         'user_id',
         'status',
+        'contribution_score',
+        'is_rewarded',
     ];
 
     public function circle()

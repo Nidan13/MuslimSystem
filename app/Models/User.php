@@ -22,7 +22,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'username', 'email', 'password', 'gender', 'rank_tier_id', 'level', 
-        'current_exp', 'overflow_exp', 'job_class', 'soul_points', 'fatigue',
+        'current_exp', 'overflow_exp', 'soul_points', 'fatigue',
         'referral_code', 'referred_by_id', 'hp', 'max_hp', 'is_menstruating',
         'menstruation_started_at', 'balance', 'is_active'
     ];
@@ -150,9 +150,23 @@ class User extends Authenticatable
         $quranHistory = \App\Models\QuranReadingHistory::where('user_id', $this->id)->count();
         $quranSurah = \DB::table('user_quran_progress')->where('user_id', $this->id)->where('is_completed', true)->count();
         $dailyCount = $this->userDailyTasks()->whereHas('dailyTask', function($q) {
-            $q->where('name', 'like', '%Ilmu%')->orWhere('name', 'like', '%Quran%');
+            $q->where('name', 'like', '%Quran%')->orWhere('name', 'like', '%Surah%')->orWhere('name', 'like', '%Ngaji%');
         })->count();
+        
         return $quranHistory + $quranSurah + $dailyCount;
+    }
+
+    public function getLectureCountAttribute()
+    {
+        return DB::table('user_lecture_logs')
+            ->where('user_id', $this->id)
+            ->distinct('islamic_video_id')
+            ->count('islamic_video_id');
+    }
+
+    public function getWawasanCountAttribute()
+    {
+        return $this->lecture_count;
     }
 
     public function getAdabCountAttribute()
@@ -160,6 +174,21 @@ class User extends Authenticatable
         return $this->userDailyTasks()->whereHas('dailyTask', function($q) {
             $q->where('name', 'like', '%Dzikir%')->orWhere('name', 'like', '%Adab%');
         })->count();
+    }
+
+    public function getHabitCountAttribute()
+    {
+        return \App\Models\Habit::where('user_id', $this->id)->sum('count');
+    }
+
+    public function getJournalCountAttribute()
+    {
+        return $this->userDailyTasks()->count();
+    }
+
+    public function getTodoCountAttribute()
+    {
+        return \App\Models\Todo::where('user_id', $this->id)->where('is_completed', true)->count();
     }
 
     /**
@@ -335,4 +364,88 @@ class User extends Authenticatable
         return $leveledDown;
     }
 
+    public function updateRiftGateProgress(string $type, int $amount)
+    {
+        if ($amount <= 0) return;
+
+        $circles = $this->joinedCircles;
+        foreach ($circles as $circle) {
+            // Find active raids for this user in this circle that match the objective type
+            $raids = CircleRaidParticipant::where('circle_id', $circle->id)
+                ->where('user_id', $this->id)
+                ->where('status', 'ready') // 'ready' means currently in lobby or in progress
+                ->whereHas('dungeon', function ($q) use ($type) {
+                    $q->where('objective_type', $type);
+                })
+                ->get();
+
+            foreach ($raids as $participant) {
+                $dungeon = $participant->dungeon;
+                
+                // 1. Increment individual contribution
+                $participant->increment('contribution_score', $amount);
+                
+                // 2. Check total collective progress for this specific raid instance in this circle
+                $totalScore = CircleRaidParticipant::where('circle_id', $circle->id)
+                    ->where('dungeon_id', $dungeon->id)
+                    ->sum('contribution_score');
+
+                \Log::info("Rift Gate Progress Check", [
+                    'user' => $this->username,
+                    'circle' => $circle->name,
+                    'raid' => $dungeon->name,
+                    'type' => $type,
+                    'added' => $amount,
+                    'current_total' => $totalScore,
+                    'target' => $dungeon->objective_target
+                ]);
+
+                // 3. Check if completed
+                if ($totalScore >= $dungeon->objective_target) {
+                    // Mission Success!
+                    $this->completeRiftGate($circle, $dungeon);
+                }
+            }
+        }
+    }
+
+    /**
+     * Logic to finalize a cleared Rift Gate.
+     */
+    protected function completeRiftGate($circle, $dungeon)
+    {
+        DB::transaction(function () use ($circle, $dungeon) {
+            // 1. Mark all participants as 'cleared'
+            $participants = CircleRaidParticipant::where('circle_id', $circle->id)
+                ->where('dungeon_id', $dungeon->id)
+                ->where('status', 'ready')
+                ->get();
+
+            foreach ($participants as $p) {
+                $p->update(['status' => 'cleared']);
+                
+                // 2. Grant rewards to each participant (Moved to manual claim)
+                /*
+                $user = $p->user;
+                if ($user) {
+                    $user->gainExp($dungeon->reward_exp);
+                    $user->increment('soul_points', $dungeon->reward_soul_points ?? 0);
+                    
+                    ActivityLog::create([
+                        'user_id' => $user->id,
+                        'type' => 'raid_cleared',
+                        'amount' => $dungeon->reward_exp,
+                        'description' => "Misi Berhasil: {$dungeon->name} (Circle: {$circle->name})"
+                    ]);
+                }
+                */
+            }
+
+            \Log::info("Rift Gate CLEARED!", [
+                'circle' => $circle->name,
+                'raid' => $dungeon->name,
+                'reward' => $dungeon->reward_exp
+            ]);
+        });
+    }
 }

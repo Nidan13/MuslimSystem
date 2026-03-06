@@ -12,8 +12,10 @@ class Dungeon extends Model
         'dungeon_type_id',
         'rank_tier_id',
         'min_level_requirement',
-        'reward_soul_points',
+        'reward_exp',
         'required_players',
+        'objective_type',
+        'objective_target',
         'loot_pool',
     ];
 

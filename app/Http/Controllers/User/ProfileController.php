@@ -69,9 +69,15 @@ class ProfileController extends Controller
                         'salah_consistency' => $salahConsistency,
                         'quran_progress' => "Juz " . (1 + floor($quranSessions / 20)),
                         'total_quran_sessions' => $quranSessions,
+                        'total_lectures' => $user->lecture_count,
+                        'total_missions_taken' => \App\Models\UserQuest::where('user_id', $user->id)->count(),
+                        'total_missions_completed' => \App\Models\UserQuest::where('user_id', $user->id)->where('status', 'completed')->count(),
+                        'total_habits' => $user->habit_count,
+                        'total_journals' => $user->journal_count,
                         'attributes' => [
                             'sholat' => $user->sholat_count,
                             'ilmu' => $user->ilmu_count,
+                            'wawasan' => $user->lecture_count,
                             'adab' => \App\Models\UserQuest::where('user_id', $user->id)->where('status', 'completed')->count(),
                             'istiqomah' => $user->streak, 
                         ],
@@ -146,9 +152,15 @@ class ProfileController extends Controller
                         'salah_consistency' => $salahConsistency,
                         'quran_progress' => "Juz " . (1 + floor($quranSessions / 20)),
                         'total_quran_sessions' => $quranSessions,
+                        'total_lectures' => $user->lecture_count,
+                        'total_missions_taken' => \App\Models\UserQuest::where('user_id', $user->id)->count(),
+                        'total_missions_completed' => \App\Models\UserQuest::where('user_id', $user->id)->where('status', 'completed')->count(),
+                        'total_habits' => $user->habit_count,
+                        'total_journals' => $user->journal_count,
                         'attributes' => [
                             'sholat' => $user->sholat_count,
                             'ilmu' => $user->ilmu_count,
+                            'wawasan' => $user->lecture_count,
                             'adab' => \App\Models\UserQuest::where('user_id', $user->id)->where('status', 'completed')->count(),
                             'istiqomah' => $user->streak,
                         ],
@@ -159,9 +171,9 @@ class ProfileController extends Controller
                         'progress' => $user->max_hp > 0 ? round(($user->hp / $user->max_hp) * 100) : 0,
                     ],
                     'job_class' => $user->job_class ?? 'Newbie',
-                    'followers_count' => $user->followers()->count(),
-                    'following_count' => $user->following()->count(),
-                    'is_following' => Auth::user()->following()->where('following_id', $id)->exists(),
+                    'followers_count' => \Illuminate\Support\Facades\Schema::hasTable('follows') ? $user->followers()->count() : 0,
+                    'following_count' => \Illuminate\Support\Facades\Schema::hasTable('follows') ? $user->following()->count() : 0,
+                    'is_following' => \Illuminate\Support\Facades\Schema::hasTable('follows') ? Auth::user()->following()->where('following_id', $id)->exists() : false,
                 ],
                 'activities' => $activities
             ]
@@ -412,8 +424,7 @@ class ProfileController extends Controller
         $user = Auth::user();
         $validated = $request->validate([
             'username' => 'sometimes|string|min:3|max:50|unique:users,username,'.$user->id,
-            'gender' => 'sometimes|in:Male,Female,male,female',
-            'job_class' => 'sometimes|string|max:50',
+            'gender' => 'sometimes|in:Laki-laki,Perempuan',
         ]);
 
         if (isset($validated['username'])) {
@@ -421,9 +432,6 @@ class ProfileController extends Controller
         }
         if (isset($validated['gender'])) {
             $user->gender = ucfirst(strtolower($validated['gender']));
-        }
-        if (isset($validated['job_class'])) {
-            $user->job_class = $validated['job_class'];
         }
 
         $user->save();

@@ -21,8 +21,9 @@ class DungeonSeeder extends Seeder
                 'description' => 'A collective effort to defeat the monster of laziness. Requires heavy consistency in tilawah.',
                 'rank_tier_id' => $rankB->id,
                 'dungeon_type_id' => $raid->id,
-                'min_level_requirement' => 5,
-                'reward_soul_points' => 5000,
+                'min_level_requirement' => 1,
+                'required_players' => 3,
+                'reward_exp' => 5000,
             ]
         );
 
@@ -33,7 +34,7 @@ class DungeonSeeder extends Seeder
                 'rank_tier_id' => $rankA->id,
                 'dungeon_type_id' => $solo->id,
                 'min_level_requirement' => 1,
-                'reward_soul_points' => 2500,
+                'reward_exp' => 2500,
             ]
         );
 
@@ -49,7 +50,7 @@ class DungeonSeeder extends Seeder
                 'dungeon_type_id' => $raid->id,
                 'min_level_requirement' => 1,
                 'required_players' => 2,
-                'reward_soul_points' => 500,
+                'reward_exp' => 500,
             ]
         );
 
@@ -61,7 +62,7 @@ class DungeonSeeder extends Seeder
                 'dungeon_type_id' => $raid->id,
                 'min_level_requirement' => 1,
                 'required_players' => 2,
-                'reward_soul_points' => 1200,
+                'reward_exp' => 1200,
             ]
         );
     }

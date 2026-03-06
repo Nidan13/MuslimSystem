@@ -25,8 +25,7 @@ class AuthController extends Controller
             'username' => 'required|string|max:255|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'gender' => 'required|in:Male,Female,male,female',
-            'job_class' => 'required|in:Al-Hafizh,Al-Muhsin,Al-Mujahid',
+            'gender' => 'required|in:male,female',
             'referral_code' => 'nullable|string|exists:users,referral_code',
         ]);
 
@@ -55,7 +54,6 @@ class AuthController extends Controller
             'current_exp' => 0,
             'overflow_exp' => 0,
             'soul_points' => 0,
-            'job_class' => $validated['job_class'],
             'referral_code' => $referralCode,
             'referred_by_id' => $referrerId,
             'is_active' => false,
@@ -75,7 +73,6 @@ class AuthController extends Controller
                     'gender' => $user->gender,
                     'level' => $user->level,
                     'soul_points' => $user->soul_points,
-                    'job_class' => $user->job_class ?? 'Newbie',
                     'referral_code' => $user->referral_code,
                     'is_active' => (bool)$user->is_active,
                 ],
@@ -123,7 +120,6 @@ class AuthController extends Controller
                     'level' => $user->level,
                     'current_exp' => $user->current_exp,
                     'soul_points' => $user->soul_points,
-                    'job_class' => $user->job_class ?? 'Newbie',
                     'is_active' => (bool)$user->is_active,
                 ],
                 'token' => $token,
@@ -192,7 +188,7 @@ class AuthController extends Controller
                         'username' => $username,
                         'email' => $email,
                         'password' => Hash::make(Str::random(16)), // Random password
-                        'gender' => 'Male', // Default, will be updated in Complete Profile
+                        'gender' => 'Male', // Default English
                         'rank_tier_id' => 1,
                         'level' => 1,
                         'hp' => 100,
@@ -200,7 +196,6 @@ class AuthController extends Controller
                         'current_exp' => 0,
                         'overflow_exp' => 0,
                         'soul_points' => 0,
-                        'job_class' => 'Al-Hafizh', // Default class
                         'referral_code' => 'REF-' . strtoupper(uniqid()),
                         'google_id' => $googleId,
                         'avatar' => $picture,
@@ -231,7 +226,6 @@ class AuthController extends Controller
                             'level' => $user->level,
                             'current_exp' => $user->current_exp,
                             'soul_points' => $user->soul_points,
-                            'job_class' => $user->job_class ?? 'Newbie',
                             'is_active' => (bool)$user->is_active,
                         ],
                         'is_new_user' => $isNewUser,

@@ -32,8 +32,8 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full md:w-auto">
                 <div class="p-6 bg-slate-50 rounded-[32px] border-2 border-slate-100/50 text-center shadow-inner group hover:border-nu-teal transition-all">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Soul Points</p>
-                    <p class="text-2xl font-black text-nu-indigo font-mono tracking-tighter">SP {{ number_format($user->soul_points) }}</p>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">EXPERIENCE</p>
+                    <p class="text-2xl font-black text-nu-indigo font-mono tracking-tighter">EXP {{ number_format($user->current_exp) }}</p>
                     <div class="mt-2 h-1 w-12 bg-nu-teal mx-auto rounded-full opacity-0 group-hover:opacity-100 transition-all"></div>
                 </div>
                 <div class="p-6 bg-slate-900 rounded-[32px] border-2 border-slate-800 text-center text-white shadow-2xl shadow-slate-900/30 group hover:border-nu-teal transition-all">

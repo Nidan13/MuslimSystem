@@ -18,7 +18,7 @@ class LeaderboardController extends Controller {
         $users = $query->orderBy('level', 'desc')
             ->orderBy('current_exp', 'desc')
             ->limit(50)
-            ->get(['id', 'username', 'level', 'current_exp', 'job_class', 'gender']);
+            ->get(['id', 'username', 'level', 'current_exp', 'gender']);
 
         return response()->json([
             'success' => true,

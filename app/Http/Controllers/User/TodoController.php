@@ -90,38 +90,37 @@ class TodoController extends Controller
         }
 
         $rewards = [
-            'trivial' => ['xp' => 5, 'sp' => 2, 'gold' => 1],
-            'easy'    => ['xp' => 10, 'sp' => 5, 'gold' => 2],
-            'medium'  => ['xp' => 20, 'sp' => 10, 'gold' => 5],
-            'hard'    => ['xp' => 40, 'sp' => 20, 'gold' => 10],
+            'trivial' => ['xp' => 5, 'gold' => 1],
+            'easy'    => ['xp' => 10, 'gold' => 2],
+            'medium'  => ['xp' => 20, 'gold' => 5],
+            'hard'    => ['xp' => 40, 'gold' => 10],
         ];
 
         $reward = $rewards[$todo->difficulty];
         $xpGained = $reward['xp'];
-        $spGained = $reward['sp'];
         $goldGained = $reward['gold'];
 
-        DB::transaction(function () use ($user, $todo, $xpGained, $spGained, $goldGained) {
+        DB::transaction(function () use ($user, $todo, $xpGained, $goldGained) {
             $todo->update([
                 'is_completed' => true,
                 'completed_at' => now(),
             ]);
 
             $user->current_exp += $xpGained;
-            $user->soul_points += $spGained;
             // Assuming gold is soul_points for now or add a new column
             // For now let's just use soul_points as the main currency
             $user->save();
+
+            // Trigger Rift Gate Progress
+            $user->updateRiftGateProgress('journal', 1);
         });
 
         return response()->json([
             'success' => true,
-            'message' => "Misi selesai! +$xpGained XP, +$spGained SP",
+            'message' => "Misi selesai! +$xpGained XP",
             'data' => [
                 'xp_gained' => $xpGained,
-                'sp_gained' => $spGained,
                 'current_xp' => $user->current_exp,
-                'current_sp' => $user->soul_points,
             ]
         ]);
     }

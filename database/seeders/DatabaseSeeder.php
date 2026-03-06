@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
             QuestSeeder::class,
             DungeonSeeder::class,
             ShopSeeder::class,
+            TaskTemplateSeeder::class,
+            DailyTaskSeeder::class,
         ]);
     }
 }

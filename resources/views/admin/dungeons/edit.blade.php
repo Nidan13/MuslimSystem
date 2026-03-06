@@ -25,7 +25,7 @@
             <div class="grid grid-cols-2 gap-8">
                 <div class="col-span-2 text-center py-5 bg-slate-50 rounded-[24px] border-2 border-slate-100 mb-2">
                     <div class="text-[9px] font-black text-slate-400 uppercase tracking-[0.5em] mb-2">Signature Gerbang</div>
-                    <div class="text-2xl font-serif font-black {{ $dungeon->rankTier->color_code ?? 'text-teal-900' }} uppercase italic tracking-tighter">Tier {{ $dungeon->rankTier->slug ?? '?' }} // {{ $dungeon->name }}</div>
+                    <div class="text-2xl font-serif font-black {{ $dungeon->rankTier->color_code ?? 'text-teal-900' }} uppercase italic tracking-tighter">Tier {{ $dungeon->rankTier->slug ?? 'Open' }} // {{ $dungeon->name }}</div>
                 </div>
 
                 <div class="col-span-2">
@@ -44,8 +44,9 @@
                 </div>
 
                 <div>
-                    <label class="block text-[10px] font-black text-teal-900/40 uppercase mb-2 tracking-[0.3em] ml-1">Rentang Otoritas</label>
-                    <select name="rank_tier_id" required class="w-full bg-slate-50 border-2 border-slate-200 rounded-[16px] text-teal-900 p-4 focus:border-cyan-400 focus:bg-white outline-none appearance-none cursor-pointer font-black text-sm shadow-inner">
+                    <label class="block text-[10px] font-black text-teal-900/40 uppercase mb-2 tracking-[0.3em] ml-1">Tingkat Otoritas</label>
+                    <select name="rank_tier_id" class="w-full bg-slate-50 border-2 border-slate-200 rounded-[16px] text-teal-900 p-4 focus:border-cyan-400 focus:bg-white outline-none appearance-none cursor-pointer font-black text-sm shadow-inner">
+                        <option value="">-- SEMUA RANK (OPEN) --</option>
                         @foreach($rankTiers as $tier)
                         <option value="{{ $tier->id }}" {{ $dungeon->rank_tier_id == $tier->id ? 'selected' : '' }}>TIER {{ $tier->slug }} - {{ $tier->name }}</option>
                         @endforeach
@@ -53,23 +54,52 @@
                 </div>
 
                 <div>
-                    <label class="block text-[10px] font-black text-teal-900/40 uppercase mb-2 tracking-[0.3em] ml-1">Minimal Level Proxy</label>
+                    <label class="block text-[10px] font-black text-teal-900/40 uppercase mb-2 tracking-[0.3em] ml-1">Minimal Level Hunter</label>
                     <input type="number" name="min_level_requirement" value="{{ $dungeon->min_level_requirement }}" required 
                         class="w-full bg-slate-50 border-2 border-slate-200 rounded-[16px] text-teal-900 p-4 focus:border-cyan-400 focus:bg-white outline-none transition-all font-mono font-black text-sm shadow-inner">
                 </div>
 
                 <div>
-                    <label class="block text-[10px] font-bold text-gold-600 uppercase mb-2 tracking-[0.3em] ml-1">Manifestasi Soul Points</label>
+                    <label class="block text-[10px] font-black text-teal-900/40 uppercase mb-2 tracking-[0.3em] ml-1">Kapasitas Raid (Personel)</label>
+                    <input type="number" name="required_players" value="{{ $dungeon->required_players ?? 1 }}" required 
+                        class="w-full bg-slate-50 border-2 border-slate-200 rounded-[16px] text-teal-900 p-4 focus:border-cyan-400 focus:bg-white outline-none transition-all font-mono font-black text-sm shadow-inner">
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-black text-teal-900/40 uppercase mb-2 tracking-[0.3em] ml-1">Tipe Objektif (Misi Raid)</label>
+                    <div class="relative group">
+                        <select name="objective_type" required class="w-full bg-slate-50 border-2 border-slate-200 rounded-[16px] text-teal-900 p-4 focus:border-cyan-400 focus:bg-white outline-none appearance-none cursor-pointer font-black text-sm transition-all shadow-inner">
+                            <option value="">-- PILIH TIPE MISI --</option>
+                            <option value="quran" {{ (old('objective_type') ?? $dungeon->objective_type) == 'quran' ? 'selected' : '' }}>📖 Tadaruz Qur'an (Halaman)</option>
+                            <option value="prayer" {{ (old('objective_type') ?? $dungeon->objective_type) == 'prayer' ? 'selected' : '' }}>🕌 Sholat Berjamaah (Waktu)</option>
+                            <option value="kajian" {{ (old('objective_type') ?? $dungeon->objective_type) == 'kajian' ? 'selected' : '' }}>🎧 Kajian Bersama (Menit)</option>
+                            <option value="habit" {{ (old('objective_type') ?? $dungeon->objective_type) == 'habit' ? 'selected' : '' }}>🌙 Kebiasaan Baik (Count)</option>
+                            <option value="journal" {{ (old('objective_type') ?? $dungeon->objective_type) == 'journal' ? 'selected' : '' }}>📝 Jurnal Harian (Count)</option>
+                        </select>
+                        <div class="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-teal-500">
+                           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-black text-teal-900/40 uppercase mb-2 tracking-[0.3em] ml-1">Target Objektif (Total HP Boss)</label>
+                    <input type="number" name="objective_target" value="{{ old('objective_target') ?? $dungeon->objective_target }}" required 
+                        class="w-full bg-slate-50 border-2 border-slate-200 rounded-[16px] text-teal-900 p-4 focus:border-cyan-400 focus:bg-white outline-none transition-all font-mono font-black text-sm shadow-inner" placeholder="Contoh: 500">
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-bold text-amber-500 uppercase mb-2 tracking-[0.3em] ml-1">Manifestasi EXP</label>
                     <div class="relative">
-                         <span class="absolute left-5 top-1/2 -translate-y-1/2 text-gold-500 text-lg font-black">★</span>
-                        <input type="number" name="reward_soul_points" value="{{ $dungeon->reward_soul_points }}" required 
-                            class="w-full bg-slate-50 border-2 border-slate-200 rounded-[16px] text-teal-900 p-4 pl-10 focus:border-gold-400 focus:bg-white outline-none transition-all font-mono font-black text-sm shadow-inner">
+                         <span class="absolute left-5 top-1/2 -translate-y-1/2 text-amber-400 text-lg font-black">⬆️</span>
+                        <input type="number" name="reward_exp" value="{{ $dungeon->reward_exp }}" required 
+                            class="w-full bg-slate-50 border-2 border-slate-200 rounded-[16px] text-teal-900 p-4 pl-12 focus:border-amber-400 focus:bg-white outline-none transition-all font-mono font-black text-sm shadow-inner">
                     </div>
                 </div>
             </div>
 
             <div>
-                <label class="block text-[10px] font-black text-teal-900/40 uppercase mb-2 tracking-[0.3em] ml-1">Dokumentasi Teologis (Deskripsi)</label>
+                <label class="block text-[10px] font-black text-teal-900/40 uppercase mb-2 tracking-[0.3em] ml-1">Deskripsi Misi</label>
                 <textarea name="description" rows="4" 
                     class="w-full bg-slate-50 border-2 border-slate-200 rounded-[24px] text-slate-700 p-6 outline-none focus:border-cyan-400 focus:bg-white transition-all font-medium text-sm shadow-inner">{{ $dungeon->description }}</textarea>
             </div>

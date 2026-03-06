@@ -142,19 +142,16 @@
         <!-- Navigation -->
         <nav id="sidebar-nav" class="flex-1 space-y-1 overflow-y-auto pb-6 custom-scrollbar">
             
-            <div class="sidebar-group-label">Main Access</div>
+            <div class="sidebar-group-label">Akses Utama</div>
             
             <a href="{{ route('admin.dashboard') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                 <i class="fas fa-th-large w-5 {{ request()->routeIs('admin.dashboard') ? 'icon-glow' : '' }}"></i>
-                <span>Command Center</span>
+                <span>Pusat Komando</span>
             </a>
 
-            <div class="sidebar-group-label">Operations</div>
+            <div class="sidebar-group-label">Operasional</div>
 
-            <a href="{{ route('admin.quests.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.quests.*') ? 'active' : '' }}">
-                <i class="fas fa-scroll w-5 {{ request()->routeIs('admin.quests.*') ? 'icon-glow' : '' }}"></i>
-                <span>Active Quests</span>
-            </a>
+
 
             <a href="{{ route('admin.dungeons.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.dungeons.*') ? 'active' : '' }}">
                 <i class="fas fa-dungeon w-5 {{ request()->routeIs('admin.dungeons.*') ? 'icon-glow' : '' }}"></i>
@@ -163,80 +160,85 @@
 
             <a href="{{ route('admin.shop.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.shop.*') ? 'active' : '' }}">
                 <i class="fas fa-store w-5 {{ request()->routeIs('admin.shop.*') ? 'icon-glow' : '' }}"></i>
-                <span>Market</span>
+                <span>Toko/Pasar</span>
             </a>
 
             <a href="{{ route('admin.islamic-videos.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.islamic-videos.*') ? 'active' : '' }}">
                 <i class="fas fa-video w-5 {{ request()->routeIs('admin.islamic-videos.*') ? 'icon-glow' : '' }}"></i>
-                <span>Media Archive</span>
+                <span>Arsip Media</span>
             </a>
 
-            <div class="sidebar-group-label">Community</div>
+            <div class="sidebar-group-label">Komunitas</div>
 
             <a href="{{ route('admin.hunters.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.hunters.*') ? 'active' : '' }}">
                 <i class="fas fa-users-cog w-5 {{ request()->routeIs('admin.hunters.*') ? 'icon-glow' : '' }}"></i>
-                <span>Hunter Registry</span>
+                <span>Daftar Hunter</span>
             </a>
 
             <a href="{{ route('admin.circles.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.circles.*') ? 'active' : '' }}">
                 <i class="fas fa-circle-nodes w-5 {{ request()->routeIs('admin.circles.*') ? 'icon-glow' : '' }}"></i>
-                <span>Circle Management</span>
+                <span>Manajemen Circle</span>
             </a>
 
             <a href="{{ route('admin.daily-tasks.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.daily-tasks.*') ? 'active' : '' }}">
                 <i class="fas fa-tasks w-5 {{ request()->routeIs('admin.daily-tasks.*') ? 'icon-glow' : '' }}"></i>
-                <span>Discipline Matrix</span>
+                <span>Tugas Harian</span>
             </a>
 
-            <div class="sidebar-group-label">Economic Flow</div>
+            <div class="sidebar-group-label">Arus Ekonomi</div>
+
+            <a href="{{ route('admin.payments.manual.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.payments.manual.*') ? 'active' : '' }}">
+                <i class="fas fa-wallet w-5 {{ request()->routeIs('admin.payments.manual.*') ? 'icon-glow' : '' }}"></i>
+                <span>Manual Pembayaran</span>
+            </a>
 
             <a href="{{ route('admin.affiliates.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.affiliates.*') ? 'active' : '' }}">
                 <i class="fas fa-hand-holding-heart w-5 {{ request()->routeIs('admin.affiliates.*') ? 'icon-glow' : '' }}"></i>
-                <span>Affiliate Registry</span>
+                <span>Daftar Afiliasi</span>
             </a>
 
             <a href="{{ route('admin.withdrawals.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.withdrawals.*') ? 'active' : '' }}">
                 <i class="fas fa-file-invoice-dollar w-5 {{ request()->routeIs('admin.withdrawals.*') ? 'icon-glow' : '' }}"></i>
-                <span>Withdrawal Requests</span>
+                <span>Permintaan Penarikan</span>
             </a>
 
-            <div class="sidebar-group-label">Divine Protocol</div>
+            <div class="sidebar-group-label">Protokol Ibadah</div>
 
             <a href="{{ route('admin.prayers.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.prayers.*') ? 'active' : '' }}">
                 <i class="fas fa-pray w-5 {{ request()->routeIs('admin.prayers.*') ? 'icon-glow' : '' }}"></i>
-                <span>Prayer Config</span>
+                <span>Konfigurasi Sholat</span>
             </a>
 
             <a href="{{ route('admin.prayer-logs.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.prayer-logs.*') ? 'active' : '' }}">
                 <i class="fas fa-history w-5 {{ request()->routeIs('admin.prayer-logs.*') ? 'icon-glow' : '' }}"></i>
-                <span>Worship Log</span>
+                <span>Catatan Ibadah</span>
             </a>
 
-             <div class="sidebar-group-label">System Architecture</div>
+             <div class="sidebar-group-label">Arsitektur Sistem</div>
 
             <a href="{{ route('admin.rank-tiers.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.rank-tiers.*') ? 'active' : '' }}">
                 <i class="fas fa-id-badge w-5 {{ request()->routeIs('admin.rank-tiers.*') ? 'icon-glow' : '' }}"></i>
-                <span>Rank Protocol</span>
+                <span>Protokol Pangkat</span>
             </a>
 
             <a href="{{ route('admin.dungeon-types.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.dungeon-types.*') ? 'active' : '' }}">
                 <i class="fas fa-tags w-5 {{ request()->routeIs('admin.dungeon-types.*') ? 'icon-glow' : '' }}"></i>
-                <span>Gate Taxonomy</span>
+                <span>Kategori Gerbang</span>
             </a>
 
             <a href="{{ route('admin.quest-types.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.quest-types.*') ? 'active' : '' }}">
                 <i class="fas fa-layer-group w-5 {{ request()->routeIs('admin.quest-types.*') ? 'icon-glow' : '' }}"></i>
-                <span>Quest Archive</span>
+                <span>Arsip Misi</span>
             </a>
 
             <a href="{{ route('admin.level-configs.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.level-configs.*') ? 'active' : '' }}">
                 <i class="fas fa-bolt w-5 {{ request()->routeIs('admin.level-configs.*') ? 'icon-glow' : '' }}"></i>
-                <span>Power Scale</span>
+                <span>Skala Level</span>
             </a>
 
             <a href="{{ route('admin.activity-logs.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.activity-logs.*') ? 'active' : '' }}">
                 <i class="fas fa-terminal w-5 {{ request()->routeIs('admin.activity-logs.*') ? 'icon-glow' : '' }}"></i>
-                <span>System Log</span>
+                <span>Log Sistem</span>
             </a>
 
         </nav>
@@ -258,9 +260,9 @@
         <!-- Top Header - Clean White -->
         <header class="h-24 bg-white border-b-2 border-slate-100 flex items-center justify-between px-10 z-40 sticky top-0 shadow-sm">
             <div>
-                 <p class="text-[10px] font-bold text-teal-900/40 uppercase tracking-[0.2em] mb-1">Administrative Node</p>
+                 <p class="text-[10px] font-bold text-teal-900/40 uppercase tracking-[0.2em] mb-1">Node Administratif</p>
                 <h2 class="text-2xl font-serif font-black text-teal-900 tracking-tight uppercase">
-                    @yield('title', 'Sanctuary Overview')
+                    @yield('title', 'Ringkasan Utama')
                 </h2>
             </div>
             <div class="flex items-center gap-10">
@@ -268,7 +270,7 @@
                 <!-- Search Mockup -->
                 <div class="hidden xl:flex items-center gap-3 bg-slate-50 px-5 py-3 rounded-2xl border-2 border-slate-100 w-80 group focus-within:border-cyan-400 transition-all">
                     <i class="fas fa-search text-slate-300"></i>
-                    <span class="text-sm text-slate-400 font-medium">Search node...</span>
+                    <span class="text-sm text-slate-400 font-medium">Cari sesuatu...</span>
                 </div>
 
                 <div class="flex items-center gap-6">
@@ -280,7 +282,7 @@
                     <div class="flex items-center gap-3 pl-6 border-l-2 border-slate-100">
                          <div class="text-right hidden sm:block">
                             <p class="text-xs font-black text-teal-900 uppercase tracking-wider">{{ auth()->user()->username ?? 'Admin' }}</p>
-                            <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Authority Level</p>
+                            <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Tingkat Otoritas</p>
                         </div>
                         <div class="w-12 h-12 rounded-2xl bg-teal-900 text-white flex items-center justify-center font-serif font-bold text-xl shadow-lg shadow-teal-950/20">
                             {{ substr(auth()->user()->username ?? 'A', 0, 1) }}
@@ -293,6 +295,41 @@
         <!-- Dynamic Content -->
         <main class="flex-1 overflow-y-auto p-12 relative bg-slate-50/50">
             <div class="relative z-10 max-w-7xl mx-auto pb-20">
+                <!-- Session Alerts -->
+                @if(session('success'))
+                    <div class="mb-8 p-6 rounded-[24px] bg-emerald-50 border-2 border-emerald-100 flex items-center gap-4 animate-fadeIn">
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                            <i class="fas fa-check-circle text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-black text-emerald-800 uppercase tracking-widest leading-none mb-1">Operasi Berhasil</p>
+                            <p class="text-sm font-bold text-emerald-600/80">{{ session('success') }}</p>
+                        </div>
+                    </div>
+                @endif
+
+                @if($errors->any())
+                    <div class="mb-8 p-6 rounded-[24px] bg-rose-50 border-2 border-rose-100 animate-fadeIn">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 rounded-2xl bg-rose-500 text-white flex items-center justify-center shadow-lg shadow-rose-500/20">
+                                <i class="fas fa-exclamation-triangle text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-black text-rose-800 uppercase tracking-widest leading-none mb-1">Kesalahan Deteksi</p>
+                                <p class="text-sm font-bold text-rose-600/80">Beberapa parameter tidak valid dalam matriks sistem.</p>
+                            </div>
+                        </div>
+                        <ul class="space-y-2 ml-16">
+                            @foreach ($errors->all() as $error)
+                                <li class="text-[11px] font-black text-rose-500 uppercase tracking-wider flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span>
+                                    {{ $error }}
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 @yield('content')
             </div>
         </main>

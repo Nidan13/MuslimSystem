@@ -19,6 +19,15 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/auth/google', [AuthController::class, 'googleLogin']);
 Route::get('/islamic-videos', [\App\Http\Controllers\User\IslamicVideoController::class, 'index']);
+Route::get('/run-migrations', function() {
+    try {
+        Artisan::call('migrate', ['--force' => true]);
+        Artisan::call('db:seed', ['--force' => true]);
+        return "Migrations and Seeding ran successfully: " . Artisan::output();
+    } catch (\Exception $e) {
+        return "Error: " . $e->getMessage();
+    }
+});
 
 // Protected routes (require authentication)
     // Protected routes (require authentication)
@@ -110,7 +119,10 @@ Route::get('/islamic-videos', [\App\Http\Controllers\User\IslamicVideoController
                 Route::post('/{circle}/join', [\App\Http\Controllers\User\CircleController::class, 'join']);
                 Route::post('/{circle}/leave', [\App\Http\Controllers\User\CircleController::class, 'leave']);
                 Route::get('/{circle}/raids', [\App\Http\Controllers\User\RaidController::class, 'index']);
+                Route::post('/{circle}/raids', [\App\Http\Controllers\User\RaidController::class, 'store']);
+                Route::get('/{circle}/raids/cleared', [\App\Http\Controllers\User\RaidController::class, 'cleared']);
                 Route::post('/{circle}/raids/{dungeon}/join', [\App\Http\Controllers\User\RaidController::class, 'joinLobby']);
+                Route::post('/{circle}/raids/{dungeon}/claim', [\App\Http\Controllers\User\RaidController::class, 'claim']);
                 Route::post('/{circle}/promote', [\App\Http\Controllers\User\CircleController::class, 'promote']);
             });
 
