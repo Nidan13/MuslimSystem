@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "415724548981",
+    "project_id": "muslimlevelup-4b8e6",
+    "storage_bucket": "muslimlevelup-4b8e6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:415724548981:android:e98e413c23cb752055193c",
+        "android_client_info": {
+          "package_name": "com.example.muslim"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "415724548981-22c0q8v4k04mva3m1isjk03p1mecn8jm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.muslim",
+            "certificate_hash": "270484d6b105e9565efb9757ff31b049488af2ac"
+          }
+        },
+        {
+          "client_id": "415724548981-k9r9pk3ot351m7il579bokquknh2iobm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_U31KifJ15w0QunO2XWZCF8Pxd78Ky3A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "415724548981-k9r9pk3ot351m7il579bokquknh2iobm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
