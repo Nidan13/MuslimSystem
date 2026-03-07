@@ -19,6 +19,10 @@ return Application::configure(basePath: dirname(__DIR__))
             'api/payments/callback',
         ]);
 
+        $middleware->web(append: [
+            \App\Http\Middleware\HandleInertiaRequests::class,
+        ]);
+
         // Register active_user middleware alias
         $middleware->alias([
             'active_user' => \App\Http\Middleware\ActiveUser::class,

@@ -3,16 +3,16 @@
 @section('title', 'Manifestasi Ritual Harian')
 
 @section('content')
-<div class="max-w-4xl mx-auto animate-fadeIn">
+<div class="w-full animate-fadeIn">
     <div class="flex items-center gap-6 mb-10">
-        <a href="{{ route('admin.daily-tasks.index') }}" class="group p-4 rounded-2xl border-2 border-slate-100 bg-white hover:border-cyan-400 transition-all shadow-sm">
-            <svg class="w-6 h-6 text-slate-400 group-hover:text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"/></svg>
+        <a href="{{ route('admin.daily-tasks.index') }}" class="w-12 h-12 rounded-2xl bg-white border border-slate-100 flex items-center justify-center text-slate-400 hover:text-teal-900 transition-all shadow-sm active:scale-95">
+            <i class="fas fa-chevron-left text-sm"></i>
         </a>
         <div>
-            <h1 class="text-4xl font-serif font-black text-teal-900 tracking-wide uppercase">Manifest Ritual</h1>
-            <p class="text-slate-500 text-[10px] font-bold uppercase tracking-[0.4em] mt-2 flex items-center gap-2">
+            <h1 class="text-3xl font-serif font-black text-teal-900 tracking-tight uppercase italic leading-none">Konstruksi <span class="text-cyan-500 font-sans tracking-normal not-italic mx-1">Ritual</span> <span class="text-teal-900 font-serif">Harian</span></h1>
+            <p class="text-slate-400 text-[10px] font-bold uppercase tracking-[0.3em] mt-2 flex items-center gap-2">
                 <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-                Mendefinisikan Mandat Penyucian Berulang Baru
+                Inisialisasi Protokol Ritual Baru ke dalam Matriks
             </p>
         </div>
     </div>
@@ -33,11 +33,11 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                     <div>
-                        <label class="block text-[10px] font-black text-gold-500 uppercase mb-3 tracking-[0.3em] ml-1">Nilai Hasil (SP)</label>
+                        <label class="block text-[10px] font-black text-blue-600 uppercase mb-3 tracking-[0.3em] ml-1">Nilai Hasil (EXP)</label>
                         <div class="relative">
                             <input type="number" name="soul_points" value="{{ old('soul_points', 10) }}" required 
-                                class="w-full bg-slate-50 border-2 border-slate-200 rounded-[24px] text-gold-600 p-6 focus:border-gold-400 focus:bg-white outline-none transition-all font-mono font-black text-xl shadow-inner">
-                            <span class="absolute right-8 top-1/2 -translate-y-1/2 text-[10px] font-black text-gold-400 uppercase">Soul Points</span>
+                                class="w-full bg-slate-50 border-2 border-slate-200 rounded-[24px] text-blue-600 p-6 focus:border-blue-400 focus:bg-white outline-none transition-all font-mono font-black text-xl shadow-inner">
+                            <span class="absolute right-8 top-1/2 -translate-y-1/2 text-[10px] font-black bg-gradient-to-r from-blue-600 to-slate-900 bg-clip-text text-transparent uppercase tracking-widest">Experience</span>
                         </div>
                         @error('soul_points') <p class="text-red-500 text-[10px] font-bold uppercase mt-2 px-4 italic">{{ $message }}</p> @enderror
                     </div>

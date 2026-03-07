@@ -7,10 +7,10 @@
     <!-- Header Area -->
     <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 animate-fadeIn">
         <div>
-            <h2 class="text-4xl font-serif font-black text-teal-900 tracking-wide uppercase">Skala Kekuatan</h2>
+            <h2 class="text-4xl font-serif font-black text-teal-900 tracking-wide uppercase">Konfigurasi Level</h2>
             <p class="text-slate-500 text-[10px] font-bold uppercase tracking-[0.4em] mt-2 flex items-center gap-2">
                 <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_10px_#22d3ee]"></span>
-                Experience Threshold & Hunter Evolution
+                Pengaturan Level & Kebutuhan XP
             </p>
         </div>
         
@@ -30,7 +30,7 @@
             <a href="{{ route('admin.level-configs.create') }}" class="group relative px-8 py-4 rounded-2xl bg-teal-900 text-white shadow-xl shadow-teal-950/20 hover:bg-teal-800 transition-all active:scale-95 overflow-hidden font-serif uppercase tracking-widest text-[10px] font-black">
                 <span class="relative flex items-center gap-3">
                     <i class="fas fa-plus text-cyan-400 icon-glow transition-transform group-hover:rotate-90"></i>
-                    Expand Horizon
+                    Tambah Level Baru
                 </span>
             </a>
         </div>
@@ -44,7 +44,7 @@
                     <tr class="border-b-2 border-slate-100 uppercase">
                         <th class="pb-6 px-6 text-[10px] font-black text-slate-400 tracking-[0.2em] cursor-pointer hover:text-cyan-500 transition-colors group" onclick="sortTable(0)">
                             <div class="flex items-center gap-2">
-                                LEVEL EVOLUSI <i class="fas fa-sort opacity-30 group-hover:opacity-100 transition-opacity" id="sort-icon-0"></i>
+                                LEVEL PENGGUNA <i class="fas fa-sort opacity-30 group-hover:opacity-100 transition-opacity" id="sort-icon-0"></i>
                             </div>
                         </th>
                         <th class="pb-6 px-6 text-[10px] font-black text-slate-400 tracking-[0.2em] cursor-pointer hover:text-cyan-500 transition-colors group" onclick="sortTable(1)">
@@ -52,9 +52,9 @@
                                 XP DIBUTUHKAN <i class="fas fa-sort opacity-30 group-hover:opacity-100 transition-opacity" id="sort-icon-1"></i>
                             </div>
                         </th>
-                        <th class="pb-6 px-6 text-[10px] font-black text-slate-400 tracking-[0.2em]">CUMULATIVE LOAD</th>
+                        <th class="pb-6 px-6 text-[10px] font-black text-slate-400 tracking-[0.2em]">TOTAL XP KUMULATIF</th>
                         <th class="pb-6 px-6 text-[10px] font-black text-slate-400 tracking-[0.2em] text-center">POIN ATRIBUT</th>
-                        <th class="pb-6 px-6 text-[10px] font-black text-slate-400 tracking-[0.2em] text-right">SINKRONISASI</th>
+                        <th class="pb-6 px-6 text-[10px] font-black text-slate-400 tracking-[0.2em] text-right">AKSI</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-50 font-sans" id="level-body">
@@ -66,8 +66,8 @@
                                     {{ $config->level }}
                                 </div>
                                 <div class="flex flex-col">
-                                    <span class="text-[10px] font-black text-slate-300 uppercase tracking-widest leading-none">Stage Node</span>
-                                    <span class="text-sm font-serif font-black text-teal-900 uppercase tracking-tight mt-1">Evolution {{ $config->level }}</span>
+                                    <span class="text-[10px] font-black text-slate-300 uppercase tracking-widest leading-none">Level Pengguna</span>
+                                    <span class="text-sm font-serif font-black text-teal-900 uppercase tracking-tight mt-1">Level {{ $config->level }}</span>
                                 </div>
                             </div>
                         </td>
@@ -75,7 +75,7 @@
                              <div class="inline-flex items-center gap-3 px-4 py-2 bg-white border-2 border-slate-100 rounded-2xl shadow-sm group-hover:border-cyan-100 transition-colors">
                                 <i class="fas fa-bolt text-[10px] text-cyan-500"></i>
                                 <span class="text-lg font-black text-teal-900 font-mono tracking-tighter">{{ number_format($config->xp_required) }}</span>
-                                <span class="text-[8px] font-black text-slate-300 uppercase tracking-widest">XP NEXT</span>
+                                <span class="text-[8px] font-black text-slate-300 uppercase tracking-widest">XP DIBUTUHKAN</span>
                             </div>
                         </td>
                         <td class="py-6 px-6">
@@ -83,7 +83,7 @@
                                 <span class="text-[11px] font-black text-teal-900/60 font-mono tracking-tighter">
                                     Σ {{ number_format($config->xp_total_cumulative ?? 0) }}
                                 </span>
-                                <span class="text-[8px] font-black text-slate-300 uppercase tracking-widest mt-0.5">Total Capacity</span>
+                                <span class="text-[8px] font-black text-slate-300 uppercase tracking-widest mt-0.5">Total XP Terkumpul</span>
                             </div>
                         </td>
                         <td class="py-6 px-6 text-center">
@@ -96,9 +96,9 @@
                                 <a href="{{ route('admin.level-configs.edit', $config) }}" class="p-4 bg-white border-2 border-slate-100 text-teal-900 hover:text-cyan-500 hover:border-cyan-200 rounded-2xl transition-all shadow-sm active:scale-95 leading-none shadow-slate-200/50">
                                     <i class="fas fa-sliders text-xs"></i>
                                 </a>
-                                <form action="{{ route('admin.level-configs.destroy', $config) }}" method="POST" class="inline" onsubmit="return confirm('Hapus konfigurasi level ini?')">
+                                <form action="{{ route('admin.level-configs.destroy', $config) }}" method="POST" class="inline">
                                     @csrf @method('DELETE')
-                                    <button type="submit" class="p-4 bg-white border-2 border-slate-100 text-slate-400 hover:text-red-500 hover:border-red-200 rounded-2xl transition-all shadow-sm active:scale-95 leading-none shadow-slate-200/50">
+                                    <button type="button" onclick="confirmDelete(this, 'Level {{ $config->level }}')" class="p-4 bg-white border-2 border-slate-100 text-slate-400 hover:text-red-500 hover:border-red-200 rounded-2xl transition-all shadow-sm active:scale-95 leading-none shadow-slate-200/50">
                                         <i class="fas fa-trash-alt text-xs"></i>
                                     </button>
                                 </form>
@@ -109,8 +109,8 @@
                     <tr>
                         <td colspan="5" class="py-20 text-center">
                             <div class="flex flex-col items-center">
-                                <i class="fas fa-bolt text-slate-100 text-6xl mb-4"></i>
-                                <span class="text-slate-300 text-[10px] font-black uppercase tracking-[0.3em]">Matriks evolusi belum terinisialisasi</span>
+                                <i class="fas fa-layer-group text-slate-100 text-6xl mb-4"></i>
+                                <span class="text-slate-300 text-[10px] font-black uppercase tracking-[0.3em]">Data Konfigurasi Level Masih Kosong</span>
                             </div>
                         </td>
                     </tr>
@@ -123,7 +123,7 @@
     <!-- Footer Area / Navigation -->
     <div class="mt-12 flex flex-col md:flex-row items-center justify-between gap-6 px-1">
         <div class="text-[10px] font-black text-teal-900/30 uppercase tracking-[0.4em]">
-            Sinkronisasi Skala Kekuatan Terverifikasi (Total Stages: {{ $configs instanceof \Illuminate\Pagination\LengthAwarePaginator ? $configs->total() : $configs->count() }})
+            Data Konfigurasi Level (Total Data: {{ $configs instanceof \Illuminate\Pagination\LengthAwarePaginator ? $configs->total() : $configs->count() }})
         </div>
         
         <div class="flex items-center gap-4">

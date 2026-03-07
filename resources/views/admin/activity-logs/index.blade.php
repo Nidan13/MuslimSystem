@@ -10,7 +10,7 @@
             <h2 class="text-4xl font-serif font-black text-teal-900 tracking-wide uppercase">Log Sistem</h2>
             <p class="text-slate-500 text-[10px] font-bold uppercase tracking-[0.4em] mt-2 flex items-center gap-2">
                 <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_10px_#22d3ee]"></span>
-                Pemantauan Interaksi Sub-sistem & Direktif Admin
+                Pemantauan Interaksi & Jejak Aktivitas
             </p>
         </div>
         
@@ -28,7 +28,7 @@
 
             <!-- Filter (Search) -->
             <form action="{{ route('admin.activity-logs.index') }}" method="GET" class="relative group">
-                <input type="text" name="search" placeholder="Cari Log Aktivitas..." 
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari Log Aktivitas..." 
                     class="pl-12 pr-6 py-4 rounded-2xl bg-white border-2 border-slate-100 text-teal-900 font-bold placeholder-slate-300 outline-none focus:border-cyan-400 transition-all text-[10px] uppercase tracking-widest w-64 shadow-sm shadow-slate-200/50">
                 <i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-cyan-400 transition-colors"></i>
             </form>
@@ -43,21 +43,21 @@
                     <tr class="border-b-2 border-slate-100 uppercase">
                         <th class="pb-6 px-4 text-[10px] font-black text-slate-400 tracking-[0.2em] cursor-pointer hover:text-cyan-500 transition-colors group" onclick="sortTable(0)">
                             <div class="flex items-center gap-2">
-                                NODE TEMPORAL <i class="fas fa-sort opacity-30 group-hover:opacity-100 transition-opacity" id="sort-icon-0"></i>
+                                TANGGAL & WAKTU <i class="fas fa-sort opacity-30 group-hover:opacity-100 transition-opacity" id="sort-icon-0"></i>
                             </div>
                         </th>
                         <th class="pb-6 px-6 text-[10px] font-black text-slate-400 tracking-[0.2em] cursor-pointer hover:text-cyan-500 transition-colors group" onclick="sortTable(1)">
                             <div class="flex items-center gap-2">
-                                SUBJEK IDENTITAS <i class="fas fa-sort opacity-30 group-hover:opacity-100 transition-opacity" id="sort-icon-1"></i>
+                                PELAKU (AKTOR) <i class="fas fa-sort opacity-30 group-hover:opacity-100 transition-opacity" id="sort-icon-1"></i>
                             </div>
                         </th>
                         <th class="pb-6 px-6 text-[10px] font-black text-slate-400 tracking-[0.2em] cursor-pointer hover:text-cyan-500 transition-colors group" onclick="sortTable(2)">
                             <div class="flex items-center gap-2">
-                                DIREKTIF EVENT <i class="fas fa-sort opacity-30 group-hover:opacity-100 transition-opacity" id="sort-icon-2"></i>
+                                JENIS AKTIVITAS <i class="fas fa-sort opacity-30 group-hover:opacity-100 transition-opacity" id="sort-icon-2"></i>
                             </div>
                         </th>
-                        <th class="pb-6 px-6 text-[10px] font-black text-slate-400 tracking-[0.2em]">MATRIKS TARGET</th>
-                        <th class="pb-6 px-6 text-[10px] font-black text-slate-400 tracking-[0.2em] text-right">OTORITAS</th>
+                        <th class="pb-6 px-6 text-[10px] font-black text-slate-400 tracking-[0.2em]">TARGET AKSI</th>
+                        <th class="pb-6 px-6 text-[10px] font-black text-slate-400 tracking-[0.2em] text-right">AKSI (TINDAKAN)</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-50 font-sans" id="log-body">
@@ -72,11 +72,11 @@
                         <td class="py-6 px-6">
                             <div class="flex items-center gap-4">
                                 <div class="w-10 h-10 rounded-xl bg-teal-900 border-2 border-teal-800 flex items-center justify-center font-serif font-black text-white text-xs shadow-md group-hover:scale-105 transition-transform">
-                                    {{ substr($log->causer->username ?? 'SYS', 0, 1) }}
+                                    {{ substr($log->user->username ?? 'SYS', 0, 1) }}
                                 </div>
                                 <div class="flex flex-col">
-                                    <span class="text-[10px] font-black text-slate-300 uppercase tracking-widest leading-none">Executor</span>
-                                    <span class="text-sm font-black text-teal-900 uppercase tracking-tight mt-1">{{ $log->causer->username ?? 'Master System' }}</span>
+                                    <span class="text-[10px] font-black text-slate-300 uppercase tracking-widest leading-none">Eksekutor</span>
+                                    <span class="text-sm font-black text-teal-900 uppercase tracking-tight mt-1">{{ $log->user->username ?? 'Sistem Utama' }}</span>
                                 </div>
                             </div>
                         </td>
@@ -87,20 +87,16 @@
                         </td>
                         <td class="py-6 px-6">
                              <div class="flex flex-col">
-                                <span class="text-sm font-serif font-black text-teal-900 uppercase tracking-tight">{{ class_basename($log->subject_type) }}</span>
-                                <span class="text-[9px] font-mono font-black text-slate-300 uppercase tracking-tighter mt-0.5">#NODE-{{ $log->subject_id }}</span>
+                                <span class="text-sm font-serif font-black text-teal-900 uppercase tracking-tight">{{ str_replace('_', ' ', strtoupper($log->type)) }}</span>
+                                <span class="text-[9px] font-mono font-black text-slate-300 uppercase tracking-tighter mt-0.5">JUMLAH: {{ $log->amount ?? '-' }}</span>
                              </div>
                         </td>
                         <td class="py-6 px-6 text-right whitespace-nowrap">
                              <div class="flex items-center justify-end gap-3 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300">
-                                 @if($log->properties && count($log->properties) > 0)
-                                    <button onclick="console.log('Raw Data:', {{ json_encode($log->properties) }}); alert('Informasi Payload Terkirim ke Konsol Sistem');" class="p-4 bg-white border-2 border-slate-100 text-teal-900 hover:text-cyan-500 hover:border-cyan-200 rounded-2xl transition-all shadow-sm active:scale-95 leading-none shadow-slate-200/50">
-                                        <i class="fas fa-terminal text-xs"></i>
-                                    </button>
-                                 @endif
-                                 <form action="{{ route('admin.activity-logs.destroy', $log) }}" method="POST" class="inline" onsubmit="return confirm('Hapus record log aktivitas ini?')">
+
+                                 <form action="{{ route('admin.activity-logs.destroy', $log) }}" method="POST" class="inline">
                                     @csrf @method('DELETE')
-                                    <button type="submit" class="p-4 bg-white border-2 border-slate-100 text-slate-400 hover:text-red-500 hover:border-red-200 rounded-2xl transition-all shadow-sm active:scale-95 leading-none shadow-slate-200/50">
+                                    <button type="button" onclick="confirmDelete(this, 'Log #{{ $log->id }}')" class="p-4 bg-white border-2 border-slate-100 text-slate-400 hover:text-red-500 hover:border-red-200 rounded-2xl transition-all shadow-sm active:scale-95 leading-none shadow-slate-200/50">
                                         <i class="fas fa-trash-alt text-xs"></i>
                                     </button>
                                 </form>
@@ -111,8 +107,8 @@
                     <tr>
                         <td colspan="5" class="py-24 text-center">
                             <div class="flex flex-col items-center opacity-40">
-                                <i class="fas fa-satellite-dish text-6xl text-slate-100 mb-6"></i>
-                                <span class="text-slate-300 text-[10px] font-black uppercase tracking-[0.4em]">Tidak ada data event termanifestasi</span>
+                                <i class="fas fa-clipboard-list text-6xl text-slate-100 mb-6"></i>
+                                <span class="text-slate-300 text-[10px] font-black uppercase tracking-[0.4em]">Tidak ada data log aktivitas</span>
                             </div>
                         </td>
                     </tr>
@@ -125,7 +121,7 @@
     <!-- Footer Area / Navigation -->
     <div class="mt-12 flex flex-col md:flex-row items-center justify-between gap-6 px-1">
         <div class="text-[10px] font-black text-teal-900/30 uppercase tracking-[0.4em]">
-            Arsip Log Operasional Terverifikasi (Total: {{ $logs instanceof \Illuminate\Pagination\LengthAwarePaginator ? $logs->total() : $logs->count() }})
+            Daftar Log Aktivitas Sistem (Total Data: {{ $logs instanceof \Illuminate\Pagination\LengthAwarePaginator ? $logs->total() : $logs->count() }})
         </div>
         
         <div class="flex items-center gap-4">

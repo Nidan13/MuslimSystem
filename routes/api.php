@@ -19,6 +19,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/auth/google', [AuthController::class, 'googleLogin']);
 Route::get('/islamic-videos', [\App\Http\Controllers\User\IslamicVideoController::class, 'index']);
+Route::post('/islamic-videos/complete', [\App\Http\Controllers\User\IslamicVideoController::class, 'logCompletion'])->middleware('auth:sanctum');
 Route::get('/run-migrations', function() {
     try {
         Artisan::call('migrate', ['--force' => true]);

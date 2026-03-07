@@ -17,6 +17,16 @@ class ActivityLogController extends Controller
             $query->where('user_id', $request->user_id);
         }
 
+        if ($request->has('search') && $search = $request->search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('description', 'like', "%{$search}%")
+                  ->orWhere('type', 'like', "%{$search}%")
+                  ->orWhereHas('user', function ($qUser) use ($search) {
+                      $qUser->where('username', 'like', "%{$search}%");
+                  });
+            });
+        }
+
         if ($request->has('type') && $request->type) {
             $query->where('type', $request->type);
         }

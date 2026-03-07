@@ -1,14 +1,14 @@
 @extends('layouts.admin')
 
-@section('title', 'Taksonomi Gerbang')
+@section('title', 'Kategori Gerbang')
 
 @section('content')
 <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6 animate-fadeIn">
     <div>
-        <h2 class="text-3xl font-serif font-black text-teal-900 tracking-wide uppercase">Taksonomi Gerbang</h2>
+        <h2 class="text-3xl font-serif font-black text-teal-900 tracking-wide uppercase">Kategori Gerbang</h2>
         <p class="text-slate-500 text-[10px] font-bold uppercase tracking-[0.4em] mt-2 flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_10px_#22d3ee]"></span>
-            Klasifikasi Rift & Parameter Kapasitas Hunter
+            Manajemen Tipe Gerbang & Kapasitas Hunter
         </p>
     </div>
     
@@ -26,7 +26,7 @@
         <a href="{{ route('admin.dungeon-types.create') }}" class="group relative px-8 py-4 rounded-2xl bg-teal-900 text-white shadow-xl shadow-teal-950/20 hover:bg-teal-800 transition-all active:scale-95 overflow-hidden font-serif uppercase tracking-widest text-[10px] font-black">
             <span class="relative flex items-center gap-3">
                 <i class="fas fa-plus text-cyan-400 icon-glow transition-transform group-hover:rotate-90"></i>
-                Inisialisasi Klasifikasi
+                Tambah Kategori Baru
             </span>
         </a>
     </div>
@@ -37,16 +37,16 @@
         <table class="w-full text-left" id="type-table">
             <thead>
                 <tr class="border-b border-slate-100 uppercase">
-                    <th class="pb-6 px-6 text-[10px] font-black text-slate-400 tracking-[0.2em]">ID Node</th>
+                    <th class="pb-6 px-6 text-[10px] font-black text-slate-400 tracking-[0.2em]">ID Kategori</th>
                     <th class="pb-6 px-6 text-[10px] font-black text-slate-400 tracking-[0.2em] cursor-pointer hover:text-cyan-500 transition-colors group" onclick="sortTable(1)">
-                        Nama Klasifikasi <i class="fas fa-sort ml-1 opacity-50 group-hover:opacity-100"></i>
+                        Nama Kategori <i class="fas fa-sort ml-1 opacity-50 group-hover:opacity-100"></i>
                     </th>
-                    <th class="pb-6 px-6 text-[10px] font-black text-slate-400 tracking-[0.2em]">Kunci Identifikasi</th>
+                    <th class="pb-6 px-6 text-[10px] font-black text-slate-400 tracking-[0.2em]">Kode Kategori (Slug)</th>
                     <th class="pb-6 px-6 text-[10px] font-black text-slate-400 tracking-[0.2em] cursor-pointer hover:text-cyan-500 transition-colors group" onclick="sortTable(3)">
                         Kapasitas Peserta <i class="fas fa-sort ml-1 opacity-50 group-hover:opacity-100"></i>
                     </th>
-                    <th class="pb-6 px-6 text-[10px] font-black text-slate-400 tracking-[0.2em]">Instansi Aktif</th>
-                    <th class="pb-6 px-6 text-[10px] font-black text-slate-400 tracking-[0.2em] text-right">Sinkronisasi</th>
+                    <th class="pb-6 px-6 text-[10px] font-black text-slate-400 tracking-[0.2em]">Total Gerbang</th>
+                    <th class="pb-6 px-6 text-[10px] font-black text-slate-400 tracking-[0.2em] text-right">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-slate-50 font-sans" id="type-body">
@@ -59,7 +59,7 @@
                         <span class="text-xl font-serif font-black text-teal-900 uppercase tracking-tight group-hover:text-cyan-600 transition-colors duration-300">
                             {{ $type->name }}
                         </span>
-                        <p class="text-[9px] font-black text-slate-300 uppercase tracking-widest mt-1">Klasifikasi Rift</p>
+                        <p class="text-[9px] font-black text-slate-300 uppercase tracking-widest mt-1">Kategori Gerbang</p>
                     </td>
                     <td class="py-6 px-6">
                         <code class="px-3 py-1 bg-slate-100 rounded-lg text-[10px] font-black text-cyan-600 uppercase tracking-wider border border-slate-200">
@@ -84,9 +84,9 @@
                             <a href="{{ route('admin.dungeon-types.edit', $type) }}" class="p-4 bg-white border-2 border-slate-100 text-teal-900 hover:text-cyan-500 hover:border-cyan-200 rounded-2xl transition-all shadow-sm active:scale-95 leading-none">
                                 <i class="fas fa-sliders text-xs"></i>
                             </a>
-                            <form action="{{ route('admin.dungeon-types.destroy', $type) }}" method="POST" class="inline" onsubmit="return confirm('Apakah anda yakin ingin menghapus klasifikasi ini?')">
+                            <form action="{{ route('admin.dungeon-types.destroy', $type) }}" method="POST" class="inline">
                                 @csrf @method('DELETE')
-                                <button type="submit" class="p-4 bg-white border-2 border-slate-100 text-slate-400 hover:text-red-500 hover:border-red-200 rounded-2xl transition-all shadow-sm active:scale-95 leading-none">
+                                <button type="button" onclick="confirmDelete(this, '{{ $type->name }}')" class="p-4 bg-white border-2 border-slate-100 text-slate-400 hover:text-red-500 hover:border-red-200 rounded-2xl transition-all shadow-sm active:scale-95 leading-none">
                                     <i class="fas fa-trash-alt text-xs"></i>
                                 </button>
                             </form>
@@ -107,7 +107,7 @@
 
 <div class="mt-12 flex flex-col md:flex-row items-center justify-between gap-6 px-1">
     <div class="text-[10px] font-black text-teal-900/30 uppercase tracking-[0.4em]">
-        Parameter Taksonomi Gerbang Tersinkronisasi
+        Data Kategori Gerbang
     </div>
     
     <div class="flex items-center gap-4">

@@ -20,16 +20,19 @@ use App\Http\Controllers\Admin\AffiliateController;
 use App\Http\Controllers\Admin\WithdrawalController;
 use Illuminate\Support\Facades\Route;
 
-// Public Routes (tanpa login)
-Route::get('/download', fn() => inertia('LandingPage', [
-    'appName'     => config('app.name'),
-    'downloadUrl' => env('APK_DOWNLOAD_URL', '#'),
-]))->name('download');
+// Public Routes (Inertia - React)
+Route::get('/', fn() => inertia('LandingPage'))->name('home');
+Route::get('/features', fn() => inertia('Features'))->name('features');
+Route::get('/about', fn() => inertia('About'))->name('about');
+Route::get('/faq', fn() => inertia('FAQ'))->name('faq');
+Route::get('/privacy', fn() => inertia('PrivacyPolicy'))->name('privacy');
 
-// Guest Routes
-Route::get('/', fn() => redirect('/login'));
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
+// Public Download Route (Optional, could be the same as landing)
+Route::get('/download', fn() => redirect()->route('home'))->name('download');
+
+// Guest Routes (Login tetap ada)
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login')->middleware('guest');
+Route::post('/login', [AuthController::class, 'login'])->middleware('guest');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Authenticated Routes
@@ -52,7 +55,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('quests', QuestController::class);
         Route::resource('dungeons', DungeonController::class);
         Route::resource('shop', ShopController::class);
-        Route::resource('hunters', UserController::class);
+        Route::resource('hunters', UserController::class)->except(['edit', 'update']);
         Route::resource('quest-types', QuestTypeController::class);
         Route::resource('rank-tiers', RankTierController::class);
         Route::resource('dungeon-types', DungeonTypeController::class);

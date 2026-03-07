@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 
 // Premium Download Modal (Shared)
 const DownloadModal = ({ isOpen, onClose, downloadUrl }) => {
@@ -14,9 +14,10 @@ const DownloadModal = ({ isOpen, onClose, downloadUrl }) => {
                     <h3 className="text-xl font-serif font-black text-nu-indigo mb-2 uppercase">Muslim Level Up</h3>
                     <p className="text-[10px] text-slate-400 font-bold mb-8 uppercase tracking-widest">Siap untuk perubahan?</p>
                     <a
-                        href="/downloads/muslim-app.apk"
+                        href={downloadUrl}
                         download
-                        className="block w-full py-4 bg-nu-teal text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-nu-teal-dark transition-all shadow-lg shadow-nu-teal/20 mb-3"
+                        name="muslim-app.apk"
+                        className="block w-full py-4 bg-nu-teal text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-nu-teal-dark transition-all shadow-lg shadow-nu-teal/20 mb-3 text-center"
                     >
                         Ya, Download APK
                     </a>
@@ -28,6 +29,7 @@ const DownloadModal = ({ isOpen, onClose, downloadUrl }) => {
 };
 
 export default function MainLayout({ children }) {
+    const { auth, downloadUrl } = usePage().props;
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -35,7 +37,7 @@ export default function MainLayout({ children }) {
 
     return (
         <div className="min-h-screen bg-nu-light font-sans text-nu-indigo antialiased">
-            <DownloadModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+            <DownloadModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} downloadUrl={downloadUrl} />
 
             {/* Persistent Navbar */}
             <nav className="fixed top-0 w-full z-50 bg-nu-teal/95 backdrop-blur-md h-20 border-b border-white/10">
@@ -62,6 +64,22 @@ export default function MainLayout({ children }) {
                         >
                             Get APK
                         </button>
+
+                        {auth.user ? (
+                            <Link
+                                href="/dashboard"
+                                className="hidden md:block px-6 py-2.5 bg-nu-indigo text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-900 transition-all shadow-lg shadow-black/10"
+                            >
+                                Dashboard
+                            </Link>
+                        ) : (
+                            <Link
+                                href="/login"
+                                className="hidden md:block px-6 py-2.5 bg-nu-indigo/20 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition-all border border-white/20 shadow-lg"
+                            >
+                                Login
+                            </Link>
+                        )}
 
                         {/* Mobile Side Toggle */}
                         <button
@@ -105,12 +123,23 @@ export default function MainLayout({ children }) {
                             </div>
                         </div>
 
-                        {/* Nav Links */}
                         <div className="space-y-4 flex flex-col">
+                            {auth.user && (
+                                <Link
+                                    href="/dashboard"
+                                    onClick={() => setIsSidebarOpen(false)}
+                                    className="group flex items-center gap-4 p-4 rounded-2xl bg-nu-teal/10 border border-nu-teal/20"
+                                >
+                                    <span className="text-xl">📊</span>
+                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-nu-teal">
+                                        Admin Panel
+                                    </span>
+                                </Link>
+                            )}
                             {[
-                                { name: 'Dashboard', path: '/', icon: '🏠' },
+                                { name: 'Home', path: '/', icon: '🏠' },
                                 { name: 'Features', path: '/features', icon: '⚔️' },
-                                { name: 'About MLU', path: '/about', icon: '💎' },
+                                { name: 'About', path: '/about', icon: '💎' },
                                 { name: 'FAQ', path: '/faq', icon: '❓' },
                                 { name: 'Privacy', path: '/privacy', icon: '🛡️' }
                             ].map((link, i) => (
@@ -140,6 +169,15 @@ export default function MainLayout({ children }) {
                             >
                                 Get The App Now
                             </button>
+                            {!auth.user && (
+                                <Link
+                                    href="/login"
+                                    onClick={() => setIsSidebarOpen(false)}
+                                    className="w-full py-4 mt-3 bg-white/5 text-white/60 border border-white/10 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition-all text-center"
+                                >
+                                    Login Admin
+                                </Link>
+                            )}
                             <p className="text-center text-[8px] font-bold text-white/20 uppercase tracking-[0.3em] mt-6">Built for Eternal Glory</p>
                         </div>
                     </div>

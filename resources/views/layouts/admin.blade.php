@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         /* Light Theme Background with Geometric Hint */
         .bg-islamic-light {
@@ -142,42 +143,23 @@
         <!-- Navigation -->
         <nav id="sidebar-nav" class="flex-1 space-y-1 overflow-y-auto pb-6 custom-scrollbar">
             
-            <div class="sidebar-group-label">Akses Utama</div>
+            <div class="sidebar-group-label" style="letter-spacing: 0.2rem;">Beranda</div>
             
             <a href="{{ route('admin.dashboard') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                 <i class="fas fa-th-large w-5 {{ request()->routeIs('admin.dashboard') ? 'icon-glow' : '' }}"></i>
-                <span>Pusat Komando</span>
+                <span>Dashboard</span>
             </a>
 
-            <div class="sidebar-group-label">Operasional</div>
+            <div class="sidebar-group-label" style="letter-spacing: 0.2rem;">Aktivitas & Tugas</div>
 
-
+            <a href="{{ route('admin.quests.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.quests.*') ? 'active' : '' }}">
+                <i class="fas fa-scroll w-5 {{ request()->routeIs('admin.quests.*') ? 'icon-glow' : '' }}"></i>
+                <span>Misi (Quests)</span>
+            </a>
 
             <a href="{{ route('admin.dungeons.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.dungeons.*') ? 'active' : '' }}">
                 <i class="fas fa-dungeon w-5 {{ request()->routeIs('admin.dungeons.*') ? 'icon-glow' : '' }}"></i>
-                <span>Rift Gates</span>
-            </a>
-
-            <a href="{{ route('admin.shop.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.shop.*') ? 'active' : '' }}">
-                <i class="fas fa-store w-5 {{ request()->routeIs('admin.shop.*') ? 'icon-glow' : '' }}"></i>
-                <span>Toko/Pasar</span>
-            </a>
-
-            <a href="{{ route('admin.islamic-videos.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.islamic-videos.*') ? 'active' : '' }}">
-                <i class="fas fa-video w-5 {{ request()->routeIs('admin.islamic-videos.*') ? 'icon-glow' : '' }}"></i>
-                <span>Arsip Media</span>
-            </a>
-
-            <div class="sidebar-group-label">Komunitas</div>
-
-            <a href="{{ route('admin.hunters.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.hunters.*') ? 'active' : '' }}">
-                <i class="fas fa-users-cog w-5 {{ request()->routeIs('admin.hunters.*') ? 'icon-glow' : '' }}"></i>
-                <span>Daftar Hunter</span>
-            </a>
-
-            <a href="{{ route('admin.circles.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.circles.*') ? 'active' : '' }}">
-                <i class="fas fa-circle-nodes w-5 {{ request()->routeIs('admin.circles.*') ? 'icon-glow' : '' }}"></i>
-                <span>Manajemen Circle</span>
+                <span>Misi Circle (Raid)</span>
             </a>
 
             <a href="{{ route('admin.daily-tasks.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.daily-tasks.*') ? 'active' : '' }}">
@@ -185,50 +167,72 @@
                 <span>Tugas Harian</span>
             </a>
 
-            <div class="sidebar-group-label">Arus Ekonomi</div>
+            <div class="sidebar-group-label" style="letter-spacing: 0.2rem;">Sosial & Media</div>
+
+            <a href="{{ route('admin.hunters.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.hunters.*') ? 'active' : '' }}">
+                <i class="fas fa-users w-5 {{ request()->routeIs('admin.hunters.*') ? 'icon-glow' : '' }}"></i>
+                <span>Pengguna (Hunter)</span>
+            </a>
+
+            <a href="{{ route('admin.circles.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.circles.*') ? 'active' : '' }}">
+                <i class="fas fa-circle-nodes w-5 {{ request()->routeIs('admin.circles.*') ? 'icon-glow' : '' }}"></i>
+                <span>Grup (Circle)</span>
+            </a>
+
+            <a href="{{ route('admin.islamic-videos.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.islamic-videos.*') ? 'active' : '' }}">
+                <i class="fas fa-video w-5 {{ request()->routeIs('admin.islamic-videos.*') ? 'icon-glow' : '' }}"></i>
+                <span>Media Islami</span>
+            </a>
+
+            <div class="sidebar-group-label" style="letter-spacing: 0.2rem;">Manajemen Toko & Uang</div>
+
+            <a href="{{ route('admin.shop.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.shop.*') ? 'active' : '' }}">
+                <i class="fas fa-store w-5 {{ request()->routeIs('admin.shop.*') ? 'icon-glow' : '' }}"></i>
+                <span>Toko / Item</span>
+            </a>
 
             <a href="{{ route('admin.payments.manual.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.payments.manual.*') ? 'active' : '' }}">
                 <i class="fas fa-wallet w-5 {{ request()->routeIs('admin.payments.manual.*') ? 'icon-glow' : '' }}"></i>
-                <span>Manual Pembayaran</span>
-            </a>
-
-            <a href="{{ route('admin.affiliates.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.affiliates.*') ? 'active' : '' }}">
-                <i class="fas fa-hand-holding-heart w-5 {{ request()->routeIs('admin.affiliates.*') ? 'icon-glow' : '' }}"></i>
-                <span>Daftar Afiliasi</span>
+                <span>Deposit Manual</span>
             </a>
 
             <a href="{{ route('admin.withdrawals.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.withdrawals.*') ? 'active' : '' }}">
                 <i class="fas fa-file-invoice-dollar w-5 {{ request()->routeIs('admin.withdrawals.*') ? 'icon-glow' : '' }}"></i>
-                <span>Permintaan Penarikan</span>
+                <span>Penarikan Uang</span>
             </a>
 
-            <div class="sidebar-group-label">Protokol Ibadah</div>
+            <a href="{{ route('admin.affiliates.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.affiliates.*') ? 'active' : '' }}">
+                <i class="fas fa-hand-holding-heart w-5 {{ request()->routeIs('admin.affiliates.*') ? 'icon-glow' : '' }}"></i>
+                <span>Data Afiliasi</span>
+            </a>
+
+            <div class="sidebar-group-label" style="letter-spacing: 0.2rem;">Ibadah & Pencatatan</div>
 
             <a href="{{ route('admin.prayers.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.prayers.*') ? 'active' : '' }}">
                 <i class="fas fa-pray w-5 {{ request()->routeIs('admin.prayers.*') ? 'icon-glow' : '' }}"></i>
-                <span>Konfigurasi Sholat</span>
+                <span>Jadwal & Setting Sholat</span>
             </a>
 
             <a href="{{ route('admin.prayer-logs.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.prayer-logs.*') ? 'active' : '' }}">
                 <i class="fas fa-history w-5 {{ request()->routeIs('admin.prayer-logs.*') ? 'icon-glow' : '' }}"></i>
-                <span>Catatan Ibadah</span>
+                <span>Catatan Sholat (Log)</span>
             </a>
 
-             <div class="sidebar-group-label">Arsitektur Sistem</div>
+            <div class="sidebar-group-label" style="letter-spacing: 0.2rem;">Konfigurasi Sistem</div>
 
             <a href="{{ route('admin.rank-tiers.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.rank-tiers.*') ? 'active' : '' }}">
                 <i class="fas fa-id-badge w-5 {{ request()->routeIs('admin.rank-tiers.*') ? 'icon-glow' : '' }}"></i>
-                <span>Protokol Pangkat</span>
-            </a>
-
-            <a href="{{ route('admin.dungeon-types.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.dungeon-types.*') ? 'active' : '' }}">
-                <i class="fas fa-tags w-5 {{ request()->routeIs('admin.dungeon-types.*') ? 'icon-glow' : '' }}"></i>
-                <span>Kategori Gerbang</span>
+                <span>Tingkatan Pangkat</span>
             </a>
 
             <a href="{{ route('admin.quest-types.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.quest-types.*') ? 'active' : '' }}">
                 <i class="fas fa-layer-group w-5 {{ request()->routeIs('admin.quest-types.*') ? 'icon-glow' : '' }}"></i>
-                <span>Arsip Misi</span>
+                <span>Kategori Misi</span>
+            </a>
+
+            <a href="{{ route('admin.dungeon-types.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.dungeon-types.*') ? 'active' : '' }}">
+                <i class="fas fa-tags w-5 {{ request()->routeIs('admin.dungeon-types.*') ? 'icon-glow' : '' }}"></i>
+                <span>Kategori Misi Circle</span>
             </a>
 
             <a href="{{ route('admin.level-configs.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.level-configs.*') ? 'active' : '' }}">
@@ -238,7 +242,7 @@
 
             <a href="{{ route('admin.activity-logs.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.activity-logs.*') ? 'active' : '' }}">
                 <i class="fas fa-terminal w-5 {{ request()->routeIs('admin.activity-logs.*') ? 'icon-glow' : '' }}"></i>
-                <span>Log Sistem</span>
+                <span>Log Aktivitas Sistem</span>
             </a>
 
         </nav>
@@ -265,13 +269,7 @@
                     @yield('title', 'Ringkasan Utama')
                 </h2>
             </div>
-            <div class="flex items-center gap-10">
-                
-                <!-- Search Mockup -->
-                <div class="hidden xl:flex items-center gap-3 bg-slate-50 px-5 py-3 rounded-2xl border-2 border-slate-100 w-80 group focus-within:border-cyan-400 transition-all">
-                    <i class="fas fa-search text-slate-300"></i>
-                    <span class="text-sm text-slate-400 font-medium">Cari sesuatu...</span>
-                </div>
+            <div class="flex items-center gap-10">  
 
                 <div class="flex items-center gap-6">
                     <button class="relative p-2 bg-slate-50 rounded-xl border-2 border-slate-100 hover:bg-slate-100 transition-colors">
@@ -295,40 +293,7 @@
         <!-- Dynamic Content -->
         <main class="flex-1 overflow-y-auto p-12 relative bg-slate-50/50">
             <div class="relative z-10 max-w-7xl mx-auto pb-20">
-                <!-- Session Alerts -->
-                @if(session('success'))
-                    <div class="mb-8 p-6 rounded-[24px] bg-emerald-50 border-2 border-emerald-100 flex items-center gap-4 animate-fadeIn">
-                        <div class="w-12 h-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center shadow-lg shadow-emerald-500/20">
-                            <i class="fas fa-check-circle text-xl"></i>
-                        </div>
-                        <div>
-                            <p class="text-[10px] font-black text-emerald-800 uppercase tracking-widest leading-none mb-1">Operasi Berhasil</p>
-                            <p class="text-sm font-bold text-emerald-600/80">{{ session('success') }}</p>
-                        </div>
-                    </div>
-                @endif
-
-                @if($errors->any())
-                    <div class="mb-8 p-6 rounded-[24px] bg-rose-50 border-2 border-rose-100 animate-fadeIn">
-                        <div class="flex items-center gap-4 mb-4">
-                            <div class="w-12 h-12 rounded-2xl bg-rose-500 text-white flex items-center justify-center shadow-lg shadow-rose-500/20">
-                                <i class="fas fa-exclamation-triangle text-xl"></i>
-                            </div>
-                            <div>
-                                <p class="text-[10px] font-black text-rose-800 uppercase tracking-widest leading-none mb-1">Kesalahan Deteksi</p>
-                                <p class="text-sm font-bold text-rose-600/80">Beberapa parameter tidak valid dalam matriks sistem.</p>
-                            </div>
-                        </div>
-                        <ul class="space-y-2 ml-16">
-                            @foreach ($errors->all() as $error)
-                                <li class="text-[11px] font-black text-rose-500 uppercase tracking-wider flex items-center gap-2">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span>
-                                    {{ $error }}
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+                <!-- Alert digantikan oleh SweetAlert Config di Layout -->
 
                 @yield('content')
             </div>
@@ -354,6 +319,142 @@
                 timeout = setTimeout(() => {
                     localStorage.setItem('sidebar-scroll', sidebarNav.scrollTop);
                 }, 100);
+            });
+        }
+
+        // Global SweetAlert Toast Configuration
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            background: 'rgba(255, 255, 255, 0.98)',
+            color: '#0f4c5c',
+            customClass: {
+                popup: 'rounded-[20px] shadow-2xl border-2 border-slate-100 !px-6 !py-4 backdrop-blur-md',
+                title: '!text-sm !font-black !uppercase !tracking-widest !mt-1',
+                icon: '!scale-75'
+            },
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+
+        // Trigger Success Alert
+        @if(session('success'))
+            Toast.fire({
+                icon: 'success',
+                title: '{{ session('success') }}'
+            });
+        @endif
+
+        // Trigger Error Alert
+        @if($errors->any())
+            Swal.fire({
+                icon: 'error',
+                title: 'Validasi Gagal!',
+                html: `
+                    <ul class="space-y-1 mt-4 text-left">
+                        @foreach ($errors->all() as $error)
+                            <li class="text-[11px] font-bold text-rose-500 uppercase tracking-wider flex items-start gap-2">
+                                <span class="w-1.5 h-1.5 rounded-full bg-rose-400 mt-1 shrink-0"></span>
+                                <span>{{ $error }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                `,
+                customClass: {
+                    popup: 'rounded-[32px] border-2 border-rose-100 shadow-2xl',
+                    title: 'text-2xl font-serif font-black text-rose-600',
+                    confirmButton: 'w-full py-4 bg-rose-500 hover:bg-rose-600 border border-rose-400 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-rose-500/30'
+                },
+                buttonsStyling: false
+            });
+        @endif
+
+        // Global SweetAlert2 Delete Confirmation
+        function confirmDelete(button, entityName) {
+            Swal.fire({
+                html: `
+                    <div class="flex flex-col items-center pb-6 mb-6 border-b border-slate-100">
+                        <div class="w-20 h-20 rounded-full bg-rose-50 border-4 border-white shadow-[0_0_20px_rgba(244,63,94,0.2)] flex items-center justify-center mb-4 relative">
+                            <div class="absolute inset-0 rounded-full border border-rose-200 animate-ping opacity-20"></div>
+                            <i class="fas fa-trash-alt text-3xl text-rose-500"></i>
+                        </div>
+                        <h2 class="text-2xl font-serif font-black text-teal-900 tracking-widest uppercase mb-2">Hapus Entitas?</h2>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center">Tindakan ini permanen & tak dapat dipulihkan</p>
+                    </div>
+                    <div class="bg-rose-50/50 rounded-2xl p-5 border border-rose-100/50 text-center relative overflow-hidden">
+                        <div class="absolute -right-4 -top-4 w-16 h-16 bg-rose-500/5 rounded-full blur-xl"></div>
+                        <p class="text-xs font-bold text-slate-500 mb-3 uppercase tracking-widest">Target Penghapusan:</p>
+                        <div class="inline-flex items-center gap-3 bg-white px-5 py-3 rounded-xl border border-rose-100 shadow-sm relative z-10">
+                            <div class="w-8 h-8 rounded-lg bg-teal-900 text-white flex items-center justify-center font-serif font-black text-sm shadow-md">
+                                ${entityName ? entityName.charAt(0).toUpperCase() : '?'}
+                            </div>
+                            <span class="text-base font-black text-rose-600 tracking-widest uppercase">${entityName || 'Data Terpilih'}</span>
+                        </div>
+                    </div>
+                `,
+                showConfirmButton: true,
+                showCancelButton: true,
+                confirmButtonText: '<i class="fas fa-check-circle mr-2 opacity-70"></i> Konfirmasi',
+                cancelButtonText: 'Batalkan',
+                reverseButtons: true,
+                buttonsStyling: false,
+                customClass: {
+                    popup: 'rounded-[40px] border border-slate-100 shadow-2xl pb-8 px-8 pt-8 overflow-hidden bg-white/95 backdrop-blur-xl',
+                    actions: 'mt-8 flex gap-4 w-full justify-center',
+                    confirmButton: 'flex-1 py-4 bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-rose-500/40 hover:-translate-y-0.5',
+                    cancelButton: 'flex-1 py-4 bg-slate-50 border-2 border-slate-100 text-slate-400 hover:bg-slate-100 hover:text-teal-900 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all shadow-sm hover:-translate-y-0.5'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    button.closest('form').submit();
+                }
+            });
+        }
+
+        // Global SweetAlert2 Approve Confirmation
+        function confirmApprove(button, username) {
+            Swal.fire({
+                html: `
+                    <div class="flex flex-col items-center pb-6 mb-6 border-b border-slate-100">
+                        <div class="w-20 h-20 rounded-full bg-emerald-50 border-4 border-white shadow-[0_0_20px_rgba(16,185,129,0.2)] flex items-center justify-center mb-4 relative">
+                            <div class="absolute inset-0 rounded-full border border-emerald-200 animate-ping opacity-20"></div>
+                            <i class="fas fa-shield-check text-3xl text-emerald-500"></i>
+                        </div>
+                        <h2 class="text-2xl font-serif font-black text-teal-900 tracking-widest uppercase mb-2">Setujui Pembayaran?</h2>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center">Saldo pengguna akan bertambah setelah disetujui</p>
+                    </div>
+                    <div class="bg-emerald-50/50 rounded-2xl p-5 border border-emerald-100/50 text-center relative overflow-hidden">
+                        <div class="absolute -right-4 -top-4 w-16 h-16 bg-emerald-500/5 rounded-full blur-xl"></div>
+                        <p class="text-xs font-bold text-slate-500 mb-3 uppercase tracking-widest">Pembayaran dari:</p>
+                        <div class="inline-flex items-center gap-3 bg-white px-5 py-3 rounded-xl border border-emerald-100 shadow-sm relative z-10">
+                            <div class="w-8 h-8 rounded-lg bg-teal-900 text-white flex items-center justify-center font-serif font-black text-sm shadow-md">
+                                ${username ? username.charAt(0).toUpperCase() : '?'}
+                            </div>
+                            <span class="text-base font-black text-emerald-600 tracking-widest uppercase">${username || 'User'}</span>
+                        </div>
+                    </div>
+                `,
+                showConfirmButton: true,
+                showCancelButton: true,
+                confirmButtonText: '<i class="fas fa-check-circle mr-2 opacity-70"></i> Setujui',
+                cancelButtonText: 'Batalkan',
+                reverseButtons: true,
+                buttonsStyling: false,
+                customClass: {
+                    popup: 'rounded-[40px] border border-slate-100 shadow-2xl pb-8 px-8 pt-8 overflow-hidden bg-white/95 backdrop-blur-xl',
+                    actions: 'mt-8 flex gap-4 w-full justify-center',
+                    confirmButton: 'flex-1 py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-emerald-500/40 hover:-translate-y-0.5',
+                    cancelButton: 'flex-1 py-4 bg-slate-50 border-2 border-slate-100 text-slate-400 hover:bg-slate-100 hover:text-teal-900 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all shadow-sm hover:-translate-y-0.5'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    button.closest('form').submit();
+                }
             });
         }
     </script>

@@ -99,10 +99,10 @@
                             <a href="{{ route('admin.islamic-videos.edit', $video) }}" class="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-teal-900 hover:border-cyan-400 hover:text-cyan-600 transition-all shadow-sm active:scale-95 group/btn">
                                 <i class="fas fa-edit group-hover/btn:rotate-12 transition-transform"></i>
                             </a>
-                            <form action="{{ route('admin.islamic-videos.destroy', $video) }}" method="POST" onsubmit="return confirm('Inisiasi protokol penghapusan arsip ini?')">
+                            <form action="{{ route('admin.islamic-videos.destroy', $video) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-red-400 hover:border-red-400 hover:text-red-600 transition-all shadow-sm active:scale-95 group/del">
+                                <button type="button" onclick="confirmDelete(this, '{{ $video->title }}')" class="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-red-400 hover:border-red-400 hover:text-red-600 transition-all shadow-sm active:scale-95 group/del">
                                     <i class="fas fa-trash-alt group-hover/del:animate-bounce"></i>
                                 </button>
                             </form>

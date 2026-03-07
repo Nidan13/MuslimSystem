@@ -1,127 +1,120 @@
 @extends('layouts.admin')
 
-@section('title', 'Registri Hunter')
+@section('title', 'Manajemen Hunter')
 
 @section('content')
-<div class="space-y-10">
-    {{-- Header Area --}}
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 animate-fadeIn">
+<div class="space-y-8">
+    <!-- Header Area -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 animate-fadeIn">
         <div>
-            <h2 class="text-4xl font-serif font-black text-teal-900 tracking-wide uppercase">Registri Hunter</h2>
-            <p class="text-slate-500 text-[10px] font-bold uppercase tracking-[0.4em] mt-2 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_10px_#22d3ee]"></span>
-                Node Identifikasi Hunter Terotorisasi Sistem
+            <h1 class="text-3xl font-serif font-black text-teal-950 uppercase tracking-tight">Daftar Hunter</h1>
+            <p class="text-slate-400 text-[11px] font-bold uppercase tracking-widest mt-2 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-cyan-500"></span>
+                Manajemen Seluruh Pengguna & Otoritas Sistem
             </p>
         </div>
         
-        <div class="flex flex-col md:flex-row items-center gap-4">
-            {{-- Row Limit Controls --}}
-            <div class="flex items-center bg-slate-100 p-1.5 rounded-2xl border-2 border-slate-50 shadow-inner">
-                <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest px-4">Baris:</span>
-                @php $currentLimit = request('limit', 16); @endphp
-                <div class="flex gap-1" id="row-limit-container">
-                    <button type="button" onclick="setRowLimit(8)" class="row-btn-hunter px-4 py-2 rounded-xl text-[10px] font-black transition-all {{ $currentLimit == 8 ? 'bg-teal-900 text-white shadow-lg' : 'hover:bg-white hover:text-cyan-500 text-slate-400' }}">8</button>
-                    <button type="button" onclick="setRowLimit(16)" class="row-btn-hunter px-4 py-2 rounded-xl text-[10px] font-black transition-all {{ $currentLimit == 16 ? 'bg-teal-900 text-white shadow-lg' : 'hover:bg-white hover:text-cyan-500 text-slate-400' }}">16</button>
-                    <button type="button" onclick="setRowLimit('all')" class="row-btn-hunter px-4 py-2 rounded-xl text-[10px] font-black transition-all {{ $currentLimit == 'all' ? 'bg-teal-900 text-white shadow-lg' : 'hover:bg-white hover:text-cyan-500 text-slate-400' }}">Semua</button>
+        <a href="{{ route('admin.hunters.create') }}" class="group flex items-center gap-3 px-8 py-4 rounded-2xl bg-teal-900 text-white shadow-xl shadow-teal-950/20 hover:bg-teal-800 transition-all active:scale-95 font-serif uppercase tracking-widest text-[10px] font-black">
+            <i class="fas fa-user-plus text-cyan-400 transition-transform group-hover:scale-110"></i>
+            Daftarkan Hunter Baru
+        </a>
+    </div>
+
+    <!-- Main Table Container -->
+    <div class="glass-panel rounded-[40px] overflow-hidden bg-white border-2 border-slate-50 shadow-xl shadow-slate-200/50">
+        <!-- Top Filter/Utility Bar -->
+        <div class="p-8 border-b border-slate-50 flex flex-wrap items-center justify-between gap-6 bg-slate-50/30">
+            <div class="flex items-center gap-4">
+                <span class="text-[9px] font-black text-slate-300 uppercase tracking-widest">Urutkan:</span>
+                <div class="flex bg-white rounded-lg p-1 border border-slate-100">
+                    <button onclick="sortTable(1)" class="px-4 py-1.5 text-[9px] font-black rounded-md text-slate-400 hover:text-teal-900 transition-colors uppercase">Username</button>
+                    <button onclick="sortTable(2)" class="px-4 py-1.5 text-[9px] font-black rounded-md text-slate-400 hover:text-teal-900 transition-colors uppercase">Rank</button>
+                    <button onclick="sortTable(3)" class="px-4 py-1.5 text-[9px] font-black rounded-md text-slate-400 hover:text-teal-900 transition-colors uppercase">Level</button>
                 </div>
             </div>
 
-            {{-- Add Button --}}
-            <a href="{{ route('admin.hunters.create') }}" class="group relative px-8 py-4 rounded-2xl bg-teal-900 text-white font-bold shadow-xl shadow-teal-950/20 hover:bg-teal-800 transition-all active:scale-95 overflow-hidden">
-                <span class="relative flex items-center gap-3 tracking-[0.1em] text-sm font-serif uppercase">
-                    <i class="fas fa-plus-circle text-cyan-400 icon-glow transition-transform group-hover:rotate-90"></i>
-                    Daftarkan Hunter
-                </span>
-            </a>
+            <div class="flex items-center gap-3">
+                <span class="text-[9px] font-black text-slate-300 uppercase tracking-widest">Limit Page:</span>
+                <select onchange="setRowLimit(this.value)" class="bg-white border border-slate-100 rounded-lg px-3 py-1 text-[9px] font-black text-teal-900 focus:outline-none focus:border-cyan-400">
+                    <option value="10" {{ request('limit') == 10 ? 'selected' : '' }}>10</option>
+                    <option value="25" {{ request('limit') == 25 ? 'selected' : '' }}>25</option>
+                    <option value="50" {{ request('limit') == 50 ? 'selected' : '' }}>50</option>
+                </select>
+            </div>
         </div>
-    </div>
 
-    {{-- Table Section --}}
-    <div class="glass-panel p-0 rounded-[40px] relative overflow-hidden bg-white border-2 border-slate-50 shadow-2xl shadow-slate-200/50">
-        <div class="overflow-x-auto p-6 pt-5">
+        <div class="overflow-x-auto">
             <table class="w-full text-left" id="hunter-table">
                 <thead>
-                    <tr class="border-b-2 border-slate-100 uppercase">
-                        <th class="pb-6 px-4 text-[10px] font-black text-slate-400 tracking-[0.2em]">Node Identitas</th>
-                        <th class="pb-6 px-6 text-[10px] font-black text-slate-400 tracking-[0.2em] text-center cursor-pointer hover:text-cyan-500 transition-colors group" onclick="sortTable(1)">
-                            <div class="flex items-center justify-center gap-2">
-                                OTORISASI <i class="fas fa-sort opacity-30 group-hover:opacity-100 transition-opacity"></i>
-                            </div>
-                        </th>
-                        <th class="pb-6 px-6 text-[10px] font-black text-slate-400 tracking-[0.2em] cursor-pointer hover:text-cyan-500 transition-colors group" onclick="sortTable(2)">
-                            <div class="flex items-center gap-2">
-                                KEMAMPUAN <i class="fas fa-sort opacity-30 group-hover:opacity-100 transition-opacity"></i>
-                            </div>
-                        </th>
-                        <th class="pb-6 px-6 text-[10px] font-black text-slate-400 tracking-[0.2em] text-right cursor-pointer hover:text-cyan-500 transition-colors group" onclick="sortTable(3)">
-                            <div class="flex items-center justify-end gap-2">
-                                VAULT SP <i class="fas fa-sort opacity-30 group-hover:opacity-100 transition-opacity"></i>
-                            </div>
-                        </th>
-                        <th class="pb-6 px-6 text-[10px] font-black text-slate-400 tracking-[0.2em] text-right">SINKRONISASI</th>
+                    <tr class="bg-slate-50/50 border-b border-slate-100">
+                        <th class="py-5 px-8 text-[9px] font-black text-slate-400 uppercase tracking-widest">Identitas</th>
+                        <th class="py-5 px-6 text-[9px] font-black text-slate-400 uppercase tracking-widest text-center">Pangkat</th>
+                        <th class="py-5 px-6 text-[9px] font-black text-slate-400 uppercase tracking-widest">Progress & Level</th>
+                        <th class="py-5 px-6 text-[9px] font-black text-slate-400 uppercase tracking-widest text-right">Saldo (IDR)</th>
+                        <th class="py-5 px-6 text-[9px] font-black text-slate-400 uppercase tracking-widest text-center">Status</th>
+                        <th class="py-5 px-8 text-[9px] font-black text-slate-400 uppercase tracking-widest text-right">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-50 font-sans" id="hunter-table-body">
+                <tbody class="divide-y divide-slate-50" id="hunter-table-body">
                     @foreach($users as $user)
-                    <tr class="hunter-row group hover:bg-slate-50/50 transition-all duration-300">
-                        <td class="py-6 px-4">
-                            <div class="flex items-center gap-5">
-                                <div class="relative">
-                                    <div class="w-14 h-14 rounded-2xl bg-teal-900 border border-teal-800 flex items-center justify-center font-serif font-black text-white text-xl shadow-lg shadow-teal-950/20 group-hover:scale-110 transition-transform duration-500">
-                                        {{ substr($user->username, 0, 1) }}
-                                    </div>
-                                    <div class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-cyan-400 border-[3px] border-white shadow-sm"></div>
-                                </div>
+                    <tr class="hunter-row group hover:bg-slate-50/50 transition-colors">
+                        <td class="py-6 px-8">
+                            <div class="flex items-center gap-4">
+                                <img src="{{ $user->avatar_url }}" class="w-12 h-12 rounded-2xl border-2 border-slate-100 shadow-sm group-hover:scale-110 transition-transform" alt="Avatar">
                                 <div>
-                                    <h3 class="text-sm font-black text-teal-950 uppercase tracking-tight group-hover:text-cyan-600 transition-colors leading-none mb-1.5">
+                                    <h3 class="text-sm font-black text-teal-950 uppercase tracking-tight group-hover:text-cyan-600 transition-colors leading-none">
                                         {{ $user->username }}
                                     </h3>
-                                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                                        <span class="text-cyan-500 font-mono">SN-{{ str_pad($user->id, 5, '0', STR_PAD_LEFT) }}</span>
-                                        <span class="w-1 h-1 rounded-full bg-slate-200"></span>
-                                        <span class="lowercase tracking-normal text-slate-300 font-medium">{{ $user->email }}</span>
-                                    </p>
+                                    <p class="text-[9px] font-medium text-slate-400 lowercase mt-1.5">{{ $user->email }}</p>
+                                    <p class="text-[8px] font-black text-slate-200 uppercase tracking-tighter mt-0.5 font-mono">ID: SN-{{ str_pad($user->id, 4, '0', STR_PAD_LEFT) }}</p>
                                 </div>
                             </div>
                         </td>
                         <td class="py-6 px-6 text-center">
-                            <div class="inline-flex flex-col items-center">
-                                <span class="text-3xl font-serif font-black {{ $user->rankTier->color_code ? '' : 'text-teal-900' }} italic leading-none" style="{{ $user->rankTier->color_code ? 'color: ' . $user->rankTier->color_code : '' }}">
-                                    {{ $user->rankTier->slug ?? 'E' }}
+                            @if($user->rankTier)
+                                <span class="text-2xl font-serif font-black italic {{ $user->rankTier->color_code ? '' : 'text-teal-900' }}" style="{{ $user->rankTier->color_code ? 'color: ' . $user->rankTier->color_code : '' }}">
+                                    {{ $user->rankTier->slug }}
                                 </span>
-                                <span class="text-[8px] font-black text-slate-400 uppercase tracking-widest bg-slate-50 px-3 py-1.5 rounded-xl mt-3 border border-slate-100 shadow-inner">
-                                    {{ $user->job_class ?? 'Initiate' }}
-                                </span>
-                            </div>
+                            @else
+                                <span class="text-xl font-serif font-black text-slate-200">?</span>
+                            @endif
                         </td>
                         <td class="py-6 px-6">
-                            <div class="w-48 space-y-3">
+                            <div class="max-w-[140px] space-y-2">
                                 <div class="flex justify-between items-end">
-                                    <span class="text-[9px] font-black text-slate-300 uppercase tracking-widest">Level {{ $user->level }}</span>
-                                    <span class="text-[9px] font-black text-cyan-500">{{ number_format(($user->current_exp / ($user->next_level_exp ?: 1000)) * 100) }}%</span>
+                                    <span class="text-[9px] font-black text-teal-900 uppercase">LVL {{ $user->level }}</span>
+                                    <span class="text-[8px] font-black text-slate-300 uppercase italic">{{ number_format($user->current_exp) }} XP</span>
                                 </div>
-                                <div class="h-2 bg-slate-50 rounded-full overflow-hidden border border-slate-100 shadow-inner">
-                                    @php $expProgress = min(($user->current_exp / ($user->next_level_exp ?: 1000)) * 100, 100); @endphp
-                                    <div class="h-full bg-gradient-to-r from-teal-900 to-cyan-400 transition-all duration-1000 rounded-full" style="width: {{ $expProgress }}%"></div>
+                                <div class="h-1.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200 shadow-inner">
+                                    @php 
+                                        $nextExp = $user->next_level_exp ?: 1000;
+                                        $progress = min(($user->current_exp / $nextExp) * 100, 100);
+                                    @endphp
+                                    <div class="h-full bg-gradient-to-r from-teal-900 via-cyan-500 to-teal-900 bg-[length:200%_auto] animate-gradientMove transition-all duration-1000" style="width: {{ $progress }}%"></div>
                                 </div>
                             </div>
                         </td>
                         <td class="py-6 px-6 text-right">
-                            <div class="inline-flex flex-col items-end">
-                                <p class="text-xl font-serif font-black text-teal-900 tracking-tighter leading-none mb-2">
-                                    {{ number_format($user->current_exp) }}
-                                </p>
-                                <span class="text-[8px] font-black text-slate-300 uppercase tracking-widest">EXP</span>
-                            </div>
+                            <span class="text-xs font-black text-teal-900 font-mono tracking-tighter">Rp{{ number_format($user->balance ?? 0) }}</span>
                         </td>
-                        <td class="py-6 text-right px-4">
-                            <div class="flex justify-end gap-3 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-4 group-hover:translate-x-0">
-                                <a href="{{ route('admin.hunters.edit', $user) }}" class="w-11 h-11 rounded-2xl bg-white border-2 border-slate-100 flex items-center justify-center text-teal-900 hover:border-cyan-400 hover:text-cyan-600 transition-all shadow-sm active:scale-95">
-                                    <i class="fas fa-edit text-xs"></i>
+                        <td class="py-6 px-6 text-center">
+                            @if($user->is_active)
+                                <span class="inline-flex px-3 py-1 rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-100 text-[8px] font-black uppercase tracking-widest">AKTIF</span>
+                            @else
+                                <span class="inline-flex px-3 py-1 rounded-lg bg-red-50 text-red-600 border border-red-100 text-[8px] font-black uppercase tracking-widest">NONAKTIF</span>
+                            @endif
+                        </td>
+                        <td class="py-6 px-8 text-right whitespace-nowrap">
+                            <div class="flex items-center justify-end gap-2">
+                                <a href="{{ route('admin.hunters.show', $user) }}" class="w-9 h-9 flex items-center justify-center bg-white border border-slate-100 text-teal-900 hover:bg-teal-900 hover:text-white rounded-xl transition-all shadow-sm">
+                                    <i class="fas fa-eye text-[10px]"></i>
                                 </a>
-                                <a href="{{ route('admin.hunters.show', $user) }}" class="w-11 h-11 rounded-2xl bg-teal-900 text-cyan-400 flex items-center justify-center hover:bg-teal-800 transition-all shadow-xl shadow-teal-950/20 active:scale-95">
-                                    <i class="fas fa-eye text-xs"></i>
-                                </a>
+                                <form action="{{ route('admin.hunters.destroy', $user) }}" method="POST" class="inline delete-form">
+                                    @csrf @method('DELETE')
+                                    <button type="button" onclick="confirmDelete(this, '{{ $user->username }}')" class="w-9 h-9 flex items-center justify-center bg-white border border-slate-100 text-slate-300 hover:bg-red-500 hover:text-white rounded-xl transition-all shadow-sm">
+                                        <i class="fas fa-trash-alt text-[10px]"></i>
+                                    </button>
+                                </form>
                             </div>
                         </td>
                     </tr>
@@ -131,47 +124,27 @@
         </div>
     </div>
 
-    {{-- Footer Area / Navigation --}}
-    <div class="mt-12 flex flex-col md:flex-row items-center justify-between gap-6 px-1">
-        <div class="text-[10px] font-black text-teal-900/30 uppercase tracking-[0.4em]">
+    <!-- Pagination -->
+    <div class="flex flex-col md:flex-row justify-between items-center gap-6 px-4">
+        <div class="text-[9px] font-black text-slate-300 uppercase tracking-widest italic leading-none text-center md:text-left">
             Total Populasi Hunter: {{ $users instanceof \Illuminate\Pagination\LengthAwarePaginator ? $users->total() : $users->count() }}
         </div>
         
-        <div class="flex items-center gap-4">
-            @if($users instanceof \Illuminate\Pagination\LengthAwarePaginator)
-                @if($users->onFirstPage())
-                    <span class="px-6 py-3 rounded-2xl bg-slate-50 text-slate-300 border-2 border-slate-100 flex items-center justify-center cursor-not-allowed font-black text-[10px] uppercase tracking-widest">
-                        <i class="fas fa-chevron-left mr-2 text-[8px]"></i> Sebelumnya
-                    </span>
-                @else
-                    <a href="{{ $users->previousPageUrl() }}" class="px-6 py-3 rounded-2xl bg-white text-teal-900 border-2 border-slate-100 flex items-center justify-center hover:border-cyan-400 hover:text-cyan-500 transition-all shadow-xl shadow-slate-200/50 active:scale-95 font-black text-[10px] uppercase tracking-widest">
-                        <i class="fas fa-chevron-left mr-2 text-[8px]"></i> Sebelumnya
-                    </a>
-                @endif
+        @if($users instanceof \Illuminate\Pagination\LengthAwarePaginator)
+        <div class="flex items-center gap-3">
+            @if(!$users->onFirstPage())
+                <a href="{{ $users->previousPageUrl() }}" class="px-5 py-2.5 bg-white border border-slate-100 rounded-xl text-teal-900 hover:border-cyan-400 transition-all shadow-sm text-[9px] font-black uppercase italic tracking-widest">Prev</a>
+            @endif
 
-                <div class="flex items-center gap-1 bg-slate-100 p-1.5 rounded-2xl border-2 border-slate-50 shadow-inner">
-                    <span class="px-4 py-2 text-[10px] font-black bg-white text-teal-900 rounded-xl shadow-sm border border-slate-100 leading-none flex items-center justify-center min-w-[2.5rem]">
-                        {{ $users->currentPage() }}
-                    </span>
-                    <span class="text-[9px] font-black text-slate-400 px-3 uppercase tracking-tighter">DARI {{ $users->lastPage() }}</span>
-                </div>
+            <div class="px-5 py-2.5 bg-teal-900 rounded-xl text-white text-[9px] font-black shadow-lg italic">
+                P{{ $users->currentPage() }}
+            </div>
 
-                @if($users->hasMorePages())
-                    <a href="{{ $users->nextPageUrl() }}" class="px-6 py-3 rounded-2xl bg-teal-900 text-white flex items-center justify-center hover:bg-teal-800 transition-all shadow-xl shadow-teal-950/20 active:scale-95 font-black text-[10px] uppercase tracking-widest">
-                        Selanjutnya <i class="fas fa-chevron-right ml-2 text-[8px]"></i>
-                    </a>
-                @else
-                    <span class="px-6 py-3 rounded-2xl bg-slate-50 text-slate-300 border-2 border-slate-100 flex items-center justify-center cursor-not-allowed font-black text-[10px] uppercase tracking-widest">
-                        Selanjutnya <i class="fas fa-chevron-right ml-2 text-[8px]"></i>
-                    </span>
-                @endif
-            @else
-                <div class="flex items-center gap-1 bg-slate-100 p-1.5 rounded-2xl border-2 border-slate-50 shadow-inner">
-                    <span class="px-4 py-2 text-[10px] font-black bg-white text-teal-900 rounded-xl shadow-sm border border-slate-100 leading-none flex items-center justify-center min-w-[2.5rem]">1</span>
-                    <span class="text-[9px] font-black text-slate-400 px-3 uppercase tracking-tighter">SEMUA DATA TERMUAT</span>
-                </div>
+            @if($users->hasMorePages())
+                <a href="{{ $users->nextPageUrl() }}" class="px-5 py-2.5 bg-white border border-slate-100 rounded-xl text-teal-900 hover:border-cyan-400 transition-all shadow-sm text-[9px] font-black uppercase italic tracking-widest">Next</a>
             @endif
         </div>
+        @endif
     </div>
 </div>
 
@@ -179,12 +152,11 @@
     function setRowLimit(limit) {
         const url = new URL(window.location.href);
         url.searchParams.set('limit', limit);
-        url.searchParams.set('page', 1); // Reset to page 1 when changing limit
+        url.searchParams.set('page', 1);
         window.location.href = url.toString();
     }
 
     let sortOrders = { 1: 'asc', 2: 'asc', 3: 'asc' };
-
     function sortTable(columnIndex) {
         const tableBody = document.getElementById('hunter-table-body');
         const rows = Array.from(document.querySelectorAll('.hunter-row'));
@@ -194,12 +166,9 @@
             let valA = a.cells[columnIndex].innerText.trim().toLowerCase();
             let valB = b.cells[columnIndex].innerText.trim().toLowerCase();
             
-            if (columnIndex === 2) { // Level/Progress
-                valA = parseInt(valA.split('\n')[0].replace(/[^0-9]/g, '')) || 0;
-                valB = parseInt(valB.split('\n')[0].replace(/[^0-9]/g, '')) || 0;
-            } else if (columnIndex === 3) { // Soul Points
-                valA = parseInt(valA.replace(/,/g, '')) || 0;
-                valB = parseInt(valB.replace(/,/g, '')) || 0;
+            if (columnIndex === 3) { // Level/XP parsing
+                valA = parseInt(valA.replace(/[^0-9]/g, '')) || 0;
+                valB = parseInt(valB.replace(/[^0-9]/g, '')) || 0;
             }
             
             if (valA < valB) return isAsc ? -1 : 1;
@@ -209,19 +178,22 @@
 
         sortOrders[columnIndex] = isAsc ? 'desc' : 'asc';
         rows.forEach(row => tableBody.appendChild(row));
-        applyDisplay();
     }
 
-    window.onload = () => {};
 </script>
 
 <style>
-    .animate-fadeIn { animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+    .animate-fadeIn { animation: fadeIn 0.6s ease-out forwards; }
     @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
+        from { opacity: 0; transform: translateY(10px); }
         to { opacity: 1; transform: translateY(0); }
     }
-    .icon-glow { filter: drop-shadow(0 0 5px rgba(34, 211, 238, 0.6)); }
-    .glass-panel { backdrop-filter: blur(16px); }
+    .animate-gradientMove {
+        background-size: 200% auto;
+        animation: gradientMove 3s linear infinite;
+    }
+    @keyframes gradientMove {
+        to { background-position: 200% center; }
+    }
 </style>
 @endsection
