@@ -3,7 +3,7 @@
 @section('title', 'Daftarkan Kategori Quest')
 
 @section('content')
-<div class="max-w-4xl mx-auto">
+<div class="w-full">
     <div class="flex items-center gap-6 mb-10">
         <a href="{{ route('admin.quest-types.index') }}" class="group p-4 rounded-2xl border-2 border-slate-100 bg-white hover:border-cyan-400 transition-all shadow-sm">
             <svg class="w-6 h-6 text-slate-400 group-hover:text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"/></svg>

@@ -93,9 +93,9 @@
                                 <a href="{{ route('admin.quest-types.edit', $type) }}" class="p-4 bg-white border-2 border-slate-100 text-teal-900 hover:text-cyan-500 hover:border-cyan-200 rounded-2xl transition-all shadow-sm active:scale-95 leading-none shadow-slate-200/50">
                                     <i class="fas fa-sliders text-xs"></i>
                                 </a>
-                                <form action="{{ route('admin.quest-types.destroy', $type) }}" method="POST" class="inline" onsubmit="return confirm('Hapus node taksonomi ini?')">
+                                <form action="{{ route('admin.quest-types.destroy', $type) }}" method="POST" class="inline">
                                     @csrf @method('DELETE')
-                                    <button type="submit" class="p-4 bg-white border-2 border-slate-100 text-slate-400 hover:text-red-500 hover:border-red-200 rounded-2xl transition-all shadow-sm active:scale-95 leading-none shadow-slate-200/50">
+                                    <button type="button" onclick="confirmDelete(this, '{{ $type->name }}')" class="p-4 bg-white border-2 border-slate-100 text-slate-400 hover:text-red-500 hover:border-red-200 rounded-2xl transition-all shadow-sm active:scale-95 leading-none shadow-slate-200/50">
                                         <i class="fas fa-trash-alt text-xs"></i>
                                     </button>
                                 </form>

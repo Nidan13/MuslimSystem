@@ -424,7 +424,7 @@ class ProfileController extends Controller
         $user = Auth::user();
         $validated = $request->validate([
             'username' => 'sometimes|string|min:3|max:50|unique:users,username,'.$user->id,
-            'gender' => 'sometimes|in:Laki-laki,Perempuan',
+            'gender' => 'sometimes|in:Male,Female',
         ]);
 
         if (isset($validated['username'])) {

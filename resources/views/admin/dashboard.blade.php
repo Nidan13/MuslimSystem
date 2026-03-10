@@ -1,196 +1,181 @@
 @extends('layouts.admin')
 
-@section('title', 'Komando Sanctuary Agung')
+@section('title', 'Dashboard Overview')
 
 @section('content')
-<!-- High-Tech Stats Grid -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+<!-- High-End Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
     
-    <!-- Registered Hunters -->
+    <!-- Total Users -->
     <div class="glass-panel p-6 rounded-[32px] relative overflow-hidden group hover:-translate-y-2 transition-all duration-500">
         <div class="absolute -right-6 -top-6 w-32 h-32 bg-teal-500/5 rounded-full blur-2xl group-hover:bg-teal-500/10 transition-colors"></div>
-        <div class="flex justify-between items-start mb-5">
+        <div class="flex justify-between items-start mb-6">
             <div class="w-12 h-12 rounded-2xl bg-teal-900 border border-teal-800 flex items-center justify-center text-cyan-400 shadow-lg shadow-teal-950/40 group-hover:scale-110 transition-transform">
-                <i class="fas fa-users-cog text-lg icon-glow"></i>
+                <i class="fas fa-users text-lg"></i>
             </div>
-            <span class="text-[8px] font-black text-teal-900/40 uppercase tracking-[0.2em] bg-slate-100 px-3 py-1.5 rounded-full">Registri</span>
+            <span class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100">User</span>
         </div>
         <div>
-            <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Populasi Hunter</p>
-            <h3 class="text-3xl font-serif font-black text-teal-900 tracking-tight leading-none">
+            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 opacity-70">Total Pengguna</p>
+            <h3 class="text-3xl font-serif font-black text-teal-900 tracking-tight leading-none italic uppercase">
                 {{ number_format($stats['total_users']) }}
-                <span class="text-[10px] font-black text-cyan-400 align-top ml-1 tracking-tighter">JIWA</span>
             </h3>
         </div>
     </div>
 
-    <!-- Active Missions -->
+    <!-- Active Quests -->
     <div class="glass-panel p-6 rounded-[32px] relative overflow-hidden group hover:-translate-y-2 transition-all duration-500">
         <div class="absolute -right-6 -top-6 w-32 h-32 bg-cyan-500/5 rounded-full blur-2xl group-hover:bg-cyan-500/10 transition-colors"></div>
-        <div class="flex justify-between items-start mb-5">
+        <div class="flex justify-between items-start mb-6">
             <div class="w-12 h-12 rounded-2xl bg-teal-900 border border-teal-800 flex items-center justify-center text-cyan-400 shadow-lg shadow-teal-950/40 group-hover:scale-110 transition-transform">
-                <i class="fas fa-scroll text-lg icon-glow"></i>
+                <i class="fas fa-scroll text-lg"></i>
             </div>
-            <span class="text-[8px] font-black text-teal-900/40 uppercase tracking-[0.2em] bg-slate-100 px-3 py-1.5 rounded-full">Protokol</span>
+            <span class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100">Quests</span>
         </div>
         <div>
-            <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Misi Aktif</p>
-            <h3 class="text-3xl font-serif font-black text-teal-900 tracking-tight leading-none">
+            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 opacity-70">Misi Aktif</p>
+            <h3 class="text-3xl font-serif font-black text-teal-900 tracking-tight leading-none italic uppercase">
                 {{ number_format($stats['active_quests']) }}
-                <span class="text-[10px] font-black text-cyan-400 align-top ml-1 tracking-tighter">NODE</span>
             </h3>
         </div>
     </div>
 
-    <!-- Rift Management -->
+    <!-- Dungeons (Rift Gates) -->
     <div class="glass-panel p-6 rounded-[32px] relative overflow-hidden group hover:-translate-y-2 transition-all duration-500">
         <div class="absolute -right-6 -top-6 w-32 h-32 bg-red-500/5 rounded-full blur-2xl group-hover:bg-red-500/10 transition-colors"></div>
-        <div class="flex justify-between items-start mb-5">
-            <div class="w-12 h-12 rounded-2xl bg-teal-900 border border-teal-800 flex items-center justify-center text-red-400 shadow-lg shadow-teal-950/40 group-hover:scale-110 transition-transform">
-                <i class="fas fa-dungeon text-lg icon-glow"></i>
+        <div class="flex justify-between items-start mb-6">
+            <div class="w-12 h-12 rounded-2xl bg-teal-900 border border-teal-800 flex items-center justify-center text-red-500 shadow-lg shadow-teal-950/40 group-hover:scale-110 transition-transform">
+                <i class="fas fa-dungeon text-lg"></i>
             </div>
-            <span class="text-[8px] font-black text-teal-900/40 uppercase tracking-[0.2em] bg-slate-100 px-3 py-1.5 rounded-full">Anomali</span>
+            <span class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100">Circles</span>
         </div>
         <div>
-            <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Gerbang Terdeteksi</p>
-            <h3 class="text-3xl font-serif font-black text-teal-900 tracking-tight leading-none">
+            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 opacity-70">Misi Circle (Raid)</p>
+            <h3 class="text-3xl font-serif font-black text-teal-900 tracking-tight leading-none italic uppercase">
                 {{ number_format($stats['total_dungeons']) }}
-                <span class="text-[10px] font-black text-red-500 align-top ml-1 tracking-tighter">RIFT</span>
             </h3>
         </div>
     </div>
 
-    <!-- Economy Matrix -->
+    <!-- Pemasukan -->
     <div class="glass-panel p-6 rounded-[32px] relative overflow-hidden group hover:-translate-y-2 transition-all duration-500">
-        <div class="absolute -right-6 -top-6 w-32 h-32 bg-gold-500/5 rounded-full blur-2xl group-hover:bg-gold-500/10 transition-colors"></div>
-        <div class="flex justify-between items-start mb-5">
-            <div class="w-12 h-12 rounded-2xl bg-teal-900 border border-teal-800 flex items-center justify-center text-gold-400 shadow-lg shadow-teal-950/40 group-hover:scale-110 transition-transform">
-                <i class="fas fa-coins text-lg icon-glow"></i>
+        <div class="absolute -right-6 -top-6 w-32 h-32 bg-amber-500/5 rounded-full blur-2xl group-hover:bg-amber-500/10 transition-colors"></div>
+        <div class="flex justify-between items-start mb-6 text-amber-500">
+            <div class="w-12 h-12 rounded-2xl bg-teal-900 border border-teal-800 flex items-center justify-center text-amber-400 shadow-lg shadow-teal-950/40 group-hover:scale-110 transition-transform">
+                <i class="fas fa-wallet text-lg"></i>
             </div>
-            <span class="text-[8px] font-black text-teal-900/40 uppercase tracking-[0.2em] bg-gold-50 px-3 py-1.5 rounded-full">Ekonomi</span>
+            <span class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100">Revenue</span>
         </div>
         <div>
-            <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Aliran Soul Points</p>
-            <div class="flex items-baseline gap-2">
-                <h3 class="text-3xl font-serif font-black text-teal-900 tracking-tight leading-none italic uppercase">8.4k</h3>
-                <span class="text-[9px] font-black text-gold-600 tracking-widest uppercase">Stabil</span>
-            </div>
+            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 opacity-70">Total Pemasukan</p>
+            <h3 class="text-2xl font-serif font-black text-teal-900 tracking-tight leading-none italic uppercase">
+                Rp{{ number_format($stats['total_income'], 0, ',', '.') }}
+            </h3>
         </div>
     </div>
 </div>
 
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+<div class="space-y-10">
     
-    <!-- Tactical Monitor Section -->
-    <div class="lg:col-span-2 space-y-10">
-        <div class="glass-panel p-10 rounded-[40px] relative overflow-hidden">
-            <!-- Background Matrix Pattern -->
-            <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(circle at 2px 2px, #0f4c5c 1px, transparent 0); background-size: 24px 24px;"></div>
-            
-            <div class="flex justify-between items-center mb-10 relative z-10">
+    <!-- Tables -->
+    <div class="space-y-10">
+        
+        <!-- Recent Users Table -->
+        <div class="glass-panel p-8 rounded-[40px] relative overflow-hidden">
+            <div class="flex justify-between items-center mb-8">
                 <div>
-                    <h4 class="text-3xl font-serif font-black text-teal-900 tracking-wide uppercase">Monitor Raid <span class="text-cyan-400 font-sans tracking-normal ml-2">Aktif</span></h4>
-                    <p class="text-slate-500 text-[10px] font-bold uppercase tracking-[0.4em] mt-2 flex items-center gap-2">
-                        <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping"></span>
-                        Memindai sistem untuk anomali yang sedang berlangsung
-                    </p>
+                    <h4 class="text-2xl font-serif font-black text-teal-900 tracking-wider uppercase italic">Pengguna <span class="text-cyan-400 font-sans tracking-normal ml-1">Baru</span></h4>
+                    <p class="text-slate-400 text-[10px] font-bold uppercase tracking-[0.3em] mt-1">Status Keanggotaan Terkini</p>
                 </div>
-                <button class="px-6 py-2 rounded-xl bg-slate-50 border-2 border-slate-100 text-[10px] font-black text-teal-900 hover:border-cyan-400 transition-all uppercase tracking-widest">Pindai Global</button>
+                <a href="{{ route('admin.hunters.index') }}" class="px-5 py-2 rounded-xl bg-slate-50 border border-slate-200 text-[9px] font-black text-teal-900/60 hover:text-cyan-500 hover:border-cyan-400/30 transition-all uppercase tracking-widest">Semua Data</a>
             </div>
             
-            <div class="relative py-20 bg-slate-50/50 rounded-[32px] border-2 border-dashed border-slate-200 flex flex-col items-center justify-center text-center group overflow-hidden">
-                <!-- Decorative Circles -->
-                <div class="absolute w-64 h-64 border border-cyan-400/20 rounded-full animate-[spin_20s_linear_infinite]"></div>
-                <div class="absolute w-48 h-48 border border-slate-200 rounded-full"></div>
-                
-                <div class="relative z-10">
-                    <div class="w-20 h-20 rounded-full bg-white shadow-xl flex items-center justify-center mb-6 text-slate-300 group-hover:text-cyan-400 group-hover:scale-110 transition-all duration-500">
-                        <i class="fas fa-satellite-dish text-3xl animate-pulse"></i>
-                    </div>
-                    <p class="text-teal-950 font-serif font-black text-xl italic uppercase tracking-wider mb-2">Status Omni-Hening</p>
-                    <p class="text-[9px] text-slate-400 uppercase font-black tracking-[0.5em]">Tidak ada node tempur aktif yang terdeteksi</p>
-                </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="border-b border-slate-100 italic">
+                            <th class="pb-4 text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]">Profil</th>
+                            <th class="pb-4 text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]">Pangkat</th>
+                            <th class="pb-4 text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]">Status</th>
+                            <th class="pb-4 text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] text-right">Bergabung</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-50">
+                        @foreach($recentUsers as $user)
+                        <tr class="group hover:bg-slate-50/50 transition-colors">
+                            <td class="py-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-teal-900 text-white flex items-center justify-center font-serif font-bold text-lg shadow-sm">
+                                        {{ substr($user->username, 0, 1) }}
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-black text-teal-950 uppercase tracking-tight">{{ $user->username }}</p>
+                                        <p class="text-[9px] text-slate-400 font-medium">{{ $user->email }}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-4">
+                                <span class="px-3 py-1 rounded-lg bg-teal-50 text-teal-900 border border-teal-100 text-[8px] font-black uppercase tracking-widest">
+                                    {{ $user->rankTier->name ?? 'NEWBIE' }}
+                                </span>
+                            </td>
+                            <td class="py-4">
+                                @if($user->is_active)
+                                    <span class="flex items-center gap-1.5 text-[8px] font-black text-emerald-500 uppercase tracking-widest">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span> Aktif
+                                    </span>
+                                @else
+                                    <span class="flex items-center gap-1.5 text-[8px] font-black text-slate-300 uppercase tracking-widest">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span> Pending
+                                    </span>
+                                @endif
+                            </td>
+                            <td class="py-4 text-right">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{{ $user->created_at->diffForHumans() }}</p>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <!-- Quick Access Nodes -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <a href="{{ route('admin.hunters.create') }}" class="glass-panel p-6 rounded-3xl text-center group transition-all hover:bg-teal-900 active:scale-95">
-                <i class="fas fa-user-plus text-teal-900 text-xl mb-3 group-hover:text-cyan-400 transition-colors"></i>
-                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest group-hover:text-white transition-colors">Hunter Baru</p>
-            </a>
-            <a href="{{ route('admin.quests.create') }}" class="glass-panel p-6 rounded-3xl text-center group transition-all hover:bg-teal-900 active:scale-95">
-                <i class="fas fa-scroll text-teal-900 text-xl mb-3 group-hover:text-cyan-400 transition-colors"></i>
-                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest group-hover:text-white transition-colors">Awal Quest</p>
-            </a>
-            <a href="{{ route('admin.shop.create') }}" class="glass-panel p-6 rounded-3xl text-center group transition-all hover:bg-teal-900 active:scale-95">
-                <i class="fas fa-plus-circle text-teal-900 text-xl mb-3 group-hover:text-cyan-400 transition-colors"></i>
-                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest group-hover:text-white transition-colors">Tambah Item</p>
-            </a>
-            <a href="{{ route('admin.activity-logs.index') }}" class="glass-panel p-6 rounded-3xl text-center group transition-all hover:bg-teal-900 active:scale-95">
-                <i class="fas fa-terminal text-teal-900 text-xl mb-3 group-hover:text-cyan-400 transition-colors"></i>
-                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest group-hover:text-white transition-colors">Log Akses</p>
-            </a>
-        </div>
-    </div>
-
-    <!-- System Pulse (Logs) -->
-    <div class="glass-panel p-10 rounded-[40px] h-full relative overflow-hidden flex flex-col">
-        <div class="flex items-center gap-4 mb-10 pb-6 border-b border-slate-100">
-            <div class="w-10 h-10 rounded-xl bg-cyan-400/10 flex items-center justify-center text-cyan-600">
-                <i class="fas fa-wave-square animate-pulse"></i>
-            </div>
-            <h4 class="text-2xl font-serif font-black text-teal-900 tracking-wide uppercase">System Pulse</h4>
-        </div>
-
-        <div class="space-y-10 relative flex-1">
-            <!-- Timeline Line -->
-            <div class="absolute left-[7px] top-2 bottom-2 w-0.5 bg-gradient-to-b from-cyan-400/30 via-slate-100 to-transparent"></div>
-
-            <!-- Log Item: Live -->
-            <div class="flex gap-6 relative group cursor-crosshair">
-                <div class="w-3.5 h-3.5 rounded-full bg-cyan-400 ring-4 ring-white shadow-xl z-10 mt-1 animate-pulse"></div>
+        <!-- Recent Payments Table -->
+        <div class="glass-panel p-8 rounded-[40px] relative overflow-hidden">
+            <div class="flex justify-between items-center mb-8">
                 <div>
-                    <div class="flex items-center gap-3 mb-2">
-                         <span class="text-[9px] font-black text-cyan-500 uppercase tracking-widest bg-cyan-50 px-2 py-0.5 rounded-lg border border-cyan-100">Synchronized</span>
-                         <span class="text-[8px] text-slate-300 font-bold uppercase">Now</span>
-                    </div>
-                    <p class="text-sm font-black text-teal-950 uppercase tracking-tight">Access Protocol Validated</p>
-                    <p class="text-[10px] text-slate-400 font-medium font-mono">NODE_AUTH::SUCCESS for root_admin</p>
+                    <h4 class="text-2xl font-serif font-black text-teal-900 tracking-wider uppercase italic">Pemasukan <span class="text-amber-500 font-sans tracking-normal ml-1">Terakhir</span></h4>
+                    <p class="text-slate-400 text-[10px] font-bold uppercase tracking-[0.3em] mt-1">Log Pembayaran Berhasil Masuk</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="text-[9px] font-black text-emerald-500 uppercase tracking-[0.2em]">Live Stream</span>
                 </div>
             </div>
-
-            <!-- Log Item -->
-            <div class="flex gap-6 relative group">
-                <div class="w-3.5 h-3.5 rounded-full bg-slate-200 ring-4 ring-white z-10 mt-1 group-hover:bg-teal-900 transition-colors"></div>
-                <div>
-                    <div class="flex items-center gap-3 mb-2">
-                         <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest bg-slate-50 px-2 py-0.5 rounded-lg">Routine</span>
-                         <span class="text-[8px] text-slate-300 font-bold uppercase">4h ago</span>
+            
+            <div class="space-y-4">
+                @forelse($recentPayments as $pay)
+                <div class="flex items-center justify-between p-5 bg-slate-50/50 rounded-3xl border border-slate-100 hover:border-amber-200 hover:bg-white transition-all cursor-default">
+                    <div class="flex items-center gap-5">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-lg border border-amber-100 shadow-sm">
+                            <i class="fas fa-hand-holding-usd"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-black text-teal-950 uppercase tracking-tight">{{ $pay->user->username ?? 'User' }}</p>
+                            <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Pembayaran #{{ substr($pay->id, -6) }}</p>
+                        </div>
                     </div>
-                    <p class="text-sm font-black text-teal-900 uppercase tracking-tight opacity-70 group-hover:opacity-100 transition-all">Matrix Reset Protocol</p>
-                    <p class="text-[10px] text-slate-400 font-medium font-mono">CRON_JOB::SYSTEM_FLUSH completed</p>
-                </div>
-            </div>
-
-            <!-- Log Item -->
-            <div class="flex gap-6 relative group">
-                <div class="w-3.5 h-3.5 rounded-full bg-slate-200 ring-4 ring-white z-10 mt-1 group-hover:bg-teal-900 transition-colors"></div>
-                <div>
-                    <div class="flex items-center gap-3 mb-2">
-                         <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest bg-slate-50 px-2 py-0.5 rounded-lg">Backup</span>
-                         <span class="text-[8px] text-slate-300 font-bold uppercase">12h ago</span>
+                    <div class="text-right">
+                        <p class="text-sm font-black text-amber-600 tracking-tight italic">+Rp{{ number_format($pay->amount, 0, ',', '.') }}</p>
+                        <p class="text-[9px] text-slate-400 font-medium uppercase">{{ $pay->paid_at->format('H:i') }} WIB</p>
                     </div>
-                    <p class="text-sm font-black text-teal-900 uppercase tracking-tight opacity-70 group-hover:opacity-100 transition-all">Snapshot Manifested</p>
-                    <p class="text-[10px] text-slate-400 font-medium font-mono">DB_SHIELD::STABILIZED version 2.1.0</p>
                 </div>
-            </div>
-
-            <!-- More Status Placeholder -->
-            <div class="pt-8 text-center">
-                <a href="{{ route('admin.activity-logs.index') }}" class="text-[9px] font-black text-slate-300 hover:text-cyan-500 uppercase tracking-[0.4em] transition-all bg-slate-50/50 px-6 py-2 rounded-full border border-slate-100">Analyze Full Matrix</a>
+                @empty
+                <div class="py-10 text-center text-slate-300 font-bold uppercase tracking-[0.3em] text-[10px] bg-slate-50 rounded-[32px] border-2 border-dashed border-slate-100 italic">
+                    Belum ada aliran koin terdeteksi hari ini
+                </div>
+                @endforelse
             </div>
         </div>
-    </div>
-</div>
+
 @endsection

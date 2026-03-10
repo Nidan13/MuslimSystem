@@ -3,14 +3,14 @@
 @section('title', 'Log Aktivitas Ibadah')
 
 @section('content')
-<div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6 animate-fadeIn">
-    <div>
-        <h2 class="text-3xl font-serif font-black text-teal-900 tracking-wide uppercase">Log Aktivitas Ibadah</h2>
-        <p class="text-slate-500 text-[10px] font-bold uppercase tracking-[0.4em] mt-2 flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_10px_#22d3ee]"></span>
-            Monitoring Sinkronisasi Suci & Petisi Hunter
-        </p>
-    </div>
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-6 animate-fadeIn">
+        <div>
+            <h1 class="text-3xl font-serif font-black text-teal-950 uppercase tracking-tight">Catatan Ibadah</h1>
+            <p class="text-slate-400 text-[11px] font-bold uppercase tracking-widest mt-2 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-cyan-500"></span>
+                Monitoring Sinkronisasi Ibadah Hunter
+            </p>
+        </div>
     
     <div class="flex flex-col md:flex-row items-center gap-4">
         <div class="flex items-center bg-slate-100 p-1.5 rounded-2xl border-2 border-slate-50 shadow-inner">
@@ -41,7 +41,7 @@
                     </th>
                     <th class="pb-6 px-4 text-[10px] font-black text-slate-400 tracking-[0.2em]">Protokol Ritual</th>
                     <th class="pb-6 px-4 text-[10px] font-black text-slate-400 tracking-[0.2em] cursor-pointer hover:text-cyan-500 transition-colors group text-center" onclick="sortTable(3)">
-                        Imbalan (SP) <i class="fas fa-sort ml-1 opacity-50 group-hover:opacity-100"></i>
+                        Yield (EXP) <i class="fas fa-sort ml-1 opacity-50 group-hover:opacity-100"></i>
                     </th>
                     <th class="pb-6 px-4 text-[10px] font-black text-slate-400 tracking-[0.2em] text-right">Verifikasi</th>
                 </tr>
@@ -77,9 +77,9 @@
                         </div>
                     </td>
                     <td class="py-6 px-4 text-center">
-                         <div class="inline-flex items-center px-4 py-2 rounded-2xl bg-white border-2 border-slate-100 text-gold-600 shadow-sm group-hover:border-gold-200 transition-colors">
+                         <div class="inline-flex items-center px-4 py-2 rounded-2xl bg-white border-2 border-slate-100 text-blue-600 shadow-sm group-hover:border-blue-200 transition-colors">
                             <span class="text-base font-black font-mono tracking-tighter">+{{ number_format($log->points_earned) }}</span>
-                            <span class="text-[8px] font-black ml-1.5 uppercase opacity-60">SP</span>
+                            <span class="text-[8px] font-black ml-1.5 uppercase opacity-60">EXP</span>
                          </div>
                     </td>
                     <td class="py-6 px-4 text-right whitespace-nowrap">
@@ -183,7 +183,7 @@
             let valA = a.cells[columnIndex].innerText.trim().toLowerCase();
             let valB = b.cells[columnIndex].innerText.trim().toLowerCase();
             
-            // Numerical sorting for SP reward at column 3
+            // Numerical sorting for EXP reward at column 3
             if (columnIndex === 3) {
                 valA = parseInt(valA.replace(/[^0-9]/g, '')) || 0;
                 valB = parseInt(valB.replace(/[^0-9]/g, '')) || 0;

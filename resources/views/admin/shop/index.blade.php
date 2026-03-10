@@ -81,9 +81,9 @@
                         <a href="{{ route('admin.shop.edit', $item) }}" class="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-white text-teal-900 border border-slate-200 text-[10px] font-black uppercase tracking-widest hover:border-cyan-400 hover:text-cyan-600 transition-all shadow-sm active:scale-95 group/btn">
                             <i class="fas fa-hammer text-amber-500 group-hover/btn:rotate-12 transition-transform"></i> Tempa
                         </a>
-                        <form action="{{ route('admin.shop.destroy', $item) }}" method="POST" class="inline" onsubmit="return confirm('Hancurkan manifestasi artefak ini?')">
+                        <form action="{{ route('admin.shop.destroy', $item) }}" method="POST" class="inline">
                             @csrf @method('DELETE')
-                            <button class="w-10 h-10 rounded-xl bg-red-50 text-red-400 hover:bg-red-500 hover:text-white border border-red-100 transition-all flex items-center justify-center shadow-sm active:scale-95 group/del">
+                            <button type="button" onclick="confirmDelete(this, '{{ $item->name }}')" class="w-10 h-10 rounded-xl bg-red-50 text-red-400 hover:bg-red-500 hover:text-white border border-red-100 transition-all flex items-center justify-center shadow-sm active:scale-95 group/del">
                                 <i class="fas fa-trash-alt group-hover/del:animate-bounce"></i>
                             </button>
                         </form>

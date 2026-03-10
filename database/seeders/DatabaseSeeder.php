@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             ShopSeeder::class,
             TaskTemplateSeeder::class,
             DailyTaskSeeder::class,
+            HeadlineSeeder::class,
         ]);
     }
 }

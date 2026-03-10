@@ -3,7 +3,7 @@
 @section('title', 'Taxonomy Detail: ' . $questType->name)
 
 @section('content')
-<div class="max-w-6xl mx-auto space-y-10">
+<div class="w-full space-y-10">
     <div class="flex justify-between items-end">
         <div class="flex items-center gap-6">
             <a href="{{ route('admin.quest-types.index') }}" class="group p-4 rounded-2xl border-2 border-slate-100 bg-white hover:border-cyan-400 transition-all shadow-sm">

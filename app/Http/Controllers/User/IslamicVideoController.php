@@ -64,13 +64,13 @@ class IslamicVideoController extends Controller
             
             return response()->json([
                 'success' => true,
-                'message' => 'Kajian berhasil dicatat. +50 EXP',
+                'message' => 'Alhamdulillah! Kajian selesai dicatat. +50 EXP',
             ]);
         }
 
         return response()->json([
-            'success' => true,
-            'message' => 'Kajian sudah dicatat sebelumnya.',
+            'success' => false,
+            'message' => 'Misi Selesai! Kamu sudah menyelesaikan kajian ini sebelumnya.',
         ]);
     }
 }

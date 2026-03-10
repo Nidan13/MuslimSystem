@@ -3,7 +3,7 @@
 @section('title', 'Authority Tier Audit')
 
 @section('content')
-<div class="max-w-6xl mx-auto space-y-10">
+<div class="w-full space-y-10">
     <!-- Header -->
     <div class="flex items-center justify-between pb-10 border-b-2 border-slate-100">
         <div class="flex items-center gap-6">

@@ -252,7 +252,7 @@
         <div class="px-6 py-8 border-t border-white/5 bg-teal-950/30">
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
-                <button class="w-full flex items-center justify-center gap-3 px-4 py-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 font-black text-[10px] tracking-widest hover:bg-red-500 hover:text-white transition-all shadow-lg hover:shadow-red-500/40 group">
+                <button onclick="confirmLogout(event)" class="w-full flex items-center justify-center gap-3 px-4 py-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 font-black text-[10px] tracking-widest hover:bg-red-500 hover:text-white transition-all shadow-lg hover:shadow-red-500/40 group">
                     <i class="fas fa-power-off transition-transform group-hover:rotate-90"></i>
                     LOGOUT
                 </button>
@@ -335,6 +335,24 @@
                 timeout = setTimeout(() => {
                     localStorage.setItem('sidebar-scroll', sidebarNav.scrollTop);
                 }, 100);
+            });
+        }
+
+        function confirmLogout(event) {
+            event.preventDefault();
+            Swal.fire({
+                title: 'Konfirmasi Logout',
+                text: "Apakah Anda yakin ingin mengakhiri sesi?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#093b48',
+                cancelButtonColor: '#ef4444',
+                confirmButtonText: 'Ya, Logout',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    event.target.closest('form').submit();
+                }
             });
         }
     </script>

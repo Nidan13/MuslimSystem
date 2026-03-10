@@ -1,19 +1,19 @@
 @extends('layouts.admin')
 
-@section('title', 'Rekalibrasi Klasifikasi Gerbang')
+@section('title', 'Edit Kategori Gerbang')
 
 @section('content')
-<div class="max-w-4xl mx-auto animate-fadeIn">
+<div class="w-full animate-fadeIn">
     <!-- Header -->
     <div class="flex items-center gap-8 mb-12">
         <a href="{{ route('admin.dungeon-types.index') }}" class="w-14 h-14 rounded-2xl bg-white border-2 border-slate-100 flex items-center justify-center text-slate-400 hover:text-teal-900 hover:border-teal-200 transition-all shadow-sm active:scale-95 group">
             <i class="fas fa-arrow-left transition-transform group-hover:-translate-x-1"></i>
         </a>
         <div>
-            <h1 class="text-4xl font-serif font-black text-teal-900 tracking-tight uppercase">Edit Klasifikasi</h1>
+            <h1 class="text-4xl font-serif font-black text-teal-900 tracking-tight uppercase">Edit Kategori</h1>
             <p class="text-slate-500 text-[10px] font-bold uppercase tracking-[0.4em] mt-2 flex items-center gap-2">
                 <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_10px_rgba(34,211,238,0.5)]"></span>
-                Target Node: {{ $dungeonType->name }} Identifier
+                Kategori: {{ $dungeonType->name }}
             </p>
         </div>
     </div>
@@ -29,21 +29,21 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <!-- Name -->
                 <div class="space-y-4">
-                    <label class="text-[10px] font-black text-teal-900 uppercase tracking-[0.3em] ml-2 block">Nama Klasifikasi</label>
+                    <label class="text-[10px] font-black text-teal-900 uppercase tracking-[0.3em] ml-2 block">Nama Kategori</label>
                     <div class="relative group">
                         <div class="absolute inset-y-0 left-0 pl-6 flex items-center shadow-inner pointer-events-none">
                             <i class="fas fa-tags text-slate-300 group-focus-within:text-cyan-500 transition-colors"></i>
                         </div>
                         <input type="text" name="name" value="{{ old('name', $dungeonType->name) }}" required
                             class="w-full pl-14 pr-8 py-5 bg-slate-50 border-2 border-slate-100 rounded-3xl focus:bg-white focus:border-teal-900 focus:outline-none text-base font-black transition-all placeholder-slate-300 shadow-inner font-serif uppercase tracking-tight"
-                            placeholder="Contoh: Klasifikasi Solo">
+                            placeholder="Contoh: Kategori Solo">
                     </div>
                     @error('name') <p class="text-red-500 text-[10px] font-bold uppercase mt-2">{{ $message }}</p> @enderror
                 </div>
 
                 <!-- Slug -->
                 <div class="space-y-4">
-                    <label class="text-[10px] font-black text-teal-900 uppercase tracking-[0.3em] ml-2 block">Pengenal Logika (Slug)</label>
+                    <label class="text-[10px] font-black text-teal-900 uppercase tracking-[0.3em] ml-2 block">Kode Kategori (Slug)</label>
                     <div class="relative group">
                         <div class="absolute inset-y-0 left-0 pl-6 flex items-center shadow-inner pointer-events-none">
                             <i class="fas fa-code text-slate-300 group-focus-within:text-cyan-500 transition-colors"></i>
@@ -75,7 +75,7 @@
                 <button type="submit" class="w-full group relative overflow-hidden bg-teal-900 hover:bg-teal-800 py-6 rounded-[24px] font-serif font-black text-white uppercase tracking-[0.3em] shadow-2xl shadow-teal-950/30 transition-all active:scale-[0.99] border-t border-white/10">
                     <div class="absolute inset-0 bg-gradient-to-r from-cyan-500/0 via-cyan-500/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                     <span class="relative flex items-center justify-center gap-4">
-                        SINKRONISASI KLASIFIKASI
+                        SIMPAN PERUBAHAN
                         <i class="fas fa-sync text-cyan-400 icon-glow transition-transform group-hover:rotate-180"></i>
                     </span>
                 </button>
