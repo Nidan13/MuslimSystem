@@ -53,6 +53,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
         Route::resource('quests', QuestController::class);
+        Route::resource('headlines', \App\Http\Controllers\Admin\HeadlineController::class);
         Route::resource('dungeons', DungeonController::class);
         Route::resource('shop', ShopController::class);
         Route::resource('hunters', UserController::class)->except(['edit', 'update']);

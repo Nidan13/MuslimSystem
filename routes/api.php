@@ -22,9 +22,18 @@ Route::get('/islamic-videos', [\App\Http\Controllers\User\IslamicVideoController
 Route::post('/islamic-videos/complete', [\App\Http\Controllers\User\IslamicVideoController::class, 'logCompletion'])->middleware('auth:sanctum');
 Route::get('/run-migrations', function() {
     try {
+        Dotenv\Dotenv::createImmutable(base_path())->load();
         Artisan::call('migrate', ['--force' => true]);
+        return "Migrations ran successfully: " . Artisan::output();
+    } catch (\Exception $e) {
+        return "Error: " . $e->getMessage();
+    }
+});
+
+Route::get('/run-seeders', function() {
+    try {
         Artisan::call('db:seed', ['--force' => true]);
-        return "Migrations and Seeding ran successfully: " . Artisan::output();
+        return "Seeding ran successfully: " . Artisan::output();
     } catch (\Exception $e) {
         return "Error: " . $e->getMessage();
     }
@@ -167,5 +176,9 @@ Route::get('/run-migrations', function() {
 
             // Template Routes
             Route::get('/templates', [TemplateController::class, 'index']);
+
+            // Headline News Routes
+            Route::get('/headlines', [\App\Http\Controllers\User\HeadlineController::class, 'index']);
+            Route::get('/headlines/{id}', [\App\Http\Controllers\User\HeadlineController::class, 'show']);
         });
     });

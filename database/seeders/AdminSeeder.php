@@ -26,7 +26,6 @@ class AdminSeeder extends Seeder
                 'level' => 99,
                 'current_exp' => 0,
                 'overflow_exp' => 0,
-                'job_class' => 'Al-Mujahid',
                 'soul_points' => 1000000,
                 'referral_code' => 'ADMIN001',
                 'referred_by_id' => null,

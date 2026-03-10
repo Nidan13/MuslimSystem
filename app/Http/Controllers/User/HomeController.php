@@ -10,6 +10,7 @@ use App\Models\DailyTask;
 use App\Models\PrayerLog;
 use App\Models\Notification;
 use App\Models\User;
+use App\Models\Headline;
 
 class HomeController extends Controller
 {
@@ -28,72 +29,39 @@ class HomeController extends Controller
         app(\App\Http\Controllers\User\ProfileController::class)->checkDailyRestore($user);
         $user->refresh();
         
-        // 2. Daily Tasks & Summary
-        // Reusing logic from DailyTaskController::index but optimized
-        $date = $request->query('date', now()->toDateString());
-        // For read-only home view, we just return empty or what exists. 
-        // 2. Daily Tasks & Summary
-        // Fetch ACTIVE Custom Tasks (Definitions)
-        $tasks = DailyTask::where('user_id', $user->id)
-            ->where('is_active', true)
-            ->get();
-
-        // Fetch Completions for today
-        $taskIds = $tasks->pluck('id');
-        $completions = \App\Models\UserDailyTask::where('user_id', $user->id)
-            ->whereIn('daily_task_id', $taskIds)
-            ->where('date', $date)
-            ->get()
-            ->keyBy('daily_task_id');
-
-        // Map tasks to include completion status
-        $mappedTasks = $tasks->map(function ($task) use ($completions) {
-            $completion = $completions->get($task->id);
-            // Add transient properties for frontend
-            $task->is_completed = !is_null($completion);
-            $task->completed_at = $completion?->completed_at;
-            return $task;
-        });
-
-        $completedCount = $mappedTasks->where('is_completed', true)->count();
-        $totalCount = $mappedTasks->count();
-        $totalPoints = $mappedTasks->sum('soul_points');
-        $earnedPoints = $mappedTasks->where('is_completed', true)->sum('soul_points');
-        
-        $taskSummary = [
-            'completed_count' => $completedCount,
-            'total_count' => $totalCount,
-            'earned_points' => $earnedPoints,
-            'total_points' => $totalPoints,
-            'progress_percentage' => $totalCount > 0 ? round($completedCount / $totalCount, 2) : 0,
-        ];
-
-        // 3. Prayer Summary
+        // 2. Prayer Tasks (Mapped for Home Checklist)
         $today = now()->toDateString();
-        // Database ENUM: 'subuh', 'dzuhur', 'ashar', 'maghrib', 'isya'
         $prayerNames = ['subuh', 'dzuhur', 'ashar', 'maghrib', 'isya'];
         
-        // --- NEW: Apply punishments before showing summary ---
-        // (Assuming you want to trigger punishment whenever user checks home)
+        $prayerLogs = PrayerLog::where('user_id', $user->id)
+            ->whereDate('date', $today)
+            ->get()
+            ->keyBy('prayer_name');
+
+        $mappedPrayers = collect($prayerNames)->map(function ($name) use ($prayerLogs) {
+            $log = $prayerLogs->get($name);
+            return [
+                'id' => $name, 
+                'name' => ucfirst($name),
+                'is_completed' => $log ? $log->is_completed : false,
+                'completed_at' => $log ? $log->completed_at : null,
+                'soul_points' => 10,
+            ];
+        });
+
+        $prayerCompletedCount = $mappedPrayers->where('is_completed', true)->count();
+        $prayerSummary = [
+            'completed_count' => $prayerCompletedCount,
+            'total_count' => 5,
+            'progress_percentage' => round($prayerCompletedCount / 5, 2),
+        ];
+
+        // 3. Prayer Global Trigger & Final Summary
         if (class_exists(\App\Http\Controllers\User\PrayerController::class)) {
             app(\App\Http\Controllers\User\PrayerController::class)->triggerPunishment($user);
         }
 
-        $logs = PrayerLog::where('user_id', $user->id)
-            ->whereDate('date', $today)
-            ->get()
-            ->keyBy('prayer_name');
-            
-        $prayerCompletedCount = 0;
-        foreach ($prayerNames as $name) {
-            if (isset($logs[$name]) && $logs[$name]->is_completed) {
-                $prayerCompletedCount++;
-            }
-        }
-        $prayerSummary = [
-            'completed_count' => $prayerCompletedCount,
-            'total_count' => 5, // Fixed 5 mandatory prayers
-        ];
+        // We use the already calculated $prayerSummary
 
         // 4. Notifications Count
         $unreadNotifCount = Notification::where('user_id', $user->id)
@@ -101,11 +69,15 @@ class HomeController extends Controller
             ->count();
 
         // 5. Quran Progress Count
-        // Ensure we only count unique surahs
         $quranCompletedCount = DB::table('user_quran_progress')
             ->where('user_id', $user->id)
-            ->where('is_completed', 1) // Explicitly use 1
-            ->count(); // Simplify first to see if distinct is the issue
+            ->where('is_completed', 1)
+            ->count();
+            
+        // 6. Active Headlines
+        $headlines = Headline::where('is_active', true)
+            ->orderBy('created_at', 'desc')
+            ->get();
             
         // Debug Log
         \Illuminate\Support\Facades\Log::info("Home Data for user {$user->id}: Quran Completed = {$quranCompletedCount}");
@@ -115,10 +87,11 @@ class HomeController extends Controller
             'data' => [
                 'user' => $user,
                 'daily_tasks' => [
-                    'tasks' => $mappedTasks,
-                    'summary' => $taskSummary
+                    'tasks' => $mappedPrayers,
+                    'summary' => $prayerSummary
                 ],
                 'prayer_summary' => $prayerSummary,
+                'headlines' => $headlines,
                 'notifications' => [
                     'unread_count' => $unreadNotifCount
                 ],
