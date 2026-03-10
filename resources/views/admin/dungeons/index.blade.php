@@ -14,10 +14,15 @@
             </p>
         </div>
         
-        <a href="{{ route('admin.dungeons.create') }}" class="group flex items-center gap-3 px-8 py-4 rounded-2xl bg-teal-900 text-white shadow-xl shadow-teal-950/20 hover:bg-teal-800 transition-all active:scale-95 font-serif uppercase tracking-widest text-[10px] font-black">
-            <i class="fas fa-plus text-cyan-400 transition-transform group-hover:rotate-90"></i>
-            Buka Rift Gate Baru
-        </a>
+        <div class="flex items-center gap-3">
+            <a href="{{ route('admin.dungeon-types.index') }}" class="w-12 h-12 rounded-2xl bg-white border border-slate-100 flex items-center justify-center text-slate-400 hover:text-teal-900 transition-all shadow-sm active:scale-95 group" title="Kategori Gerbang">
+                <i class="fas fa-tags text-sm group-hover:scale-110 transition-transform"></i>
+            </a>
+            <a href="{{ route('admin.dungeons.create') }}" class="group flex items-center gap-3 px-8 py-4 rounded-2xl bg-teal-900 text-white shadow-xl shadow-teal-950/20 hover:bg-teal-800 transition-all active:scale-95 font-serif uppercase tracking-widest text-[10px] font-black">
+                <i class="fas fa-plus text-cyan-400 transition-transform group-hover:rotate-90"></i>
+                Buka Rift Gate Baru
+            </a>
+        </div>
     </div>
 
     <!-- Stats & Filters -->
@@ -31,72 +36,35 @@
         <button onclick="filterByRank('E')" class="rank-tab-rift px-4 py-3 rounded-xl text-[9px] font-black tracking-widest transition-all bg-white text-slate-400 border border-slate-100 hover:border-slate-400 hover:text-slate-600 uppercase">E-Rank</button>
     </div>
 
-<<<<<<< HEAD
-<!-- Manifestation Grid -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-12">
-    @forelse($dungeons as $d)
-    <div class="dungeon-card group" data-rank="{{ $d->rankCategory->slug ?? 'OPEN' }}">
-        <div class="glass-panel p-6 rounded-[40px] bg-white border-2 border-slate-50 shadow-xl hover:shadow-2xl transition-all duration-700 relative overflow-hidden h-full flex flex-col justify-between">
-            <!-- Rank Glow -->
-            @php
-                $rankSlug = $d->rankCategory->slug ?? 'OPEN';
-                $rankColor = match(strtoupper(str_replace('-rank', '', $rankSlug))) {
-                    'S' => 'red',
-                    'A' => 'orange',
-                    'B' => 'purple',
-                    'C' => 'blue',
-                    'D' => 'green',
-                    'E' => 'slate',
-                    'OPEN' => 'cyan',
-                    default => 'slate'
-                };
-            @endphp
-            <div class="absolute -right-16 -top-16 w-32 h-32 bg-{{ $rankColor }}-400/10 rounded-full blur-[40px] pointer-events-none group-hover:bg-{{ $rankColor }}-400/20 transition-all"></div>
-            
-            <div class="relative z-10">
-                <div class="flex justify-between items-start mb-6">
-                    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 text-teal-900 group-hover:bg-teal-900 group-hover:text-white transition-all duration-500">
-                        <i class="fas {{ ($d->category->slug ?? '') == 'raid-dungeon' ? 'fa-skull-crossbones' : (($d->category->slug ?? '') == 'solo-dungeon' ? 'fa-user-ghost' : 'fa-users-cog') }} text-xl"></i>
-                    </div>
-                    <div class="flex flex-col items-end">
-                        <span class="px-4 py-1.5 rounded-lg bg-{{ $rankColor }}-50 text-[10px] font-black text-{{ $rankColor }}-500 uppercase tracking-widest border border-{{ $rankColor }}-100">{{ $d->rankCategory->name ?? 'OPEN RANK' }}</span>
-                        <span class="text-[8px] font-black text-slate-300 uppercase mt-2 tracking-widest">{{ $d->category->name ?? 'N/A' }}</span>
-                    </div>
-                </div>
-
-                <h4 class="text-xl font-serif font-black text-teal-950 uppercase tracking-tight group-hover:text-cyan-500 transition-all leading-tight mb-4">
-                    {{ $d->name }}
-                </h4>
-=======
-    <!-- Main Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="rift-container">
+    <!-- Manifestation Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-12" id="rift-container">
         @forelse($dungeons as $d)
         @php
-            $rankSlug = $d->rankTier->slug ?? 'OPEN';
-            $rankColor = match($rankSlug) {
+            $rankSlug = $d->rankCategory->slug ?? 'OPEN';
+            $rankColor = match(strtoupper(str_replace('-rank', '', $rankSlug))) {
                 'S' => 'red',
                 'A' => 'orange',
                 'B' => 'purple',
                 'C' => 'blue',
                 'D' => 'green',
                 'E' => 'slate',
-                default => 'cyan'
+                'OPEN' => 'cyan',
+                default => 'slate'
             };
         @endphp
-        <div class="rift-card group h-full" data-rank="{{ $rankSlug }}">
-            <div class="glass-panel p-8 rounded-[40px] bg-white border-2 border-slate-50 shadow-xl hover:shadow-2xl transition-all duration-500 h-full flex flex-col relative overflow-hidden">
-                <!-- Rank Gradient Accent -->
-                <div class="absolute top-0 right-0 w-32 h-32 bg-{{ $rankColor }}-400/5 rounded-full blur-[40px] -mr-10 -mt-10"></div>
->>>>>>> origin/main
+        <div class="dungeon-card rift-card group h-full" data-rank="{{ $rankSlug }}">
+            <div class="glass-panel p-8 rounded-[40px] bg-white border-2 border-slate-50 shadow-xl hover:shadow-2xl transition-all duration-700 h-full flex flex-col relative overflow-hidden">
+                <!-- Rank Glow -->
+                <div class="absolute -right-16 -top-16 w-32 h-32 bg-{{ $rankColor }}-400/10 rounded-full blur-[40px] pointer-events-none group-hover:bg-{{ $rankColor }}-400/20 transition-all"></div>
                 
                 <!-- Category/ID Icon Row -->
                 <div class="flex justify-between items-start mb-6 shrink-0">
                     <div class="w-12 h-12 rounded-2xl bg-teal-900 border border-teal-800 flex items-center justify-center text-cyan-400 shadow-lg shadow-teal-950/20 group-hover:scale-110 transition-transform">
-                        <i class="fas {{ $d->dungeonType->slug == 'raid' ? 'fa-skull-crossbones' : 'fa-dungeon' }} text-lg"></i>
+                        <i class="fas {{ ($d->category->slug ?? '') == 'raid-dungeon' ? 'fa-skull-crossbones' : 'fa-dungeon' }} text-lg"></i>
                     </div>
                     <div class="text-right">
                         <span class="px-3 py-1 rounded-lg bg-{{ $rankColor }}-50 text-{{ $rankColor }}-600 border border-{{ $rankColor }}-100 text-[10px] font-black uppercase tracking-widest italic group-hover:bg-{{ $rankColor }}-500 group-hover:text-white transition-colors">
-                            RANK {{ $rankSlug }}
+                            {{ $d->rankCategory->name ?? 'RANK ' . $rankSlug }}
                         </span>
                         <p class="text-[8px] font-black text-slate-300 mt-2 uppercase tracking-widest">GATE #{{ str_pad($d->id, 4, '0', STR_PAD_LEFT) }}</p>
                     </div>

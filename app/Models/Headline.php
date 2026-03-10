@@ -11,7 +11,7 @@ class Headline extends Model
 
     protected $fillable = [
         'tag',
-        'category',
+        'category_id',
         'title',
         'content',
         'image_url',
@@ -21,4 +21,9 @@ class Headline extends Model
     protected $casts = [
         'is_active' => 'boolean',
     ];
+
+    public function itemCategory()
+    {
+        return $this->belongsTo(Category::class , 'category_id');
+    }
 }

@@ -40,8 +40,15 @@
 
                     <div class="space-y-3">
                         <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Kategori (Optional)</label>
-                        <input type="text" name="category" value="{{ old('category', $headline->category) }}"
-                            class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-cyan-400 focus:outline-none text-sm font-black transition-all uppercase tracking-widest text-teal-900">
+                        <select name="category_id"
+                            class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-cyan-400 focus:outline-none text-sm font-black transition-all uppercase tracking-widest text-teal-900 appearance-none">
+                            <option value="">-- TANPA KATEGORI --</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}" {{ old('category_id', $headline->category_id) == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
 

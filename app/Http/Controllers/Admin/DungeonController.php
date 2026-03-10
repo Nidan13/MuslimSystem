@@ -13,8 +13,8 @@ class DungeonController extends Controller
     public function index(Request $request)
     {
         $limit = $request->get('limit', 12);
-        // Use the new category relationships
-        $query = Dungeon::with(['category', 'rankCategory'])->latest();
+        // Eager load relationships for performance
+        $query = Dungeon::with(['category', 'rankCategory', 'dungeonType', 'rankTier'])->latest();
 
         if ($limit === 'all') {
             $dungeons = $query->get();
@@ -47,6 +47,10 @@ class DungeonController extends Controller
             'objective_target' => 'nullable|integer|min:0',
             'loot_pool' => 'nullable|array',
         ]);
+
+        // Fix: Provide legacy NOT NULL fields if schema hasn't been migrated to nullable yet
+        $validated['dungeon_type_id'] = 1; // Default to first type
+        $validated['rank_tier_id'] = 1; // Default to first tier
 
         try {
             Dungeon::create($validated);

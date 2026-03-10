@@ -11,9 +11,6 @@
             <p class="text-slate-400 text-[10px] font-bold uppercase tracking-[0.3em] mt-1">Kelola tugas harian dan misi khusus sistem</p>
         </div>
         
-<<<<<<< HEAD
-        </div>
-        
         <!-- Category Filtration Tabs -->
         <div class="flex items-center gap-4 mt-4 overflow-x-auto no-scrollbar py-2">
             <a href="{{ route('admin.quests.index') }}" class="px-4 py-2 rounded-xl text-[9px] font-black tracking-widest transition-all {{ !request('category_id') ? 'bg-teal-900 text-white shadow-md' : 'bg-slate-50 text-slate-400 hover:text-teal-900 border border-slate-100' }}">SEMUA PROTOKOL</a>
@@ -23,12 +20,16 @@
                 </a>
             @endforeach
         </div>
-=======
-        <a href="{{ route('admin.quests.create') }}" class="group flex items-center gap-3 px-8 py-4 rounded-2xl bg-teal-900 text-white shadow-xl shadow-teal-950/20 hover:bg-teal-800 transition-all active:scale-95 font-serif uppercase tracking-widest text-[10px] font-black">
-            <i class="fas fa-plus text-cyan-400 transition-transform group-hover:rotate-90"></i>
-            Tambah Misi Baru
-        </a>
->>>>>>> origin/main
+
+        <div class="flex items-center gap-3">
+            <a href="{{ route('admin.quest-categories.index') }}" class="w-12 h-12 rounded-2xl bg-white border border-slate-100 flex items-center justify-center text-slate-400 hover:text-teal-900 transition-all shadow-sm active:scale-95 group" title="Kategori Misi">
+                <i class="fas fa-tags text-sm group-hover:scale-110 transition-transform"></i>
+            </a>
+            <a href="{{ route('admin.quests.create') }}" class="group flex items-center gap-3 px-8 py-4 rounded-2xl bg-teal-900 text-white shadow-xl shadow-teal-950/20 hover:bg-teal-800 transition-all active:scale-95 font-serif uppercase tracking-widest text-[10px] font-black">
+                <i class="fas fa-plus text-cyan-400 transition-transform group-hover:rotate-90"></i>
+                Tambah Misi Baru
+            </a>
+        </div>
     </div>
 
     <!-- Filters & Table -->
@@ -76,7 +77,6 @@
                 <tbody class="divide-y divide-slate-50" id="quest-body">
                     @forelse($quests as $quest)
                     @php
-<<<<<<< HEAD
                         $slug = $quest->category->slug ?? 'default';
                         $color = $quest->category->color ?? '#0f4c5c';
                     @endphp
@@ -87,24 +87,6 @@
                         <td class="py-6 px-6">
                             <span class="inline-flex items-center px-4 py-1.5 rounded-xl border-2 text-[9px] font-black uppercase tracking-widest shadow-sm" style="background-color: {{ $color }}10; color: {{ $color }}; border-color: {{ $color }}30">
                                 {{ $quest->category->name ?? 'Protocol' }}
-=======
-                        $typeColors = [
-                            'daily' => 'text-emerald-600 bg-emerald-50 border-emerald-100',
-                            'hidden' => 'text-indigo-600 bg-indigo-50 border-indigo-100',
-                            'special' => 'text-amber-600 bg-amber-50 border-amber-100',
-                            'raid' => 'text-rose-600 bg-rose-50 border-rose-100',
-                        ];
-                        $slugType = $quest->questType->slug ?? 'default';
-                        $colorClass = $typeColors[$slugType] ?? 'text-slate-600 bg-slate-50 border-slate-100';
-                    @endphp
-                    <tr class="quest-row group hover:bg-slate-50/50 transition-colors" data-rank="{{ $quest->rankTier->slug ?? 'OPEN' }}">
-                        <td class="py-6 px-8">
-                            <span class="text-[10px] font-black text-slate-300 font-mono tracking-tighter">#{{ str_pad($quest->id, 4, '0', STR_PAD_LEFT) }}</span>
-                        </td>
-                        <td class="py-6 px-6">
-                            <span class="inline-flex px-3 py-1 rounded-lg border {{ $colorClass }} text-[8px] font-black uppercase tracking-widest">
-                                {{ $quest->questType->name ?? 'QUEST' }}
->>>>>>> origin/main
                             </span>
                         </td>
                         <td class="py-6 px-6">
@@ -118,16 +100,10 @@
                             </div>
                         </td>
                         <td class="py-6 px-6 text-center">
-<<<<<<< HEAD
                             @if($quest->rankCategory)
                                 @php $rankSlug = str_replace('-rank', '', $quest->rankCategory->slug); @endphp
                                 <span class="text-xl font-serif font-black {{ $quest->rankCategory->metadata['color'] ?? 'text-teal-900' }} italic">
                                     {{ strtoupper($rankSlug) }}
-=======
-                            @if($quest->rankTier)
-                                <span class="text-lg font-serif font-black {{ $quest->rankTier->color_code ?? 'text-teal-900' }} italic">
-                                    {{ $quest->rankTier->slug }}
->>>>>>> origin/main
                                 </span>
                             @else
                                 <span class="text-[9px] font-black text-slate-200 uppercase tracking-widest">OPEN</span>

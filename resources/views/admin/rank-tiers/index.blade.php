@@ -45,7 +45,7 @@
                 default => ['text' => 'text-cyan-500', 'border' => 'border-cyan-500', 'bg' => 'bg-cyan-500', 'glow' => 'shadow-cyan-500/40', 'gradient' => 'from-cyan-400/20 to-blue-500/5', 'badge' => 'bg-cyan-50 text-cyan-600 border-cyan-200', 'dot' => 'bg-cyan-500', 'hover' => 'group-hover:border-cyan-400 group-hover:shadow-cyan-500/30'],
             };
         @endphp
-        <div class="relative group h-full flex flex-col">
+        <div class="relative group h-full flex flex-col overflow-hidden rounded-[40px]">
             <!-- Decorative Glow Background -->
             <div class="absolute inset-0 bg-gradient-to-br {{ $theme['gradient'] }} rounded-[40px] shadow-xl {{ $theme['glow'] }} transform group-hover:-translate-y-2 transition-all duration-500 border-2 border-slate-100/50 {{ $theme['hover'] }}"></div>
             
@@ -110,35 +110,32 @@
                     </div>
                 </div>
 
-                <!-- Action Bar -->
-                <div class="mt-auto p-4 flex gap-3 z-10">
+                <!-- Action Bar (Default View) -->
+                <div class="mt-auto p-4 flex gap-3 z-10 group-hover:opacity-0 transition-opacity duration-300">
                     <a href="{{ route('admin.rank-tiers.edit', $tier) }}" class="flex-1 py-3.5 bg-white/80 backdrop-blur-md border border-slate-200 rounded-2xl text-[9px] text-center font-black text-teal-900 uppercase tracking-[0.2em] hover:bg-white hover:border-cyan-400 hover:text-cyan-600 transition-all shadow-sm active:scale-95">
                         Edit Pangkat
                     </a>
                 </div>
-            </div>
-<<<<<<< HEAD
 
-            <!-- Footer Actions -->
-            <div class="absolute bottom-0 left-0 right-0 p-6 bg-slate-50/50 backdrop-blur-sm border-t-2 border-slate-50 translate-y-full group-hover:translate-y-0 transition-transform duration-500 flex justify-between gap-3">
-                <a href="{{ route('admin.rank-tiers.show', $tier) }}" class="flex-1 py-3 bg-white border-2 border-slate-100 rounded-2xl text-center text-[10px] font-black text-teal-900 uppercase tracking-widest hover:border-cyan-400 hover:text-cyan-600 transition-all shadow-sm">
-                    Inspeksi
-                </a>
-                <a href="{{ route('admin.rank-tiers.edit', $tier) }}" class="p-3 bg-teal-900 text-cyan-400 rounded-2xl hover:bg-teal-800 transition-all shadow-xl shadow-teal-950/20">
-                    <i class="fas fa-sliders text-xs"></i>
-                </a>
-                <form action="{{ route('admin.rank-tiers.destroy', $tier) }}" method="POST" class="inline" onsubmit="return confirm('Hancurkan data tingkat otoritas ini? Hunters yang terikat mungkin akan kehilangan status.')">
-                    @csrf @method('DELETE')
-                    <button type="submit" class="p-3 bg-red-500 text-white rounded-2xl hover:bg-red-600 transition-all shadow-xl shadow-red-950/20">
-                        <i class="fas fa-trash-alt text-xs"></i>
-                    </button>
-                </form>
+                <!-- Footer Actions (Hover View) -->
+                <div class="absolute bottom-0 left-0 right-0 p-6 bg-slate-50/90 backdrop-blur-md border-t-2 border-slate-100 translate-y-full group-hover:translate-y-0 transition-transform duration-500 flex justify-between gap-3 z-20">
+                    <a href="{{ route('admin.rank-tiers.show', $tier) }}" class="flex-1 py-3 bg-white border-2 border-slate-100 rounded-2xl text-center text-[10px] font-black text-teal-900 uppercase tracking-widest hover:border-cyan-400 hover:text-cyan-600 transition-all shadow-sm">
+                        Inspeksi
+                    </a>
+                    <a href="{{ route('admin.rank-tiers.edit', $tier) }}" class="p-3 bg-teal-900 text-cyan-400 rounded-2xl hover:bg-teal-800 transition-all shadow-xl shadow-teal-950/20">
+                        <i class="fas fa-sliders text-xs"></i>
+                    </a>
+                    <form action="{{ route('admin.rank-tiers.destroy', $tier) }}" method="POST" class="inline" onsubmit="return confirm('Hancurkan data tingkat otoritas ini? Hunters yang terikat mungkin akan kehilangan status.')">
+                        @csrf @method('DELETE')
+                        <button type="submit" class="p-3 bg-red-500 text-white rounded-2xl hover:bg-red-600 transition-all shadow-xl shadow-red-950/20">
+                            <i class="fas fa-trash-alt text-xs"></i>
+                        </button>
+                    </form>
+                </div>
             </div>
 
             <!-- Background Elements -->
             <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-slate-100 rounded-full blur-3xl opacity-50 pointer-events-none group-hover:bg-cyan-100 transition-colors"></div>
-=======
->>>>>>> origin/main
         </div>
         @endforeach
 

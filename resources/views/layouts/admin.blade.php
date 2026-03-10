@@ -170,6 +170,11 @@
 
             <div class="sidebar-group-label">Komunitas</div>
 
+            <a href="{{ route('admin.headlines.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.headlines.*') ? 'active' : '' }}">
+                <i class="fas fa-newspaper w-5 {{ request()->routeIs('admin.headlines.*') ? 'icon-glow' : '' }}"></i>
+                <span>Pusat Berita</span>
+            </a>
+
             <a href="{{ route('admin.hunters.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.hunters.*') ? 'active' : '' }}">
                 <i class="fas fa-users-cog w-5 {{ request()->routeIs('admin.hunters.*') ? 'icon-glow' : '' }}"></i>
                 <span>Daftar Hunter</span>
@@ -214,11 +219,16 @@
                 <span>Catatan Ibadah</span>
             </a>
 
-             <div class="sidebar-group-label">Arsitektur Sistem</div>
+             <div class="sidebar-group-label">Arsitektur Sistem (Master Data)</div>
 
-            <a href="{{ route('admin.categories.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
-                <i class="fas fa-tags w-5 {{ request()->routeIs('admin.categories.*') ? 'icon-glow' : '' }}"></i>
-                <span>Master Kategori</span>
+            <a href="{{ route('admin.headline-categories.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.headline-categories.*') ? 'active' : '' }}">
+                <i class="fas fa-newspaper w-5 {{ request()->routeIs('admin.headline-categories.*') ? 'icon-glow' : '' }}"></i>
+                <span>Kategori Berita</span>
+            </a>
+
+            <a href="{{ route('admin.islamic-video-categories.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.islamic-video-categories.*') ? 'active' : '' }}">
+                <i class="fas fa-video w-5 {{ request()->routeIs('admin.islamic-video-categories.*') ? 'icon-glow' : '' }}"></i>
+                <span>Kategori Kajian</span>
             </a>
 
             <a href="{{ route('admin.rank-tiers.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.rank-tiers.*') ? 'active' : '' }}">
@@ -229,6 +239,11 @@
             <a href="{{ route('admin.dungeon-types.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.dungeon-types.*') ? 'active' : '' }}">
                 <i class="fas fa-tags w-5 {{ request()->routeIs('admin.dungeon-types.*') ? 'icon-glow' : '' }}"></i>
                 <span>Kategori Gerbang</span>
+            </a>
+
+            <a href="{{ route('admin.daily-task-categories.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.daily-task-categories.*') ? 'active' : '' }}">
+                <i class="fas fa-tasks w-5 {{ request()->routeIs('admin.daily-task-categories.*') ? 'icon-glow' : '' }}"></i>
+                <span>Kategori Tugas</span>
             </a>
 
             <a href="{{ route('admin.quest-types.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.quest-types.*') ? 'active' : '' }}">

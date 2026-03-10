@@ -11,19 +11,20 @@ class HeadlineController extends Controller
 {
     public function index()
     {
-        $headlines = Headline::latest()->paginate(10);
+        $headlines = Headline::with('itemCategory')->latest()->paginate(10);
         return view('admin.headlines.index', compact('headlines'));
     }
 
     public function create()
     {
-        return view('admin.headlines.create');
+        $categories = \App\Models\Category::byType('berita')->active()->get();
+        return view('admin.headlines.create', compact('categories'));
     }
 
     public function store(HeadlineRequest $request)
     {
         $validated = $request->validated();
-        
+
         // Handle boolean cast for checkbox
         $validated['is_active'] = $request->has('is_active');
 
@@ -34,13 +35,14 @@ class HeadlineController extends Controller
 
     public function edit(Headline $headline)
     {
-        return view('admin.headlines.edit', compact('headline'));
+        $categories = \App\Models\Category::byType('berita')->active()->get();
+        return view('admin.headlines.edit', compact('headline', 'categories'));
     }
 
     public function update(HeadlineRequest $request, Headline $headline)
     {
         $validated = $request->validated();
-        
+
         // Handle boolean cast for checkbox
         $validated['is_active'] = $request->has('is_active');
 

@@ -30,31 +30,6 @@
                         placeholder="MISAL: SHOLAT BERJAMAAH DI MASJID">
                 </div>
 
-                <!-- Grid Type & Rank -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="space-y-3">
-                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Kategori Misi</label>
-                        <select name="quest_type_id" required 
-                            class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-cyan-400 focus:outline-none text-sm font-black transition-all appearance-none cursor-pointer uppercase tracking-widest text-teal-900">
-                            @foreach($questTypes as $type)
-                            <option value="{{ $type->id }}">{{ $type->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="space-y-3">
-                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Batas Rank (Tier)</label>
-                        <select name="rank_tier_id" 
-                            class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-cyan-400 focus:outline-none text-sm font-black transition-all appearance-none cursor-pointer uppercase tracking-widest text-teal-900">
-                            <option value="">OTORITAS TERBUKA (OPEN)</option>
-                            @foreach($rankTiers as $tier)
-                            <option value="{{ $tier->id }}">TIER {{ $tier->slug }} - {{ $tier->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-
-<<<<<<< HEAD
                 <!-- Type and Rank Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                     <div class="space-y-4">
@@ -90,14 +65,15 @@
                             <i class="fas fa-chevron-down absolute right-8 top-1/2 -translate-y-1/2 text-cyan-500 pointer-events-none group-hover:rotate-180 transition-transform"></i>
                         </div>
                     </div>
-=======
+                </div>
+
                 <!-- Description -->
                 <div class="space-y-3">
                     <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Deskripsi & Instruksi</label>
                     <textarea name="description" rows="4" 
                         class="w-full p-6 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-cyan-400 focus:outline-none text-sm font-medium transition-all placeholder-slate-300 italic leading-relaxed"
                         placeholder="Detail instruksi untuk hunter...">{{ old('description') }}</textarea>
->>>>>>> origin/main
+                </div>
                 </div>
 
                 <!-- Rewards Grid -->

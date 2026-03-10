@@ -8,11 +8,7 @@
         "build": "vite build"
     },
     "devDependencies": {
-<<<<<<< HEAD
-        "@vitejs/plugin-react": "^4.2.0",
-=======
         "@inertiajs/react": "^2.3.17",
->>>>>>> origin/main
         "@tailwindcss/vite": "^4.0.0",
         "@vitejs/plugin-react": "^5.1.4",
         "autoprefixer": "^10.4.24",

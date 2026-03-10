@@ -10,6 +10,7 @@ class IslamicVideoController extends Controller
 {
     public function index()
     {
+        // Eager load category to avoid property access conflicts and improve speed
         $videos = IslamicVideo::with('category')->latest()->paginate(10);
         return view('admin.islamic-videos.index', compact('videos'));
     }

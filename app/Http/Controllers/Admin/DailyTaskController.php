@@ -14,6 +14,7 @@ class DailyTaskController extends Controller
      */
     public function index()
     {
+        // Eager load category for performance
         $tasks = DailyTask::master()->with('category')->orderBy('created_at', 'desc')->paginate(10);
 
         return view('admin.daily-tasks.index', compact('tasks'));

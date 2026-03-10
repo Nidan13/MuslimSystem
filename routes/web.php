@@ -18,41 +18,29 @@ use App\Http\Controllers\Admin\PrayerController as AdminMasterPrayerController;
 use App\Http\Controllers\Admin\IslamicVideoController;
 use App\Http\Controllers\Admin\AffiliateController;
 use App\Http\Controllers\Admin\WithdrawalController;
-use App\Http\Controllers\Admin\CategoryController;
+
 use Illuminate\Support\Facades\Route;
 
-<<<<<<< HEAD
-// Public / Guest Routes
+// Public Routes (Inertia - React)
 Route::get('/', function () {
     return inertia('LandingPage', [
     'appName' => config('app.name'),
     'downloadUrl' => env('APK_DOWNLOAD_URL', '#'),
     ]);
-})->name('landing');
+})->name('home');
 
-Route::get('/features', fn() => inertia('Features', ['appName' => config('app.name')]))->name('landing.features');
-Route::get('/about', fn() => inertia('About', ['appName' => config('app.name')]))->name('landing.about');
-Route::get('/privacy', fn() => inertia('PrivacyPolicy', ['appName' => config('app.name')]))->name('landing.privacy');
-Route::get('/faq', fn() => inertia('FAQ', ['appName' => config('app.name')]))->name('landing.faq');
-Route::get('/login', [AuthController::class , 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class , 'login']);
-Route::post('/logout', [AuthController::class , 'logout'])->name('logout');
-=======
-// Public Routes (Inertia - React)
-Route::get('/', fn() => inertia('LandingPage'))->name('home');
-Route::get('/features', fn() => inertia('Features'))->name('features');
-Route::get('/about', fn() => inertia('About'))->name('about');
-Route::get('/faq', fn() => inertia('FAQ'))->name('faq');
-Route::get('/privacy', fn() => inertia('PrivacyPolicy'))->name('privacy');
+Route::get('/features', fn() => inertia('Features', ['appName' => config('app.name')]))->name('features');
+Route::get('/about', fn() => inertia('About', ['appName' => config('app.name')]))->name('about');
+Route::get('/faq', fn() => inertia('FAQ', ['appName' => config('app.name')]))->name('faq');
+Route::get('/privacy', fn() => inertia('PrivacyPolicy', ['appName' => config('app.name')]))->name('privacy');
 
 // Public Download Route (Optional, could be the same as landing)
 Route::get('/download', fn() => redirect()->route('home'))->name('download');
 
-// Guest Routes (Login tetap ada)
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login')->middleware('guest');
-Route::post('/login', [AuthController::class, 'login'])->middleware('guest');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
->>>>>>> origin/main
+// Guest Routes
+Route::get('/login', [AuthController::class , 'showLogin'])->name('login')->middleware('guest');
+Route::post('/login', [AuthController::class , 'login'])->middleware('guest');
+Route::post('/logout', [AuthController::class , 'logout'])->name('logout');
 
 // Authenticated Routes
 Route::middleware(['auth'])->group(function () {
@@ -72,9 +60,12 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/dashboard', [AdminDashboardController::class , 'index'])->name('dashboard');
 
-<<<<<<< HEAD
             Route::resource('quests', QuestController::class);
-            Route::resource('categories', CategoryController::class);
+
+            Route::resource('headline-categories', \App\Http\Controllers\Admin\HeadlineCategoryController::class);
+            Route::resource('islamic-video-categories', \App\Http\Controllers\Admin\IslamicVideoCategoryController::class);
+            Route::resource('quest-categories', \App\Http\Controllers\Admin\QuestCategoryController::class);
+            Route::resource('headlines', \App\Http\Controllers\Admin\HeadlineController::class);
             Route::resource('dungeons', DungeonController::class);
             Route::resource('shop', ShopController::class);
             Route::resource('hunters', UserController::class);
@@ -84,33 +75,13 @@ Route::middleware(['auth'])->group(function () {
             Route::resource('level-configs', LevelConfigController::class)->parameters([
                 'level-configs' => 'level_config'
             ]);
-=======
-        Route::resource('quests', QuestController::class);
-        Route::resource('headlines', \App\Http\Controllers\Admin\HeadlineController::class);
-        Route::resource('dungeons', DungeonController::class);
-        Route::resource('shop', ShopController::class);
-        Route::resource('hunters', UserController::class)->except(['edit', 'update']);
-        Route::resource('quest-types', QuestTypeController::class);
-        Route::resource('rank-tiers', RankTierController::class);
-        Route::resource('dungeon-types', DungeonTypeController::class);
-        Route::resource('level-configs', LevelConfigController::class)->parameters([
-            'level-configs' => 'level_config'
-        ]);
-        
-        Route::resource('circles', CircleController::class);
-        Route::resource('islamic-videos', IslamicVideoController::class);
-    
-        // Daily Tasks (Master)
-        Route::resource('daily-tasks', AdminDailyTaskController::class);
-        Route::get('/users-with-custom-tasks', [AdminDailyTaskController::class, 'usersWithCustomTasks'])->name('daily-tasks.users');
-        Route::get('/users/{user}/custom-tasks', [AdminDailyTaskController::class, 'userCustomTasks'])->name('daily-tasks.user-tasks');
->>>>>>> origin/main
 
             Route::resource('circles', CircleController::class);
             Route::resource('islamic-videos', IslamicVideoController::class);
 
             // Daily Tasks (Master)
             Route::resource('daily-tasks', AdminDailyTaskController::class);
+            Route::resource('daily-task-categories', \App\Http\Controllers\Admin\DailyTaskCategoryController::class);
             Route::get('/users-with-custom-tasks', [AdminDailyTaskController::class , 'usersWithCustomTasks'])->name('daily-tasks.users');
             Route::get('/users/{user}/custom-tasks', [AdminDailyTaskController::class , 'userCustomTasks'])->name('daily-tasks.user-tasks');
 

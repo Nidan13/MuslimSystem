@@ -22,12 +22,17 @@
                 <button type="button" onclick="setRowLimit('all')" class="row-btn-video px-4 py-2 rounded-xl text-[10px] font-black transition-all {{ $currentLimit == 'all' ? 'bg-teal-900 text-white shadow-lg' : 'hover:bg-white hover:text-cyan-500 text-slate-400' }}">Semua</button>
             </div>
         </div>
-        <a href="{{ route('admin.islamic-videos.create') }}" class="group relative px-6 py-4 rounded-2xl bg-teal-900 text-white font-bold shadow-xl shadow-teal-950/20 hover:bg-teal-800 transition-all active:scale-95 overflow-hidden">
-            <span class="relative flex items-center gap-3 tracking-[0.1em] text-xs font-serif uppercase">
-                <i class="fas fa-video text-amber-400"></i>
-                Inisialisasi Konten
-            </span>
-        </a>
+        <div class="flex items-center gap-4">
+            <a href="{{ route('admin.islamic-video-categories.index') }}" class="w-12 h-12 rounded-2xl bg-white border border-slate-100 flex items-center justify-center text-slate-400 hover:text-teal-900 transition-all shadow-sm active:scale-95 group" title="Kategori Kajian">
+                <i class="fas fa-tags text-sm group-hover:scale-110 transition-transform"></i>
+            </a>
+            <a href="{{ route('admin.islamic-videos.create') }}" class="group relative px-6 py-4 rounded-2xl bg-teal-900 text-white font-bold shadow-xl shadow-teal-950/20 hover:bg-teal-800 transition-all active:scale-95 overflow-hidden">
+                <span class="relative flex items-center gap-3 tracking-[0.1em] text-xs font-serif uppercase">
+                    <i class="fas fa-video text-amber-400"></i>
+                    Inisialisasi Konten
+                </span>
+            </a>
+        </div>
     </div>
 </div>
 

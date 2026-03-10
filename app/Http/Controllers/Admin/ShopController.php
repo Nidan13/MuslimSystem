@@ -10,7 +10,8 @@ class ShopController extends Controller
 {
     public function index()
     {
-        $items = ShopItem::with('category')->latest()->paginate(12);
+        // Eager load category to avoid property access conflicts and improve speed
+        $items = ShopItem::with('itemCategory')->latest()->paginate(request('limit', 12));
         return view('admin.shop.index', compact('items'));
     }
 

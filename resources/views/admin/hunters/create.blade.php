@@ -61,64 +61,42 @@
                         </select>
                     </div>
 
-<<<<<<< HEAD
-                <!-- Level, EXP, Soul Points -->
-                <div class="col-span-full grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div>
-                        <label class="block text-[10px] font-black text-slate-400 uppercase mb-3 tracking-widest ml-1">Level Hunter</label>
-                        <input type="number" name="level" value="{{ old('level', 1) }}" 
-                            class="w-full bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 p-5 focus:border-nu-teal focus:ring-4 focus:ring-nu-teal/5 outline-none transition-all font-mono font-black text-xl shadow-inner">
-                        @error('level') <p class="text-red-500 text-[10px] font-bold uppercase mt-2 ml-1 tracking-widest">{{ $message }}</p> @enderror
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-black text-nu-indigo uppercase mb-3 tracking-widest ml-1">Progres Evolusi (EXP)</label>
-                        <input type="number" name="current_exp" value="{{ old('current_exp', 0) }}" 
-                            class="w-full bg-slate-50 border border-slate-200 rounded-2xl text-nu-indigo p-5 focus:border-nu-indigo focus:ring-4 focus:ring-nu-indigo/5 outline-none transition-all font-mono font-black text-xl shadow-inner">
-                        @error('current_exp') <p class="text-red-500 text-[10px] font-bold uppercase mt-2 ml-1 tracking-widest">{{ $message }}</p> @enderror
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-black text-nu-teal uppercase mb-3 tracking-widest ml-1">Cadangan Modal (SP)</label>
-                        <input type="number" name="soul_points" value="{{ old('soul_points', 0) }}" 
-                            class="w-full bg-slate-50 border border-slate-200 rounded-2xl text-nu-teal p-5 focus:border-nu-teal focus:ring-4 focus:ring-nu-teal/5 outline-none transition-all font-mono font-black text-xl shadow-inner">
-                        @error('soul_points') <p class="text-red-500 text-[10px] font-bold uppercase mt-2 ml-1 tracking-widest">{{ $message }}</p> @enderror
-                    </div>
-                </div>
-
-                <!-- Gender -->
-                <div class="col-span-full">
-                    <label class="block text-[10px] font-black text-slate-400 uppercase mb-4 tracking-widest ml-1">Identitas Biologis (Gender)</label>
-                    <div class="flex gap-6">
-                        <label class="relative flex-1 cursor-pointer group/opt">
-                            <input type="radio" name="gender" value="Male" checked class="peer hidden">
-                            <div class="p-6 rounded-2xl border-2 border-slate-100 bg-white text-slate-400 font-black text-center peer-checked:border-blue-600 peer-checked:bg-blue-600 peer-checked:text-white transition-all uppercase tracking-widest text-[11px] shadow-sm hover:border-slate-300">
-                                <i class="fas fa-mars mr-2"></i> Laki-laki
-                            </div>
-                        </label>
-                        <label class="relative flex-1 cursor-pointer group/opt">
-                            <input type="radio" name="gender" value="Female" class="peer hidden">
-                            <div class="p-6 rounded-2xl border-2 border-slate-100 bg-white text-slate-400 font-black text-center peer-checked:border-pink-500 peer-checked:bg-pink-500 peer-checked:text-white transition-all uppercase tracking-widest text-[11px] shadow-sm hover:border-slate-300">
-                                <i class="fas fa-venus mr-2"></i> Perempuan
-                            </div>
-                        </label>
-=======
                     <!-- Gender -->
                     <div class="space-y-3">
                         <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 text-center block">Gender</label>
                         <div class="flex gap-4">
                             <label class="flex-1 cursor-pointer group">
                                 <input type="radio" name="gender" value="Male" checked class="hidden peer">
-                                <div class="py-3 rounded-xl border border-slate-100 bg-slate-50 text-slate-400 font-black text-center peer-checked:bg-teal-900 peer-checked:text-white transition-all uppercase tracking-widest text-[9px]">
-                                    Laki-laki
+                                <div class="py-4 rounded-xl border border-slate-100 bg-slate-50 text-slate-400 font-black text-center peer-checked:bg-teal-900 peer-checked:text-white transition-all uppercase tracking-widest text-[9px]">
+                                    <i class="fas fa-mars mr-1"></i> Laki-laki
                                 </div>
                             </label>
                             <label class="flex-1 cursor-pointer group">
                                 <input type="radio" name="gender" value="Female" class="hidden peer">
-                                <div class="py-3 rounded-xl border border-slate-100 bg-slate-50 text-slate-400 font-black text-center peer-checked:bg-teal-900 peer-checked:text-white transition-all uppercase tracking-widest text-[9px]">
-                                    Perempuan
+                                <div class="py-4 rounded-xl border border-slate-100 bg-slate-50 text-slate-400 font-black text-center peer-checked:bg-pink-500 peer-checked:text-white transition-all uppercase tracking-widest text-[9px]">
+                                    <i class="fas fa-venus mr-1"></i> Perempuan
                                 </div>
                             </label>
                         </div>
->>>>>>> origin/main
+                    </div>
+                </div>
+
+                <!-- Level, EXP, Soul Points -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="space-y-3">
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Level Hunter</label>
+                        <input type="number" name="level" value="{{ old('level', 1) }}" required 
+                            class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-cyan-400 focus:outline-none text-lg font-mono font-black text-teal-900 transition-all">
+                    </div>
+                    <div class="space-y-3">
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Current EXP</label>
+                        <input type="number" name="current_exp" value="{{ old('current_exp', 0) }}" required 
+                            class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-cyan-400 focus:outline-none text-lg font-mono font-black text-teal-900 transition-all">
+                    </div>
+                    <div class="space-y-3">
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Soul Points (SP)</label>
+                        <input type="number" name="soul_points" value="{{ old('soul_points', 0) }}" required 
+                            class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-cyan-400 focus:outline-none text-lg font-mono font-black text-teal-900 transition-all">
                     </div>
                 </div>
             </div>

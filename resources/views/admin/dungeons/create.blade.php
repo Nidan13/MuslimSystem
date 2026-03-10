@@ -30,47 +30,28 @@
                         placeholder="MISAL: THE ABYSSAL ECHO">
                 </div>
 
-<<<<<<< HEAD
-                <div>
-                    <label class="block text-[10px] font-black text-teal-900/40 uppercase mb-2 tracking-[0.3em] ml-1">Klasifikasi Gerbang</label>
-                    <div class="relative group">
-                        <select name="category_id" required class="w-full bg-slate-50 border-2 border-slate-200 rounded-[16px] text-teal-900 p-4 focus:border-cyan-400 focus:bg-white outline-none appearance-none cursor-pointer font-bold text-sm transition-all shadow-inner">
-                            @foreach($dungeonCategories as $cat)
-                                @php $metadata = is_array($cat->metadata) ? $cat->metadata : json_decode($cat->metadata, true); @endphp
-                                <option value="{{ $cat->id }}" {{ old('category_id') == $cat->id ? 'selected' : '' }}>
-                                    {{ $cat->name }} (Cap: {{ $metadata['max_participants'] ?? 'N/A' }})
-                                </option>
-=======
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <!-- Tipe & Rank -->
                     <div class="space-y-3">
                         <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Klasifikasi Gate</label>
-                        <select name="dungeon_type_id" required class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-cyan-400 focus:outline-none text-sm font-black transition-all appearance-none cursor-pointer uppercase tracking-widest text-teal-900">
-                            @foreach($dungeonTypes as $type)
-                            <option value="{{ $type->id }}">{{ $type->name }} (Max: {{ $type->max_participants }} People)</option>
->>>>>>> origin/main
+                        <select name="category_id" required class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-cyan-400 focus:outline-none text-sm font-black transition-all appearance-none cursor-pointer uppercase tracking-widest text-teal-900">
+                            @foreach($dungeonCategories as $cat)
+                                @php $metadata = is_array($cat->metadata) ? $cat->metadata : json_decode($cat->metadata, true); @endphp
+                                <option value="{{ $cat->id }}" {{ old('category_id') == $cat->id ? 'selected' : '' }}>
+                                    {{ $cat->name }} (Cap: {{ $metadata['max_participants'] ?? 'N/A' }} People)
+                                </option>
                             @endforeach
                         </select>
                     </div>
 
-<<<<<<< HEAD
-                <div>
-                    <label class="block text-[10px] font-black text-teal-900/40 uppercase mb-2 tracking-[0.3em] ml-1">Rentang Otoritas</label>
-                    <div class="relative group">
-                        <select name="rank_category_id" class="w-full bg-slate-50 border-2 border-slate-200 rounded-[16px] text-teal-900 p-4 focus:border-cyan-400 focus:bg-white outline-none appearance-none cursor-pointer font-black text-sm transition-all shadow-inner">
-                            <option value="">-- SEMUA RANK (OPEN) --</option>
-                            @foreach($rankCategories as $rank)
-                                <option value="{{ $rank->id }}" {{ old('rank_category_id') == $rank->id ? 'selected' : '' }}>
-                                    TIER {{ str_replace('-rank', '', $rank->slug) }} - {{ $rank->name }}
-                                </option>
-=======
                     <div class="space-y-3">
                         <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Rank Otoritas</label>
-                        <select name="rank_tier_id" class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-cyan-400 focus:outline-none text-sm font-black transition-all appearance-none cursor-pointer uppercase tracking-widest text-teal-900">
+                        <select name="rank_category_id" class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-cyan-400 focus:outline-none text-sm font-black transition-all appearance-none cursor-pointer uppercase tracking-widest text-teal-900">
                             <option value="">OPEN-RANK (SEMUA TIER)</option>
-                            @foreach($rankTiers as $tier)
-                            <option value="{{ $tier->id }}">TIER {{ $tier->slug }} - {{ $tier->name }}</option>
->>>>>>> origin/main
+                            @foreach($rankCategories as $rank)
+                                <option value="{{ $rank->id }}" {{ old('rank_category_id') == $rank->id ? 'selected' : '' }}>
+                                    TIER {{ strtoupper(str_replace('-rank', '', $rank->slug)) }} - {{ $rank->name }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
@@ -128,7 +109,7 @@
                     <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Briefing Dokumentasi (Deskripsi)</label>
                     <textarea name="description" rows="4" 
                         class="w-full p-6 bg-slate-50 border border-slate-100 rounded-3xl focus:bg-white focus:border-cyan-400 focus:outline-none text-sm font-medium transition-all placeholder-slate-200 italic leading-relaxed" 
-                        placeholder="Jelaskan parameter rift dan data historis..."></textarea>
+                        placeholder="Jelaskan parameter rift dan data historis...">{{ old('description') }}</textarea>
                 </div>
             </div>
 

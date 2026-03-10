@@ -55,9 +55,9 @@
                                     <span class="px-2.5 py-1 rounded-lg bg-teal-50 border border-teal-100 text-teal-600 text-[8px] font-black uppercase tracking-widest shadow-sm">
                                         {{ $headline->tag }}
                                     </span>
-                                    @if($headline->category)
+                                    @if($headline->itemCategory)
                                     <span class="px-2.5 py-1 rounded-lg bg-slate-50 border border-slate-100 text-slate-400 text-[8px] font-black uppercase tracking-widest">
-                                        {{ $headline->category }}
+                                        {{ $headline->itemCategory->name }}
                                     </span>
                                     @endif
                                 </div>

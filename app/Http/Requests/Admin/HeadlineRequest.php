@@ -15,7 +15,7 @@ class HeadlineRequest extends FormRequest
     {
         return [
             'tag' => 'required|string|max:255',
-            'category' => 'nullable|string|max:255',
+            'category_id' => 'nullable|exists:categories,id',
             'title' => 'required|string|max:255',
             'content' => 'nullable|string',
             'image_url' => 'nullable|url|max:255',

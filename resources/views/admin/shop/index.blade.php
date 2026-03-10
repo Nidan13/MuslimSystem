@@ -22,6 +22,7 @@
                 <button type="button" onclick="setRowLimit('all')" class="row-btn-shop px-4 py-2 rounded-xl text-[10px] font-black transition-all {{ $currentLimit == 'all' ? 'bg-teal-900 text-white shadow-lg' : 'hover:bg-white hover:text-cyan-500 text-slate-400' }}">Semua</button>
             </div>
         </div>
+
         <a href="{{ route('admin.shop.create') }}" class="group relative px-6 py-4 rounded-2xl bg-teal-900 text-white font-bold shadow-xl shadow-teal-950/20 hover:bg-teal-800 transition-all active:scale-95 overflow-hidden">
             <span class="relative flex items-center gap-3 tracking-[0.1em] text-xs font-serif uppercase">
                 <i class="fas fa-hammer text-amber-400"></i>
@@ -45,8 +46,8 @@
                         </div>
                     @endif
                     
-                    <div class="absolute top-3 right-3 px-3 py-1 backdrop-blur-md rounded-lg text-[9px] font-black uppercase tracking-widest shadow-sm border" style="background-color: {{ ($item->category->color ?? '#ffffff') }}dd; color: {{ $item->category->color ? '#ffffff' : '#0f4c5c' }}; border-color: {{ ($item->category->color ?? '#e2e8f0') }}30">
-                        {{ $item->category->name ?? 'Common' }}
+                    <div class="absolute top-3 right-3 px-3 py-1 backdrop-blur-md rounded-lg text-[9px] font-black uppercase tracking-widest shadow-sm border" style="background-color: {{ ($item->itemCategory->color ?? '#ffffff') }}dd; color: {{ ($item->itemCategory->color ?? false) ? '#ffffff' : '#0f4c5c' }}; border-color: {{ ($item->itemCategory->color ?? '#e2e8f0') }}30">
+                        {{ $item->itemCategory->name ?? 'Common' }}
                     </div>
                 </div>
             </div>

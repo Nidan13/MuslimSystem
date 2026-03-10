@@ -31,7 +31,7 @@
                     @error('name') <p class="text-red-500 text-[10px] font-bold uppercase mt-2 px-4 italic">{{ $message }}</p> @enderror
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
                     <div>
                         <label class="block text-[10px] font-black text-blue-600 uppercase mb-3 tracking-[0.3em] ml-1">Nilai Hasil (EXP)</label>
                         <div class="relative">
@@ -43,11 +43,22 @@
                     </div>
 
                     <div>
+                        <label class="block text-[10px] font-black text-teal-900/40 uppercase mb-3 tracking-[0.3em] ml-1">Kategori Matriks</label>
+                        <select name="category_id" required 
+                            class="w-full bg-slate-50 border-2 border-slate-200 rounded-[24px] text-teal-900 p-6 focus:border-cyan-400 focus:bg-white outline-none transition-all font-black text-xs uppercase tracking-widest appearance-none cursor-pointer shadow-inner">
+                            @foreach($categories as $cat)
+                                <option value="{{ $cat->id }}" {{ old('category_id') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('category_id') <p class="text-red-500 text-[10px] font-bold uppercase mt-2 px-4 italic">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div>
                         <label class="block text-[10px] font-black text-teal-900/40 uppercase mb-3 tracking-[0.3em] ml-1">Urutan Ikon</label>
                         <div class="relative">
                             <input type="text" name="icon" value="{{ old('icon', 'fas fa-star') }}" required 
                                 class="w-full bg-slate-50 border-2 border-slate-200 rounded-[24px] text-teal-900 p-6 focus:border-cyan-400 focus:bg-white outline-none transition-all font-mono font-bold text-sm shadow-inner" placeholder="fas fa-sun">
-                            <div class="absolute right-6 top-1/2 -translate-y-1/2 text-slate-300 italic text-[8px] font-black uppercase pointer-events-none">Vektor FontAwesome</div>
+                            <div class="absolute right-6 top-1/2 -translate-y-1/2 text-slate-300 italic text-[8px] font-black uppercase pointer-events-none">Icon</div>
                         </div>
                         @error('icon') <p class="text-red-500 text-[10px] font-bold uppercase mt-2 px-4 italic">{{ $message }}</p> @enderror
                     </div>

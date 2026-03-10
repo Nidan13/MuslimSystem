@@ -1,36 +1,25 @@
 @extends('layouts.admin')
 
-@section('title', 'Manajemen Master Kategori')
+@section('title', 'Kategori Berita')
 
 @section('content')
 <div class="space-y-10">
     <!-- Header Area -->
     <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 animate-fadeIn">
         <div>
-            <h2 class="text-4xl font-serif font-black text-teal-900 tracking-wide uppercase">Master Kategori</h2>
+            <h2 class="text-4xl font-serif font-black text-teal-900 tracking-wide uppercase">Kategori Berita</h2>
             <p class="text-slate-500 text-[10px] font-bold uppercase tracking-[0.4em] mt-2 flex items-center gap-2">
                 <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_10px_#22d3ee]"></span>
-                Pengaturan Klasifikasi Sistem Terpusat
+                Master Data Kategori Berita Utama
             </p>
         </div>
         
         <div class="flex flex-col md:flex-row items-center gap-4">
-            <!-- Type Filtration Tabs -->
-            <div class="flex items-center bg-slate-100 p-1.5 rounded-2xl border-2 border-slate-50 shadow-inner overflow-x-auto no-scrollbar max-w-full">
-                <a href="{{ route('admin.categories.index') }}" class="px-5 py-2 rounded-xl text-[10px] font-black tracking-widest transition-all whitespace-nowrap {{ !request('type') ? 'bg-teal-900 text-white shadow-lg' : 'text-slate-400 hover:text-teal-900' }}">ALL ({{ $counts->sum() }})</a>
-                <a href="{{ route('admin.categories.index', ['type' => 'quest']) }}" class="px-4 py-2 rounded-xl text-[10px] font-black tracking-widest transition-all whitespace-nowrap {{ request('type') == 'quest' ? 'bg-teal-900 text-white shadow-lg' : 'text-slate-400 hover:text-teal-900' }}">QUEST ({{ $counts['quest'] ?? 0 }})</a>
-                <a href="{{ route('admin.categories.index', ['type' => 'kajian']) }}" class="px-4 py-2 rounded-xl text-[10px] font-black tracking-widest transition-all whitespace-nowrap {{ request('type') == 'kajian' ? 'bg-teal-900 text-white shadow-lg' : 'text-slate-400 hover:text-teal-900' }}">KAJIAN ({{ $counts['kajian'] ?? 0 }})</a>
-                <a href="{{ route('admin.categories.index', ['type' => 'shop']) }}" class="px-4 py-2 rounded-xl text-[10px] font-black tracking-widest transition-all whitespace-nowrap {{ request('type') == 'shop' ? 'bg-teal-900 text-white shadow-lg' : 'text-slate-400 hover:text-teal-900' }}">SHOP ({{ $counts['shop'] ?? 0 }})</a>
-                <a href="{{ route('admin.categories.index', ['type' => 'daily_task']) }}" class="px-4 py-2 rounded-xl text-[10px] font-black tracking-widest transition-all whitespace-nowrap {{ request('type') == 'daily_task' ? 'bg-teal-900 text-white shadow-lg' : 'text-slate-400 hover:text-teal-900' }}">TASK ({{ $counts['daily_task'] ?? 0 }})</a>
-                <a href="{{ route('admin.categories.index', ['type' => 'dungeon']) }}" class="px-4 py-2 rounded-xl text-[10px] font-black tracking-widest transition-all whitespace-nowrap {{ request('type') == 'dungeon' ? 'bg-teal-900 text-white shadow-lg' : 'text-slate-400 hover:text-teal-900' }}">DUNGEON ({{ $counts['dungeon'] ?? 0 }})</a>
-                <a href="{{ route('admin.categories.index', ['type' => 'rank']) }}" class="px-4 py-2 rounded-xl text-[10px] font-black tracking-widest transition-all whitespace-nowrap {{ request('type') == 'rank' ? 'bg-teal-900 text-white shadow-lg' : 'text-slate-400 hover:text-teal-900' }}">RANK ({{ $counts['rank'] ?? 0 }})</a>
-            </div>
-
             <!-- Add Button -->
-            <a href="{{ route('admin.categories.create') }}" class="group relative px-8 py-4 rounded-2xl bg-teal-900 text-white shadow-xl shadow-teal-950/20 hover:bg-teal-800 transition-all active:scale-95 overflow-hidden font-serif uppercase tracking-widest text-[10px] font-black">
+            <a href="{{ route('admin.headline-categories.create') }}" class="group relative px-8 py-4 rounded-2xl bg-teal-900 text-white shadow-xl shadow-teal-950/20 hover:bg-teal-800 transition-all active:scale-95 overflow-hidden font-serif uppercase tracking-widest text-[10px] font-black">
                 <span class="relative flex items-center gap-3">
                     <i class="fas fa-plus text-cyan-400 icon-glow transition-transform group-hover:rotate-90"></i>
-                    Tambah Kategori
+                    Tambah Kategori Berita
                 </span>
             </a>
         </div>
@@ -44,8 +33,7 @@
                     <tr class="border-b-2 border-slate-100 uppercase">
                         <th class="pb-6 px-4 text-[10px] font-black text-slate-400 tracking-[0.2em] w-20">ID</th>
                         <th class="pb-6 px-6 text-[10px] font-black text-slate-400 tracking-[0.2em]">NAMA</th>
-                        <th class="pb-6 px-6 text-[10px] font-black text-slate-400 tracking-[0.2em]">TIPE</th>
-                        <th class="pb-6 px-6 text-[10px] font-black text-slate-400 tracking-[0.2em]">SLUG</th>
+                        <th class="pb-6 px-6 text-[10px] font-black text-slate-400 tracking-[0.2em]">DESKRIPSI</th>
                         <th class="pb-6 px-6 text-[10px] font-black text-slate-400 tracking-[0.2em] text-center">STATUS</th>
                         <th class="pb-6 px-6 text-[10px] font-black text-slate-400 tracking-[0.2em] text-right">AKSI</th>
                     </tr>
@@ -54,23 +42,21 @@
                     @forelse($categories as $category)
                     <tr class="group hover:bg-slate-50/50 transition-colors">
                         <td class="py-6 px-4">
-                            <span class="text-[10px] font-black text-slate-300 font-mono tracking-tighter uppercase whitespace-nowrap">#CAT-{{ str_pad($category->id, 3, '0', STR_PAD_LEFT) }}</span>
+                            <span class="text-[10px] font-black text-slate-300 font-mono tracking-tighter uppercase whitespace-nowrap">#BRT-{{ str_pad($category->id, 3, '0', STR_PAD_LEFT) }}</span>
                         </td>
                         <td class="py-6 px-6">
                             <div class="flex items-center gap-3">
                                 <div class="w-8 h-8 rounded-lg flex items-center justify-center border-2 border-slate-100 shadow-sm" style="background-color: {{ $category->color ?? '#f1f5f9' }}">
-                                    <i class="{{ $category->icon ?? 'fas fa-tag' }} text-[10px] {{ $category->color ? 'text-white' : 'text-slate-400' }}"></i>
+                                    <i class="{{ $category->icon ?? 'fas fa-newspaper' }} text-[10px] {{ $category->color ? 'text-white' : 'text-slate-400' }}"></i>
                                 </div>
-                                <span class="text-sm font-black text-teal-900 uppercase tracking-tight">{{ $category->name }}</span>
+                                <div class="flex flex-col">
+                                    <span class="text-sm font-black text-teal-900 uppercase tracking-tight">{{ $category->name }}</span>
+                                    <span class="text-[9px] font-mono text-slate-400">{{ $category->slug }}</span>
+                                </div>
                             </div>
                         </td>
                         <td class="py-6 px-6">
-                            <span class="inline-flex items-center px-4 py-1.5 rounded-xl border-2 border-slate-100 bg-slate-50 text-[9px] font-black uppercase tracking-widest shadow-sm text-slate-600">
-                                {{ strtoupper(str_replace('_', ' ', $category->type)) }}
-                            </span>
-                        </td>
-                        <td class="py-6 px-6">
-                            <span class="text-[10px] font-mono text-slate-400">{{ $category->slug }}</span>
+                            <span class="text-xs text-slate-500 line-clamp-2 max-w-xs">{{ $category->description ?? '-' }}</span>
                         </td>
                         <td class="py-6 px-6 text-center">
                             @if($category->is_active)
@@ -81,10 +67,10 @@
                         </td>
                         <td class="py-6 px-6 text-right whitespace-nowrap">
                             <div class="flex items-center justify-end gap-3 transition-all duration-300">
-                                <a href="{{ route('admin.categories.edit', $category) }}" class="p-3 bg-white border-2 border-slate-100 text-teal-900 hover:text-cyan-500 hover:border-cyan-200 rounded-xl transition-all shadow-sm active:scale-95 leading-none shadow-slate-200/50" title="Edit Kategori">
+                                <a href="{{ route('admin.headline-categories.edit', $category) }}" class="p-3 bg-white border-2 border-slate-100 text-teal-900 hover:text-cyan-500 hover:border-cyan-200 rounded-xl transition-all shadow-sm active:scale-95 leading-none shadow-slate-200/50" title="Edit Kategori">
                                     <i class="fas fa-sliders text-xs"></i>
                                 </a>
-                                <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" class="inline" onsubmit="return confirm('Hapus kategori ini?')">
+                                <form action="{{ route('admin.headline-categories.destroy', $category) }}" method="POST" class="inline" onsubmit="return confirm('Hapus kategori ini?')">
                                     @csrf @method('DELETE')
                                     <button type="submit" class="p-3 bg-white border-2 border-slate-100 text-slate-400 hover:text-red-500 hover:border-red-200 rounded-xl transition-all shadow-sm active:scale-95 leading-none shadow-slate-200/50" title="Hapus Kategori">
                                         <i class="fas fa-trash-alt text-xs"></i>
@@ -95,7 +81,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="6" class="py-20 text-center">
+                        <td colspan="5" class="py-20 text-center">
                             <div class="flex flex-col items-center">
                                 <i class="fas fa-tags text-slate-100 text-6xl mb-4"></i>
                                 <span class="text-slate-300 text-[10px] font-black uppercase tracking-[0.3em]">Belum ada kategori yang tersedia</span>
