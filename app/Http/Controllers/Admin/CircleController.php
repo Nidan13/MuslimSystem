@@ -42,7 +42,7 @@ class CircleController extends Controller
         ]);
 
         $circle = Circle::create($validated);
-        
+
         // Automatically add leader as member with 'leader' role
         $circle->members()->attach($validated['leader_id'], [
             'role' => 'leader',
@@ -91,11 +91,12 @@ class CircleController extends Controller
         if ($oldLeaderId != $validated['leader_id']) {
             // Demote old leader to member if they were leader
             $circle->members()->updateExistingPivot($oldLeaderId, ['role' => 'member']);
-            
+
             // Promote or Add new leader
             if ($circle->members()->where('user_id', $validated['leader_id'])->exists()) {
                 $circle->members()->updateExistingPivot($validated['leader_id'], ['role' => 'leader']);
-            } else {
+            }
+            else {
                 $circle->members()->attach($validated['leader_id'], [
                     'role' => 'leader',
                     'joined_at' => now(),

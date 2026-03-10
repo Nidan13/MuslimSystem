@@ -13,8 +13,14 @@ class TaskTemplate extends Model
         'name',
         'description',
         'category',
+        'category_id',
         'icon',
         'soul_points',
         'type',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

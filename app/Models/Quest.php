@@ -9,8 +9,10 @@ class Quest extends Model
     protected $fillable = [
         'title',
         'description',
-        'quest_type_id',
-        'rank_tier_id',
+        'category_id',
+        'rank_category_id',
+        'quest_type_id', // Legacy
+        'rank_tier_id', // Legacy
         'reward_exp',
         'reward_soul_points',
         'is_mandatory',
@@ -26,6 +28,16 @@ class Quest extends Model
     public function questType()
     {
         return $this->belongsTo(QuestType::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class , 'category_id');
+    }
+
+    public function rankCategory()
+    {
+        return $this->belongsTo(Category::class , 'rank_category_id');
     }
 
     public function rankTier()

@@ -67,6 +67,12 @@
                 <a href="{{ route('admin.rank-tiers.edit', $tier) }}" class="p-3 bg-teal-900 text-cyan-400 rounded-2xl hover:bg-teal-800 transition-all shadow-xl shadow-teal-950/20">
                     <i class="fas fa-sliders text-xs"></i>
                 </a>
+                <form action="{{ route('admin.rank-tiers.destroy', $tier) }}" method="POST" class="inline" onsubmit="return confirm('Hancurkan data tingkat otoritas ini? Hunters yang terikat mungkin akan kehilangan status.')">
+                    @csrf @method('DELETE')
+                    <button type="submit" class="p-3 bg-red-500 text-white rounded-2xl hover:bg-red-600 transition-all shadow-xl shadow-red-950/20">
+                        <i class="fas fa-trash-alt text-xs"></i>
+                    </button>
+                </form>
             </div>
 
             <!-- Background Elements -->

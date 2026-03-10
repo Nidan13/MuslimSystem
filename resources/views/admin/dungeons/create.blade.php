@@ -32,9 +32,12 @@
                 <div>
                     <label class="block text-[10px] font-black text-teal-900/40 uppercase mb-2 tracking-[0.3em] ml-1">Klasifikasi Gerbang</label>
                     <div class="relative group">
-                        <select name="dungeon_type_id" required class="w-full bg-slate-50 border-2 border-slate-200 rounded-[16px] text-teal-900 p-4 focus:border-cyan-400 focus:bg-white outline-none appearance-none cursor-pointer font-bold text-sm transition-all shadow-inner">
-                            @foreach($dungeonTypes as $type)
-                            <option value="{{ $type->id }}" {{ old('dungeon_type_id') == $type->id ? 'selected' : '' }}>{{ $type->name }} (Cap: {{ $type->max_participants }})</option>
+                        <select name="category_id" required class="w-full bg-slate-50 border-2 border-slate-200 rounded-[16px] text-teal-900 p-4 focus:border-cyan-400 focus:bg-white outline-none appearance-none cursor-pointer font-bold text-sm transition-all shadow-inner">
+                            @foreach($dungeonCategories as $cat)
+                                @php $metadata = is_array($cat->metadata) ? $cat->metadata : json_decode($cat->metadata, true); @endphp
+                                <option value="{{ $cat->id }}" {{ old('category_id') == $cat->id ? 'selected' : '' }}>
+                                    {{ $cat->name }} (Cap: {{ $metadata['max_participants'] ?? 'N/A' }})
+                                </option>
                             @endforeach
                         </select>
                         <div class="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-teal-500">
@@ -46,10 +49,12 @@
                 <div>
                     <label class="block text-[10px] font-black text-teal-900/40 uppercase mb-2 tracking-[0.3em] ml-1">Rentang Otoritas</label>
                     <div class="relative group">
-                        <select name="rank_tier_id" class="w-full bg-slate-50 border-2 border-slate-200 rounded-[16px] text-teal-900 p-4 focus:border-cyan-400 focus:bg-white outline-none appearance-none cursor-pointer font-black text-sm transition-all shadow-inner">
+                        <select name="rank_category_id" class="w-full bg-slate-50 border-2 border-slate-200 rounded-[16px] text-teal-900 p-4 focus:border-cyan-400 focus:bg-white outline-none appearance-none cursor-pointer font-black text-sm transition-all shadow-inner">
                             <option value="">-- SEMUA RANK (OPEN) --</option>
-                            @foreach($rankTiers as $tier)
-                            <option value="{{ $tier->id }}" {{ old('rank_tier_id') == $tier->id ? 'selected' : '' }}>TIER {{ $tier->slug }} - {{ $tier->name }}</option>
+                            @foreach($rankCategories as $rank)
+                                <option value="{{ $rank->id }}" {{ old('rank_category_id') == $rank->id ? 'selected' : '' }}>
+                                    TIER {{ str_replace('-rank', '', $rank->slug) }} - {{ $rank->name }}
+                                </option>
                             @endforeach
                         </select>
                         <div class="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-teal-500">

@@ -10,13 +10,14 @@ class ShopController extends Controller
 {
     public function index()
     {
-        $items = ShopItem::latest()->paginate(12);
+        $items = ShopItem::with('category')->latest()->paginate(12);
         return view('admin.shop.index', compact('items'));
     }
 
     public function create()
     {
-        return view('admin.shop.create');
+        $categories = \App\Models\Category::byType('shop')->active()->get();
+        return view('admin.shop.create', compact('categories'));
     }
 
     public function store(Request $request)
@@ -24,14 +25,14 @@ class ShopController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'price_soul_points' => 'required|integer|min:0',
-            'category' => 'required|in:border,title,name_color,consumable',
-            'asset_path' => 'nullable|string',
+            'price' => 'required|integer|min:0',
+            'category_id' => 'required|exists:categories,id',
+            'image_url' => 'nullable|string',
         ]);
 
         ShopItem::create($validated);
 
-        return redirect()->route('admin.shop-items.index')->with('success', 'A new artifact has been added to the shop.');
+        return redirect()->route('admin.shop.index')->with('success', 'A new artifact has been added to the shop.');
     }
 
     public function show(ShopItem $shopItem)
@@ -41,7 +42,8 @@ class ShopController extends Controller
 
     public function edit(ShopItem $shopItem)
     {
-        return view('admin.shop.edit', ['item' => $shopItem]);
+        $categories = \App\Models\Category::byType('shop')->active()->get();
+        return view('admin.shop.edit', ['item' => $shopItem, 'categories' => $categories]);
     }
 
     public function update(Request $request, ShopItem $shopItem)
@@ -49,14 +51,14 @@ class ShopController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'price_soul_points' => 'required|integer|min:0',
-            'category' => 'required|in:border,title,name_color,consumable',
-            'asset_path' => 'nullable|string',
+            'price' => 'required|integer|min:0',
+            'category_id' => 'required|exists:categories,id',
+            'image_url' => 'nullable|string',
         ]);
 
         $shopItem->update($validated);
 
-        return redirect()->route('admin.shop-items.index')->with('success', 'Item profile synchronized.');
+        return redirect()->route('admin.shop.index')->with('success', 'Item profile synchronized.');
     }
 
     public function destroy(ShopItem $shopItem)

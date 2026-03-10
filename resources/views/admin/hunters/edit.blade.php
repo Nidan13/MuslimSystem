@@ -64,10 +64,18 @@
                     </div>
                 </div>
 
+                <!-- Level -->
+                <div>
+                    <label class="block text-[10px] font-black text-slate-400 uppercase mb-3 tracking-widest ml-1">Level Hunter</label>
+                    <input type="number" name="level" value="{{ old('level', $user->level) }}" 
+                        class="w-full bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 p-5 focus:border-nu-teal focus:ring-4 focus:ring-nu-teal/5 outline-none transition-all font-mono font-black text-xl shadow-inner">
+                    @error('level') <p class="text-red-500 text-[10px] font-bold uppercase mt-2 ml-1 tracking-widest">{{ $message }}</p> @enderror
+                </div>
+
                 <!-- Soul Points -->
                 <div>
                     <label class="block text-[10px] font-black text-nu-teal uppercase mb-3 tracking-widest ml-1">Cadangan Modal (SP)</label>
-                    <input type="number" name="soul_points" value="{{ old('soul_points', $user->soul_points) }}" required 
+                    <input type="number" name="soul_points" value="{{ old('soul_points', $user->soul_points) }}" 
                         class="w-full bg-slate-50 border border-slate-200 rounded-2xl text-nu-teal p-5 focus:border-nu-teal focus:ring-4 focus:ring-nu-teal/5 outline-none transition-all font-mono font-black text-xl shadow-inner">
                     @error('soul_points') <p class="text-red-500 text-[10px] font-bold uppercase mt-2 ml-1 tracking-widest">{{ $message }}</p> @enderror
                 </div>

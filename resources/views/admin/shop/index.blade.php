@@ -45,8 +45,8 @@
                         </div>
                     @endif
                     
-                    <div class="absolute top-3 right-3 px-3 py-1 bg-white/90 backdrop-blur-md rounded-lg text-[9px] font-black text-teal-900 uppercase tracking-widest shadow-sm border border-slate-100">
-                        {{ $item->category }}
+                    <div class="absolute top-3 right-3 px-3 py-1 backdrop-blur-md rounded-lg text-[9px] font-black uppercase tracking-widest shadow-sm border" style="background-color: {{ ($item->category->color ?? '#ffffff') }}dd; color: {{ $item->category->color ? '#ffffff' : '#0f4c5c' }}; border-color: {{ ($item->category->color ?? '#e2e8f0') }}30">
+                        {{ $item->category->name ?? 'Common' }}
                     </div>
                 </div>
             </div>

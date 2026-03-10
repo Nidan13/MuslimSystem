@@ -14,8 +14,8 @@ class DailyTaskController extends Controller
      */
     public function index()
     {
-        $tasks = DailyTask::master()->orderBy('created_at', 'desc')->paginate(10);
-        
+        $tasks = DailyTask::master()->with('category')->orderBy('created_at', 'desc')->paginate(10);
+
         return view('admin.daily-tasks.index', compact('tasks'));
     }
 
@@ -24,7 +24,8 @@ class DailyTaskController extends Controller
      */
     public function create()
     {
-        return view('admin.daily-tasks.create');
+        $categories = \App\Models\Category::byType('daily_task')->active()->get();
+        return view('admin.daily-tasks.create', compact('categories'));
     }
 
     /**
@@ -37,6 +38,7 @@ class DailyTaskController extends Controller
             'description' => 'nullable|string|max:500',
             'soul_points' => 'required|integer|min:10|max:200',
             'icon' => 'nullable|string|max:50',
+            'category_id' => 'required|exists:categories,id',
             'is_active' => 'boolean',
         ]);
 
@@ -46,6 +48,7 @@ class DailyTaskController extends Controller
             'description' => $validated['description'] ?? null,
             'soul_points' => $validated['soul_points'],
             'icon' => $validated['icon'] ?? '⭐',
+            'category_id' => $validated['category_id'],
             'is_active' => $validated['is_active'] ?? true,
         ]);
 
@@ -57,8 +60,8 @@ class DailyTaskController extends Controller
      */
     public function show($id)
     {
-        $task = DailyTask::master()->findOrFail($id);
-        
+        $task = DailyTask::master()->with('category')->findOrFail($id);
+
         return view('admin.daily-tasks.show', compact('task'));
     }
 
@@ -68,8 +71,9 @@ class DailyTaskController extends Controller
     public function edit($id)
     {
         $task = DailyTask::master()->findOrFail($id);
-        
-        return view('admin.daily-tasks.edit', compact('task'));
+        $categories = \App\Models\Category::byType('daily_task')->active()->get();
+
+        return view('admin.daily-tasks.edit', compact('task', 'categories'));
     }
 
     /**
@@ -78,12 +82,13 @@ class DailyTaskController extends Controller
     public function update(Request $request, $id)
     {
         $task = DailyTask::master()->findOrFail($id);
-        
+
         $validated = $request->validate([
             'name' => 'required|string|max:100',
             'description' => 'nullable|string|max:500',
             'soul_points' => 'required|integer|min:10|max:200',
             'icon' => 'nullable|string|max:50',
+            'category_id' => 'required|exists:categories,id',
             'is_active' => 'boolean',
         ]);
 
@@ -109,7 +114,7 @@ class DailyTaskController extends Controller
     public function usersWithCustomTasks()
     {
         $users = User::whereHas('dailyTasks')->withCount('dailyTasks')->paginate(10);
-        
+
         return view('admin.daily-tasks.users', compact('users'));
     }
 
@@ -120,7 +125,7 @@ class DailyTaskController extends Controller
     {
         $user = User::findOrFail($userId);
         $tasks = DailyTask::custom($userId)->orderBy('created_at', 'desc')->paginate(10);
-        
+
         return view('admin.daily-tasks.user-tasks', compact('user', 'tasks'));
     }
 }

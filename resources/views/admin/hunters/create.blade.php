@@ -63,6 +63,28 @@
                     </div>
                 </div>
 
+                <!-- Level, EXP, Soul Points -->
+                <div class="col-span-full grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-400 uppercase mb-3 tracking-widest ml-1">Level Hunter</label>
+                        <input type="number" name="level" value="{{ old('level', 1) }}" 
+                            class="w-full bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 p-5 focus:border-nu-teal focus:ring-4 focus:ring-nu-teal/5 outline-none transition-all font-mono font-black text-xl shadow-inner">
+                        @error('level') <p class="text-red-500 text-[10px] font-bold uppercase mt-2 ml-1 tracking-widest">{{ $message }}</p> @enderror
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-black text-nu-indigo uppercase mb-3 tracking-widest ml-1">Progres Evolusi (EXP)</label>
+                        <input type="number" name="current_exp" value="{{ old('current_exp', 0) }}" 
+                            class="w-full bg-slate-50 border border-slate-200 rounded-2xl text-nu-indigo p-5 focus:border-nu-indigo focus:ring-4 focus:ring-nu-indigo/5 outline-none transition-all font-mono font-black text-xl shadow-inner">
+                        @error('current_exp') <p class="text-red-500 text-[10px] font-bold uppercase mt-2 ml-1 tracking-widest">{{ $message }}</p> @enderror
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-black text-nu-teal uppercase mb-3 tracking-widest ml-1">Cadangan Modal (SP)</label>
+                        <input type="number" name="soul_points" value="{{ old('soul_points', 0) }}" 
+                            class="w-full bg-slate-50 border border-slate-200 rounded-2xl text-nu-teal p-5 focus:border-nu-teal focus:ring-4 focus:ring-nu-teal/5 outline-none transition-all font-mono font-black text-xl shadow-inner">
+                        @error('soul_points') <p class="text-red-500 text-[10px] font-bold uppercase mt-2 ml-1 tracking-widest">{{ $message }}</p> @enderror
+                    </div>
+                </div>
+
                 <!-- Gender -->
                 <div class="col-span-full">
                     <label class="block text-[10px] font-black text-slate-400 uppercase mb-4 tracking-widest ml-1">Identitas Biologis (Gender)</label>

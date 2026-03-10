@@ -35,9 +35,9 @@ class UserController extends Controller
             'password' => 'required|string|min:8',
             'gender' => 'required|in:Male,Female',
             'rank_tier_id' => 'required|exists:rank_tiers,id',
-            'level' => 'required|integer|min:1',
-            'current_exp' => 'required|integer|min:0',
-            'soul_points' => 'required|integer|min:0',
+            'level' => 'nullable|integer|min:1',
+            'current_exp' => 'nullable|integer|min:0',
+            'soul_points' => 'nullable|integer|min:0',
             'job_class' => 'nullable|string',
         ]);
 
@@ -49,12 +49,12 @@ class UserController extends Controller
     public function show(User $hunter)
     {
         $hunter->load(['userStat', 'rankTier']);
-        
+
         // Aggregate Quest Statistics
         $completedQuests = \App\Models\UserQuest::where('user_id', $hunter->id)
             ->where('status', 'completed')
             ->get();
-            
+
         $questStats = [];
         foreach ($completedQuests as $uq) {
             $progress = $uq->progress ?? [];
@@ -65,7 +65,7 @@ class UserController extends Controller
         }
 
         // --- SYNCHRONIZED STATS WITH USER APP ---
-        
+
         // 1. Total Surah (Completed Surahs from progress table)
         // This is the most "hard" progress metric for Quran
         $totalSurah = \DB::table('user_quran_progress')
@@ -85,15 +85,15 @@ class UserController extends Controller
         // Logic: Total Ilmu Count from model MINUS the Quran specific parts
         $quranHistory = \App\Models\QuranReadingHistory::where('user_id', $hunter->id)->count();
         $totalKajian = max(0, $hunter->ilmu_count - ($quranHistory + $totalSurah));
-        
+
         // Add manual Activity Logs for Kajian/Videos (if any)
         $totalKajian += \App\Models\ActivityLog::where('user_id', $hunter->id)
-            ->where(function($q) {
-                $q->where('type', 'like', '%video%')
-                  ->orWhere('description', 'like', '%menonton%')
-                  ->orWhere('description', 'like', '%kajian%')
-                  ->orWhere('description', 'like', '%tahsin%');
-            })->count();
+            ->where(function ($q) {
+            $q->where('type', 'like', '%video%')
+                ->orWhere('description', 'like', '%menonton%')
+                ->orWhere('description', 'like', '%kajian%')
+                ->orWhere('description', 'like', '%tahsin%');
+        })->count();
 
         // 5. Habit Matrix (Sum of all habit repetitions)
         $habits = \App\Models\Habit::where('user_id', $hunter->id)->latest()->get();
@@ -109,11 +109,11 @@ class UserController extends Controller
         $radarData = [
             'labels' => ['SURAH', 'SHOLAT', 'MISI', 'KAJIAN', 'HABIT'],
             'values' => [
-                min(100, ($totalSurah / 114) * 100),            // Target 114 Surahs
-                min(100, ($totalSholat / 100) * 100),           // Milestone 100 Sholat
-                min(100, ($totalMisi / 50) * 100),              // Milestone 50 Misi
-                min(100, ($totalKajian / 30) * 100),            // Milestone 30 Kajian
-                min(100, ($totalHabit / 100) * 100),            // Milestone 100 Habit Nodes
+                min(100, ($totalSurah / 114) * 100), // Target 114 Surahs
+                min(100, ($totalSholat / 100) * 100), // Milestone 100 Sholat
+                min(100, ($totalMisi / 50) * 100), // Milestone 50 Misi
+                min(100, ($totalKajian / 30) * 100), // Milestone 30 Kajian
+                min(100, ($totalHabit / 100) * 100), // Milestone 100 Habit Nodes
             ]
         ];
 
@@ -153,13 +153,14 @@ class UserController extends Controller
     public function update(Request $request, User $hunter)
     {
         $validated = $request->validate([
-            'username' => 'required|string|max:255|unique:users,username,'.$hunter->id,
-            'email' => 'required|string|email|max:255|unique:users,email,'.$hunter->id,
+            'username' => 'required|string|max:255|unique:users,username,' . $hunter->id,
+            'email' => 'required|string|email|max:255|unique:users,email,' . $hunter->id,
+            'password' => 'nullable|string|min:8',
             'gender' => 'required|in:Male,Female',
             'rank_tier_id' => 'required|exists:rank_tiers,id',
-            'level' => 'required|integer|min:1',
-            'current_exp' => 'required|integer|min:0',
-            'soul_points' => 'required|integer|min:0',
+            'level' => 'nullable|integer|min:1',
+            'current_exp' => 'nullable|integer|min:0',
+            'soul_points' => 'nullable|integer|min:0',
             'job_class' => 'nullable|string',
         ]);
 

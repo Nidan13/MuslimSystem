@@ -15,9 +15,21 @@ class HunterService
     {
         return DB::transaction(function () use ($data) {
             $data['password'] = Hash::make($data['password']);
-            
+
+            // Auto-generate referral code if not provided
+            if (empty($data['referral_code'])) {
+                $data['referral_code'] = 'REF-' . strtoupper(uniqid());
+            }
+
+            // Defaults for new Hunters
+            $data['level'] = $data['level'] ?? 1;
+            $data['current_exp'] = $data['current_exp'] ?? 0;
+            $data['soul_points'] = $data['soul_points'] ?? 0;
+            $data['hp'] = 100;
+            $data['max_hp'] = 100;
+
             $user = User::create($data);
-            
+
             // Initialize basic stats
             $user->userStat()->create([
                 'strength' => 10,
@@ -40,7 +52,8 @@ class HunterService
         return DB::transaction(function () use ($user, $data) {
             if (isset($data['password']) && !empty($data['password'])) {
                 $data['password'] = Hash::make($data['password']);
-            } else {
+            }
+            else {
                 unset($data['password']);
             }
 

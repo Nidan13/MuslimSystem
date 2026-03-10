@@ -24,7 +24,9 @@ class QuestRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'quest_type_id' => 'required|exists:quest_types,id',
+            'category_id' => 'required|exists:categories,id',
+            'rank_category_id' => 'nullable|exists:categories,id',
+            'quest_type_id' => 'nullable|exists:quest_types,id',
             'rank_tier_id' => 'nullable|exists:rank_tiers,id',
             'reward_exp' => 'nullable|integer|min:0',
             'reward_soul_points' => 'nullable|integer|min:0',

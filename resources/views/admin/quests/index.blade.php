@@ -14,34 +14,16 @@
             </p>
         </div>
         
-        <div class="flex flex-col md:flex-row items-center gap-4">
-            <!-- Rank Filtration Tabs -->
-            <div class="flex items-center bg-slate-100 p-1.5 rounded-2xl border-2 border-slate-50 shadow-inner overflow-x-auto no-scrollbar max-w-[500px]">
-                <button onclick="filterByRank('ALL')" class="rank-tab-quest px-5 py-2 rounded-xl text-[10px] font-black tracking-widest transition-all whitespace-nowrap bg-teal-900 text-white shadow-lg active-tab">ALL</button>
-                <button onclick="filterByRank('OPEN')" class="rank-tab-quest px-4 py-2 rounded-xl text-[10px] font-black tracking-widest transition-all whitespace-nowrap text-slate-400 hover:text-teal-900">OPEN</button>
-                <button onclick="filterByRank('E')" class="rank-tab-quest px-4 py-2 rounded-xl text-[10px] font-black tracking-widest transition-all whitespace-nowrap text-slate-400 hover:text-teal-900">E-RANK</button>
-                <button onclick="filterByRank('D')" class="rank-tab-quest px-4 py-2 rounded-xl text-[10px] font-black tracking-widest transition-all whitespace-nowrap text-slate-400 hover:text-teal-900">D-RANK</button>
-                <button onclick="filterByRank('C')" class="rank-tab-quest px-4 py-2 rounded-xl text-[10px] font-black tracking-widest transition-all whitespace-nowrap text-slate-400 hover:text-teal-900">C-RANK</button>
-                <button onclick="filterByRank('B')" class="rank-tab-quest px-4 py-2 rounded-xl text-[10px] font-black tracking-widest transition-all whitespace-nowrap text-slate-400 hover:text-teal-900">B-RANK</button>
-                <button onclick="filterByRank('A')" class="rank-tab-quest px-4 py-2 rounded-xl text-[10px] font-black tracking-widest transition-all whitespace-nowrap text-slate-400 hover:text-teal-900">A-RANK</button>
-                <button onclick="filterByRank('S')" class="rank-tab-quest px-4 py-2 rounded-xl text-[10px] font-black tracking-widest transition-all whitespace-nowrap text-slate-400 hover:text-teal-900">S-RANK</button>
-            </div>
-
-            <!-- Row Limit Controls -->
-                @php $currentLimit = request('limit', 16); @endphp
-                <div class="flex gap-1" id="row-limit-container">
-                    <button type="button" onclick="setRowLimit(8)" class="row-btn-quest px-4 py-2 rounded-xl text-[10px] font-black transition-all {{ $currentLimit == 8 ? 'bg-teal-900 text-white shadow-lg' : 'hover:bg-white hover:text-cyan-500 text-slate-400' }}">8</button>
-                    <button type="button" onclick="setRowLimit(16)" class="row-btn-quest px-4 py-2 rounded-xl text-[10px] font-black transition-all {{ $currentLimit == 16 ? 'bg-teal-900 text-white shadow-lg' : 'hover:bg-white hover:text-cyan-500 text-slate-400' }}">16</button>
-                    <button type="button" onclick="setRowLimit('all')" class="row-btn-quest px-4 py-2 rounded-xl text-[10px] font-black transition-all {{ $currentLimit == 'all' ? 'bg-teal-900 text-white shadow-lg' : 'hover:bg-white hover:text-cyan-500 text-slate-400' }}">Semua</button>
-                </div>
-
-            <!-- Add Button -->
-            <a href="{{ route('admin.quests.create') }}" class="group relative px-8 py-4 rounded-2xl bg-teal-900 text-white shadow-xl shadow-teal-950/20 hover:bg-teal-800 transition-all active:scale-95 overflow-hidden font-serif uppercase tracking-widest text-[10px] font-black">
-                <span class="relative flex items-center gap-3">
-                    <i class="fas fa-plus text-cyan-400 icon-glow transition-transform group-hover:rotate-90"></i>
-                    Inisialisasi Mandat
-                </span>
-            </a>
+        </div>
+        
+        <!-- Category Filtration Tabs -->
+        <div class="flex items-center gap-4 mt-4 overflow-x-auto no-scrollbar py-2">
+            <a href="{{ route('admin.quests.index') }}" class="px-4 py-2 rounded-xl text-[9px] font-black tracking-widest transition-all {{ !request('category_id') ? 'bg-teal-900 text-white shadow-md' : 'bg-slate-50 text-slate-400 hover:text-teal-900 border border-slate-100' }}">SEMUA PROTOKOL</a>
+            @foreach($categories as $cat)
+                <a href="{{ route('admin.quests.index', ['category_id' => $cat->id]) }}" class="px-4 py-2 rounded-xl text-[9px] font-black tracking-widest transition-all {{ request('category_id') == $cat->id ? 'text-white' : 'bg-slate-50 text-slate-400 hover:text-teal-900 border border-slate-100' }}" style="{{ request('category_id') == $cat->id ? 'background-color: ' . ($cat->color ?? '#0f4c5c') . '; box-shadow: 0 4px 10px ' . ($cat->color ?? '#0f4c5c') . '40' : '' }}">
+                    {{ strtoupper($cat->name) }}
+                </a>
+            @endforeach
         </div>
     </div>
 
@@ -74,22 +56,16 @@
                 <tbody class="divide-y divide-slate-50 font-sans" id="quest-body">
                     @forelse($quests as $quest)
                     @php
-                        $typeColors = [
-                            'daily' => 'text-emerald-700 bg-emerald-50 border-emerald-100',
-                            'hidden' => 'text-indigo-700 bg-indigo-50 border-indigo-100',
-                            'special' => 'text-amber-700 bg-amber-50 border-amber-100',
-                            'raid' => 'text-rose-700 bg-rose-50 border-rose-100',
-                        ];
-                        $slug = $quest->questType->slug ?? 'default';
-                        $colorClass = $typeColors[$slug] ?? 'text-slate-700 bg-slate-50 border-slate-100';
+                        $slug = $quest->category->slug ?? 'default';
+                        $color = $quest->category->color ?? '#0f4c5c';
                     @endphp
-                    <tr class="quest-row group hover:bg-slate-50/50 transition-colors" data-rank="{{ $quest->rankTier->slug ?? 'OPEN' }}">
+                    <tr class="quest-row group hover:bg-slate-50/50 transition-colors" data-rank="{{ $quest->rankCategory->slug ?? 'OPEN' }}">
                         <td class="py-6 px-4">
                             <span class="text-[10px] font-black text-slate-300 font-mono tracking-tighter uppercase whitespace-nowrap">#QST-{{ str_pad($quest->id, 4, '0', STR_PAD_LEFT) }}</span>
                         </td>
                         <td class="py-6 px-6">
-                            <span class="inline-flex items-center px-4 py-1.5 rounded-xl border-2 {{ $colorClass }} text-[9px] font-black uppercase tracking-widest shadow-sm">
-                                {{ $quest->questType->name ?? 'Protocol' }}
+                            <span class="inline-flex items-center px-4 py-1.5 rounded-xl border-2 text-[9px] font-black uppercase tracking-widest shadow-sm" style="background-color: {{ $color }}10; color: {{ $color }}; border-color: {{ $color }}30">
+                                {{ $quest->category->name ?? 'Protocol' }}
                             </span>
                         </td>
                         <td class="py-6 px-6">
@@ -103,9 +79,10 @@
                             </div>
                         </td>
                         <td class="py-6 px-6 text-center">
-                            @if($quest->rankTier)
-                                <span class="text-xl font-serif font-black {{ $quest->rankTier->color_code ?? 'text-teal-900' }} italic">
-                                    {{ $quest->rankTier->slug }}
+                            @if($quest->rankCategory)
+                                @php $rankSlug = str_replace('-rank', '', $quest->rankCategory->slug); @endphp
+                                <span class="text-xl font-serif font-black {{ $quest->rankCategory->metadata['color'] ?? 'text-teal-900' }} italic">
+                                    {{ strtoupper($rankSlug) }}
                                 </span>
                             @else
                                 <span class="text-[9px] font-black text-slate-200 uppercase tracking-widest italic">OPEN</span>

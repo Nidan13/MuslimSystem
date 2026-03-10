@@ -77,8 +77,8 @@
                         </p>
                     </td>
                     <td class="py-6 pr-4">
-                        <span class="text-[9px] font-black text-teal-800 uppercase tracking-widest bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200 shadow-sm">
-                            {{ $video->category }}
+                        <span class="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border shadow-sm" style="background-color: {{ ($video->category->color ?? '#f1f5f9') }}10; color: {{ $video->category->color ?? '#64748b' }}; border-color: {{ ($video->category->color ?? '#e2e8f0') }}30">
+                            {{ $video->category->name ?? 'Uncategorized' }}
                         </span>
                     </td>
                     <td class="py-6 pr-4">

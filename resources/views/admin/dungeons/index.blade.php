@@ -62,16 +62,18 @@
 <!-- Manifestation Grid -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-12">
     @forelse($dungeons as $d)
-    <div class="dungeon-card group" data-rank="{{ $d->rankTier->slug ?? 'OPEN' }}">
+    <div class="dungeon-card group" data-rank="{{ $d->rankCategory->slug ?? 'OPEN' }}">
         <div class="glass-panel p-6 rounded-[40px] bg-white border-2 border-slate-50 shadow-xl hover:shadow-2xl transition-all duration-700 relative overflow-hidden h-full flex flex-col justify-between">
             <!-- Rank Glow -->
             @php
-                $rankColor = match($d->rankTier->slug ?? 'OPEN') {
+                $rankSlug = $d->rankCategory->slug ?? 'OPEN';
+                $rankColor = match(strtoupper(str_replace('-rank', '', $rankSlug))) {
                     'S' => 'red',
                     'A' => 'orange',
                     'B' => 'purple',
                     'C' => 'blue',
                     'D' => 'green',
+                    'E' => 'slate',
                     'OPEN' => 'cyan',
                     default => 'slate'
                 };
@@ -81,11 +83,11 @@
             <div class="relative z-10">
                 <div class="flex justify-between items-start mb-6">
                     <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 text-teal-900 group-hover:bg-teal-900 group-hover:text-white transition-all duration-500">
-                        <i class="fas {{ $d->dungeonType->slug == 'raid' ? 'fa-skull-crossbones' : ($d->dungeonType->slug == 'solo' ? 'fa-user-ghost' : 'fa-users-cog') }} text-xl"></i>
+                        <i class="fas {{ ($d->category->slug ?? '') == 'raid-dungeon' ? 'fa-skull-crossbones' : (($d->category->slug ?? '') == 'solo-dungeon' ? 'fa-user-ghost' : 'fa-users-cog') }} text-xl"></i>
                     </div>
                     <div class="flex flex-col items-end">
-                        <span class="px-4 py-1.5 rounded-lg bg-{{ $rankColor }}-50 text-[10px] font-black text-{{ $rankColor }}-500 uppercase tracking-widest border border-{{ $rankColor }}-100">{{ $d->rankTier->name ?? 'OPEN RANK' }}</span>
-                        <span class="text-[8px] font-black text-slate-300 uppercase mt-2 tracking-widest">{{ $d->dungeonType->name }}</span>
+                        <span class="px-4 py-1.5 rounded-lg bg-{{ $rankColor }}-50 text-[10px] font-black text-{{ $rankColor }}-500 uppercase tracking-widest border border-{{ $rankColor }}-100">{{ $d->rankCategory->name ?? 'OPEN RANK' }}</span>
+                        <span class="text-[8px] font-black text-slate-300 uppercase mt-2 tracking-widest">{{ $d->category->name ?? 'N/A' }}</span>
                     </div>
                 </div>
 

@@ -15,8 +15,14 @@ class IslamicVideo extends Model
         'video_url',
         'duration',
         'category',
+        'category_id',
         'is_active',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 
     /**
      * Helper to extract YouTube video ID from URL

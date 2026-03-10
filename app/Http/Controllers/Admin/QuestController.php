@@ -19,17 +19,25 @@ class QuestController extends Controller
         $this->questService = $questService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $quests = Quest::with(['questType', 'rankTier'])->latest()->paginate(10);
-        return view('admin.quests.index', compact('quests'));
+        $query = Quest::with(['category', 'rankCategory'])->latest();
+
+        if ($request->has('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        $quests = $query->paginate($request->get('limit', 10));
+        $categories = \App\Models\Category::byType('quest')->active()->get();
+
+        return view('admin.quests.index', compact('quests', 'categories'));
     }
 
     public function create()
     {
-        $questTypes = QuestType::all();
-        $rankTiers = RankTier::all();
-        return view('admin.quests.create', compact('questTypes', 'rankTiers'));
+        $categories = \App\Models\Category::byType('quest')->active()->get();
+        $rankCategories = \App\Models\Category::byType('rank')->active()->get();
+        return view('admin.quests.create', compact('categories', 'rankCategories'));
     }
 
     public function store(QuestRequest $request)
@@ -46,7 +54,7 @@ class QuestController extends Controller
         if (!empty($validated['req_keys']) && !empty($validated['req_values'])) {
             foreach ($validated['req_keys'] as $index => $key) {
                 if (!empty($key) && isset($validated['req_values'][$index])) {
-                    $requirements[$key] = (int) $validated['req_values'][$index];
+                    $requirements[$key] = (int)$validated['req_values'][$index];
                 }
             }
         }
@@ -59,15 +67,15 @@ class QuestController extends Controller
 
     public function show(Quest $quest)
     {
-        $quest->load(['questType', 'rankTier']);
+        $quest->load(['category', 'rankCategory']);
         return view('admin.quests.show', compact('quest'));
     }
 
     public function edit(Quest $quest)
     {
-        $questTypes = QuestType::all();
-        $rankTiers = RankTier::all();
-        return view('admin.quests.edit', compact('quest', 'questTypes', 'rankTiers'));
+        $categories = \App\Models\Category::byType('quest')->active()->get();
+        $rankCategories = \App\Models\Category::byType('rank')->active()->get();
+        return view('admin.quests.edit', compact('quest', 'categories', 'rankCategories'));
     }
 
     public function update(QuestRequest $request, Quest $quest)
@@ -84,7 +92,7 @@ class QuestController extends Controller
         if (!empty($validated['req_keys']) && !empty($validated['req_values'])) {
             foreach ($validated['req_keys'] as $index => $key) {
                 if (!empty($key) && isset($validated['req_values'][$index])) {
-                    $requirements[$key] = (int) $validated['req_values'][$index];
+                    $requirements[$key] = (int)$validated['req_values'][$index];
                 }
             }
         }

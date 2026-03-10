@@ -1,0 +1,341 @@
+{
+    "quest_types": {
+        "count": 4,
+        "data": [
+            {
+                "id": 1,
+                "slug": "daily",
+                "name": "Daily Quest",
+                "description": "Mandatory missions for daily discipline.",
+                "created_at": "2026-02-27 13:56:24",
+                "updated_at": "2026-02-27 13:56:24"
+            },
+            {
+                "id": 2,
+                "slug": "hidden",
+                "name": "Hidden Quest",
+                "description": "Secret missions triggered by specific actions.",
+                "created_at": "2026-02-27 13:56:24",
+                "updated_at": "2026-02-27 13:56:24"
+            },
+            {
+                "id": 3,
+                "slug": "trial",
+                "name": "Rank-Up Trial",
+                "description": "Dangerous trials to advance to higher hunter ranks.",
+                "created_at": "2026-02-27 13:56:24",
+                "updated_at": "2026-02-27 13:56:24"
+            },
+            {
+                "id": 4,
+                "slug": "raid",
+                "name": "System Raid",
+                "description": "Collective boss battles for grand rewards.",
+                "created_at": "2026-02-27 13:56:24",
+                "updated_at": "2026-02-27 13:56:24"
+            }
+        ]
+    },
+    "dungeon_types": {
+        "count": 5,
+        "data": [
+            {
+                "id": 1,
+                "slug": "solok",
+                "name": "Instant Dungeon",
+                "max_participants": 1,
+                "created_at": "2026-02-27 13:56:24",
+                "updated_at": "2026-03-06 16:18:26"
+            },
+            {
+                "id": 2,
+                "slug": "party",
+                "name": "Party Dungeon",
+                "max_participants": 4,
+                "created_at": "2026-02-27 13:56:24",
+                "updated_at": "2026-02-27 13:56:24"
+            },
+            {
+                "id": 3,
+                "slug": "raid",
+                "name": "Great Raid",
+                "max_participants": 100,
+                "created_at": "2026-02-27 13:56:24",
+                "updated_at": "2026-02-27 13:56:24"
+            },
+            {
+                "id": 6,
+                "slug": "squad",
+                "name": "no",
+                "max_participants": 100,
+                "created_at": "2026-03-02 12:35:10",
+                "updated_at": "2026-03-02 12:42:43"
+            },
+            {
+                "id": 7,
+                "slug": "solo",
+                "name": "kingdom of mbg",
+                "max_participants": 1,
+                "created_at": "2026-03-06 16:18:49",
+                "updated_at": "2026-03-06 16:18:49"
+            }
+        ]
+    },
+    "rank_tiers": {
+        "count": 8,
+        "data": [
+            {
+                "id": 1,
+                "slug": "E",
+                "name": "Rank E",
+                "color_code": "#ff0000",
+                "min_level": 1,
+                "created_at": "2026-02-27 13:56:24",
+                "updated_at": "2026-03-02 12:13:27",
+                "description": null
+            },
+            {
+                "id": 2,
+                "slug": "D",
+                "name": "Rank D",
+                "color_code": "text-green-400",
+                "min_level": 10,
+                "created_at": "2026-02-27 13:56:24",
+                "updated_at": "2026-02-27 13:56:24",
+                "description": null
+            },
+            {
+                "id": 3,
+                "slug": "C",
+                "name": "Rank C",
+                "color_code": "text-blue-400",
+                "min_level": 30,
+                "created_at": "2026-02-27 13:56:24",
+                "updated_at": "2026-02-27 13:56:24",
+                "description": null
+            },
+            {
+                "id": 4,
+                "slug": "B",
+                "name": "Rank B",
+                "color_code": "text-purple-400",
+                "min_level": 50,
+                "created_at": "2026-02-27 13:56:24",
+                "updated_at": "2026-02-27 13:56:24",
+                "description": null
+            },
+            {
+                "id": 5,
+                "slug": "A",
+                "name": "Rank A",
+                "color_code": "text-orange-400",
+                "min_level": 70,
+                "created_at": "2026-02-27 13:56:24",
+                "updated_at": "2026-02-27 13:56:24",
+                "description": null
+            },
+            {
+                "id": 6,
+                "slug": "S",
+                "name": "Rank S",
+                "color_code": "text-red-500",
+                "min_level": 90,
+                "created_at": "2026-02-27 13:56:24",
+                "updated_at": "2026-02-27 13:56:24",
+                "description": null
+            },
+            {
+                "id": 7,
+                "slug": "w",
+                "name": "degree",
+                "color_code": "#ffae00",
+                "min_level": 99,
+                "created_at": "2026-02-27 14:48:33",
+                "updated_at": "2026-03-02 11:33:35",
+                "description": "keren"
+            },
+            {
+                "id": 8,
+                "slug": "xx",
+                "name": "a",
+                "color_code": "#00ccff",
+                "min_level": 1,
+                "created_at": "2026-03-02 11:33:58",
+                "updated_at": "2026-03-02 11:33:58",
+                "description": "as"
+            }
+        ]
+    },
+    "islamic_videos": {
+        "count": 1,
+        "data": [
+            {
+                "id": 4,
+                "title": "dshgf",
+                "channel": "dfsjhg",
+                "video_url": "https:\/\/www.youtube.com\/watch?v=mabIfukbmQg",
+                "duration": "10:10",
+                "category": "General",
+                "is_active": 1,
+                "created_at": "2026-03-06 15:37:45",
+                "updated_at": "2026-03-06 15:37:45",
+                "category_id": 5
+            }
+        ]
+    },
+    "shop_items": {
+        "count": 3,
+        "data": [
+            {
+                "id": 1,
+                "name": "Golden Aura Border",
+                "description": "A radiant golden border for your status avatar. Symbol of purity.",
+                "price_soul_points": 50000,
+                "category": "border",
+                "asset_path": "border-gold-aura",
+                "created_at": "2026-02-27 13:56:24",
+                "updated_at": "2026-02-27 13:56:24",
+                "category_id": 6
+            },
+            {
+                "id": 2,
+                "name": "The Shadow Sovereign Title",
+                "description": "A legendary title that glows in the dark. Grants a +2% WIS bonus.",
+                "price_soul_points": 100000,
+                "category": "title",
+                "asset_path": "title-sovereign",
+                "created_at": "2026-02-27 13:56:24",
+                "updated_at": "2026-02-27 13:56:24",
+                "category_id": 7
+            },
+            {
+                "id": 3,
+                "name": "Emerald Green Name",
+                "description": "Change your name display color to a calming emerald green.",
+                "price_soul_points": 25000,
+                "category": "name_color",
+                "asset_path": "color-emerald",
+                "created_at": "2026-02-27 13:56:24",
+                "updated_at": "2026-02-27 13:56:24",
+                "category_id": 8
+            }
+        ]
+    },
+    "task_templates": {
+        "count": 0,
+        "data": []
+    },
+    "categories": {
+        "count": 9,
+        "data": [
+            {
+                "id": 1,
+                "created_at": "2026-03-10 11:07:42",
+                "updated_at": "2026-03-10 11:07:42",
+                "name": "Daily Quest",
+                "slug": "daily",
+                "type": "quest",
+                "color": null,
+                "icon": null,
+                "is_active": 1,
+                "description": "Mandatory missions for daily discipline."
+            },
+            {
+                "id": 2,
+                "created_at": "2026-03-10 11:07:42",
+                "updated_at": "2026-03-10 11:07:42",
+                "name": "Hidden Quest",
+                "slug": "hidden",
+                "type": "quest",
+                "color": null,
+                "icon": null,
+                "is_active": 1,
+                "description": "Secret missions triggered by specific actions."
+            },
+            {
+                "id": 3,
+                "created_at": "2026-03-10 11:07:42",
+                "updated_at": "2026-03-10 11:07:42",
+                "name": "Rank-Up Trial",
+                "slug": "trial",
+                "type": "quest",
+                "color": null,
+                "icon": null,
+                "is_active": 1,
+                "description": "Dangerous trials to advance to higher hunter ranks."
+            },
+            {
+                "id": 4,
+                "created_at": "2026-03-10 11:07:42",
+                "updated_at": "2026-03-10 11:07:42",
+                "name": "System Raid",
+                "slug": "raid",
+                "type": "quest",
+                "color": null,
+                "icon": null,
+                "is_active": 1,
+                "description": "Collective boss battles for grand rewards."
+            },
+            {
+                "id": 5,
+                "created_at": "2026-03-10 11:07:42",
+                "updated_at": "2026-03-10 11:07:42",
+                "name": "General",
+                "slug": "general-kajian",
+                "type": "kajian",
+                "color": null,
+                "icon": null,
+                "is_active": 1,
+                "description": null
+            },
+            {
+                "id": 6,
+                "created_at": "2026-03-10 11:07:42",
+                "updated_at": "2026-03-10 11:07:42",
+                "name": "Border",
+                "slug": "border-shop",
+                "type": "shop",
+                "color": null,
+                "icon": null,
+                "is_active": 1,
+                "description": null
+            },
+            {
+                "id": 7,
+                "created_at": "2026-03-10 11:07:42",
+                "updated_at": "2026-03-10 11:07:42",
+                "name": "Title",
+                "slug": "title-shop",
+                "type": "shop",
+                "color": null,
+                "icon": null,
+                "is_active": 1,
+                "description": null
+            },
+            {
+                "id": 8,
+                "created_at": "2026-03-10 11:07:42",
+                "updated_at": "2026-03-10 11:07:42",
+                "name": "Name color",
+                "slug": "name-color-shop",
+                "type": "shop",
+                "color": null,
+                "icon": null,
+                "is_active": 1,
+                "description": null
+            },
+            {
+                "id": 9,
+                "created_at": "2026-03-10 11:07:42",
+                "updated_at": "2026-03-10 11:07:42",
+                "name": "Consumable",
+                "slug": "consumable-shop",
+                "type": "shop",
+                "color": null,
+                "icon": null,
+                "is_active": 1,
+                "description": null
+            }
+        ]
+    }
+}

@@ -48,6 +48,7 @@
                     <th class="pb-6 px-4 text-[10px] font-black text-slate-400 tracking-[0.2em] cursor-pointer hover:text-cyan-500 transition-colors group" onclick="sortTable(1)">
                         Nama Protokol <i class="fas fa-sort ml-1 opacity-50 group-hover:opacity-100"></i>
                     </th>
+                    <th class="pb-6 px-4 text-[10px] font-black text-slate-400 tracking-[0.2em]">Kategori</th>
                     <th class="pb-6 px-4 text-[10px] font-black text-slate-400 tracking-[0.2em]">Direktif</th>
                     <th class="pb-6 px-4 text-[10px] font-black text-slate-400 tracking-[0.2em] text-right cursor-pointer hover:text-cyan-500 transition-colors group" onclick="sortTable(3)">
                         Hasil SP <i class="fas fa-sort ml-1 opacity-50 group-hover:opacity-100"></i>
@@ -71,6 +72,11 @@
                     <td class="py-6 px-4">
                         <span class="text-sm font-black text-teal-950 uppercase tracking-tight group-hover:text-cyan-600 transition-colors leading-none">
                             {{ $task->name }}
+                        </span>
+                    </td>
+                    <td class="py-6 px-4">
+                        <span class="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border shadow-sm" style="background-color: {{ ($task->category->color ?? '#f1f5f9') }}10; color: {{ $task->category->color ?? '#64748b' }}; border-color: {{ ($task->category->color ?? '#e2e8f0') }}30">
+                            {{ $task->category->name ?? 'Matriks' }}
                         </span>
                     </td>
                     <td class="py-6 px-4">

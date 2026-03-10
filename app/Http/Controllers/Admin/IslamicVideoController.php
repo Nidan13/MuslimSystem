@@ -10,13 +10,14 @@ class IslamicVideoController extends Controller
 {
     public function index()
     {
-        $videos = IslamicVideo::latest()->paginate(10);
+        $videos = IslamicVideo::with('category')->latest()->paginate(10);
         return view('admin.islamic-videos.index', compact('videos'));
     }
 
     public function create()
     {
-        return view('admin.islamic-videos.create');
+        $categories = \App\Models\Category::byType('kajian')->active()->get();
+        return view('admin.islamic-videos.create', compact('categories'));
     }
 
     public function store(Request $request)
@@ -26,7 +27,7 @@ class IslamicVideoController extends Controller
             'channel' => 'required|string|max:255',
             'video_url' => 'required|url',
             'duration' => 'nullable|string|max:20',
-            'category' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
             'is_active' => 'boolean',
         ]);
 
@@ -38,7 +39,8 @@ class IslamicVideoController extends Controller
 
     public function edit(IslamicVideo $islamicVideo)
     {
-        return view('admin.islamic-videos.edit', compact('islamicVideo'));
+        $categories = \App\Models\Category::byType('kajian')->active()->get();
+        return view('admin.islamic-videos.edit', compact('islamicVideo', 'categories'));
     }
 
     public function update(Request $request, IslamicVideo $islamicVideo)
@@ -48,7 +50,7 @@ class IslamicVideoController extends Controller
             'channel' => 'required|string|max:255',
             'video_url' => 'required|url',
             'duration' => 'nullable|string|max:20',
-            'category' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
             'is_active' => 'boolean',
         ]);
 

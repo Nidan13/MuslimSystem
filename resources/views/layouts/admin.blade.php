@@ -216,6 +216,11 @@
 
              <div class="sidebar-group-label">Arsitektur Sistem</div>
 
+            <a href="{{ route('admin.categories.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
+                <i class="fas fa-tags w-5 {{ request()->routeIs('admin.categories.*') ? 'icon-glow' : '' }}"></i>
+                <span>Master Kategori</span>
+            </a>
+
             <a href="{{ route('admin.rank-tiers.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.rank-tiers.*') ? 'active' : '' }}">
                 <i class="fas fa-id-badge w-5 {{ request()->routeIs('admin.rank-tiers.*') ? 'icon-glow' : '' }}"></i>
                 <span>Protokol Pangkat</span>
@@ -295,42 +300,18 @@
         <!-- Dynamic Content -->
         <main class="flex-1 overflow-y-auto p-12 relative bg-slate-50/50">
             <div class="relative z-10 max-w-7xl mx-auto pb-20">
-                <!-- Session Alerts -->
-                @if(session('success'))
-                    <div class="mb-8 p-6 rounded-[24px] bg-emerald-50 border-2 border-emerald-100 flex items-center gap-4 animate-fadeIn">
-                        <div class="w-12 h-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center shadow-lg shadow-emerald-500/20">
-                            <i class="fas fa-check-circle text-xl"></i>
-                        </div>
-                        <div>
-                            <p class="text-[10px] font-black text-emerald-800 uppercase tracking-widest leading-none mb-1">Operasi Berhasil</p>
-                            <p class="text-sm font-bold text-emerald-600/80">{{ session('success') }}</p>
-                        </div>
-                    </div>
-                @endif
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @vite('resources/js/admin-utils.js')
 
-                @if($errors->any())
-                    <div class="mb-8 p-6 rounded-[24px] bg-rose-50 border-2 border-rose-100 animate-fadeIn">
-                        <div class="flex items-center gap-4 mb-4">
-                            <div class="w-12 h-12 rounded-2xl bg-rose-500 text-white flex items-center justify-center shadow-lg shadow-rose-500/20">
-                                <i class="fas fa-exclamation-triangle text-xl"></i>
-                            </div>
-                            <div>
-                                <p class="text-[10px] font-black text-rose-800 uppercase tracking-widest leading-none mb-1">Kesalahan Deteksi</p>
-                                <p class="text-sm font-bold text-rose-600/80">Beberapa parameter tidak valid dalam matriks sistem.</p>
-                            </div>
-                        </div>
-                        <ul class="space-y-2 ml-16">
-                            @foreach ($errors->all() as $error)
-                                <li class="text-[11px] font-black text-rose-500 uppercase tracking-wider flex items-center gap-2">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span>
-                                    {{ $error }}
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+    <script>
+        window.flashMessages = {
+            success: "{{ session('success') }}",
+            error: "{{ $errors->any() ? $errors->first() : '' }}"
+        };
+    </script>
 
-                @yield('content')
+    @yield('content')
             </div>
         </main>
     </div>

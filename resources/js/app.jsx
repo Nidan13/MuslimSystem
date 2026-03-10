@@ -1,3 +1,4 @@
+import React from 'react';
 import '../css/app.css';
 import './bootstrap';
 import { createRoot } from 'react-dom/client';

@@ -48,10 +48,10 @@
                             <div class="absolute inset-y-0 left-0 pl-8 flex items-center pointer-events-none">
                                 <i class="fas fa-layer-group text-slate-300 group-focus-within:text-cyan-500 transition-colors"></i>
                             </div>
-                            <select name="quest_type_id" required 
+                            <select name="category_id" required 
                                 class="w-full pl-18 pr-12 py-6 bg-slate-50 border-2 border-slate-100 rounded-[28px] focus:bg-white focus:border-teal-900 focus:outline-none text-sm font-black transition-all appearance-none cursor-pointer shadow-inner uppercase tracking-[0.2em] text-teal-900">
-                                @foreach($questTypes as $type)
-                                <option value="{{ $type->id }}" {{ $quest->quest_type_id == $type->id ? 'selected' : '' }}>{{ $type->name }}</option>
+                                @foreach($categories as $cat)
+                                <option value="{{ $cat->id }}" {{ $quest->category_id == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
                                 @endforeach
                             </select>
                             <i class="fas fa-chevron-down absolute right-8 top-1/2 -translate-y-1/2 text-cyan-500 pointer-events-none group-hover:rotate-180 transition-transform"></i>
@@ -64,11 +64,12 @@
                             <div class="absolute inset-y-0 left-0 pl-8 flex items-center pointer-events-none">
                                 <i class="fas fa-shield-halved text-slate-300 group-focus-within:text-cyan-500 transition-colors"></i>
                             </div>
-                            <select name="rank_tier_id" 
+                            <select name="rank_category_id" 
                                 class="w-full pl-18 pr-12 py-6 bg-slate-50 border-2 border-slate-100 rounded-[28px] focus:bg-white focus:border-teal-900 focus:outline-none text-sm font-black transition-all appearance-none cursor-pointer shadow-inner uppercase tracking-[0.2em] text-teal-900">
                                 <option value="">OTORITAS TERBUKA</option>
-                                @foreach($rankTiers as $tier)
-                                <option value="{{ $tier->id }}" {{ $quest->rank_tier_id == $tier->id ? 'selected' : '' }}>TIER {{ $tier->slug }} - {{ $tier->name }}</option>
+                                @foreach($rankCategories as $rank)
+                                @php $rankSlug = str_replace('-rank', '', $rank->slug); @endphp
+                                <option value="{{ $rank->id }}" {{ $quest->rank_category_id == $rank->id ? 'selected' : '' }}>TIER {{ strtoupper($rankSlug) }} - {{ $rank->name }}</option>
                                 @endforeach
                             </select>
                             <i class="fas fa-chevron-down absolute right-8 top-1/2 -translate-y-1/2 text-cyan-500 pointer-events-none group-hover:rotate-180 transition-transform"></i>

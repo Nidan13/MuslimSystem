@@ -1,0 +1,12 @@
+[
+    "id",
+    "created_at",
+    "updated_at",
+    "name",
+    "slug",
+    "type",
+    "color",
+    "icon",
+    "is_active",
+    "description"
+]

@@ -12,8 +12,14 @@ class DailyTask extends Model
         'description',
         'soul_points',
         'icon',
+        'category_id',
         'is_active',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 
     protected $casts = [
         'is_active' => 'boolean',

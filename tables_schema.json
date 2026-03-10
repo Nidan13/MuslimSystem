@@ -1,0 +1,55 @@
+{
+    "dungeons": [
+        "id",
+        "name",
+        "description",
+        "dungeon_type_id",
+        "rank_tier_id",
+        "min_level_requirement",
+        "reward_exp",
+        "loot_pool",
+        "created_at",
+        "updated_at",
+        "required_players",
+        "objective_type",
+        "objective_target"
+    ],
+    "quests": [
+        "id",
+        "title",
+        "description",
+        "quest_type_id",
+        "rank_tier_id",
+        "reward_exp",
+        "reward_soul_points",
+        "is_mandatory",
+        "penalty_fatigue",
+        "requirements",
+        "created_at",
+        "updated_at",
+        "starts_at",
+        "expires_at",
+        "time_limit",
+        "start_time",
+        "end_time",
+        "category_id"
+    ],
+    "rank_tiers": [
+        "id",
+        "slug",
+        "name",
+        "color_code",
+        "min_level",
+        "created_at",
+        "updated_at",
+        "description"
+    ],
+    "dungeon_types": [
+        "id",
+        "slug",
+        "name",
+        "max_participants",
+        "created_at",
+        "updated_at"
+    ]
+}
