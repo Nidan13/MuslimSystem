@@ -19,6 +19,11 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/auth/google', [AuthController::class, 'googleLogin']);
 Route::get('/islamic-videos', [\App\Http\Controllers\User\IslamicVideoController::class, 'index']);
+Route::prefix('donations')->group(function () {
+    Route::get('/', [\App\Http\Controllers\User\DonationController::class, 'index']);
+    Route::get('/{id}', [\App\Http\Controllers\User\DonationController::class, 'show']);
+});
+Route::get('/payment-methods', [\App\Http\Controllers\User\PaymentController::class, 'methods']);
 Route::post('/islamic-videos/complete', [\App\Http\Controllers\User\IslamicVideoController::class, 'logCompletion'])->middleware('auth:sanctum');
 Route::get('/run-migrations', function() {
     try {
@@ -177,19 +182,19 @@ Route::get('/run-seeders', function() {
             // Template Routes
             Route::get('/templates', [TemplateController::class, 'index']);
 
+            // Feedback Route
+            Route::post('/feedback', [\App\Http\Controllers\User\ProfileController::class, 'storeFeedback']);
+
             // Headline News Routes
             Route::get('/headlines', [\App\Http\Controllers\User\HeadlineController::class, 'index']);
             Route::get('/headlines/{id}', [\App\Http\Controllers\User\HeadlineController::class, 'show']);
 
-            // Donation API
+            // Donation API (Protected)
             Route::prefix('donations')->group(function () {
-                Route::get('/', [\App\Http\Controllers\User\DonationController::class, 'index']);
                 Route::get('/my', [\App\Http\Controllers\User\DonationController::class, 'organizerIndex']);
-                Route::get('/{id}', [\App\Http\Controllers\User\DonationController::class, 'show']);
                 Route::post('/donate', [\App\Http\Controllers\User\DonationController::class, 'donate']);
                 Route::post('/campaign', [\App\Http\Controllers\User\DonationController::class, 'storeCampaign']);
                 Route::post('/report/{campaignId}', [\App\Http\Controllers\User\DonationController::class, 'storeReport']);
             });
         });
-
     });

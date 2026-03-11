@@ -27,10 +27,10 @@
 
         /* Sidebar: Deep Deep Teal */
         .sidebar {
-            background-color: #093b48;
+            background-color: #062d38; /* Slightly darker for depth */
             color: white;
             box-shadow: 4px 0 24px rgba(0, 0, 0, 0.3);
-            border-right: 1px solid rgba(34, 211, 238, 0.1);
+            border-right: 1px solid rgba(0, 242, 255, 0.1);
         }
         
         .sidebar-link {
@@ -42,15 +42,15 @@
         }
 
         .sidebar-link:hover {
-            background: rgba(34, 211, 238, 0.05);
+            background: rgba(0, 242, 255, 0.05);
             color: rgba(255, 255, 255, 0.9);
             transform: translateX(4px);
         }
 
         .sidebar-link.active {
-            background: linear-gradient(90deg, rgba(34, 211, 238, 0.15) 0%, rgba(34, 211, 238, 0.05) 100%);
-            color: #22d3ee;
-            box-shadow: 0 4px 15px -3px rgba(34, 211, 238, 0.2);
+            background: linear-gradient(90deg, rgba(0, 242, 255, 0.15) 0%, rgba(0, 242, 255, 0.05) 100%);
+            color: #00F2FF;
+            box-shadow: 0 4px 15px -3px rgba(0, 242, 255, 0.2);
         }
 
         .sidebar-link.active::before {
@@ -60,9 +60,9 @@
             top: 25%;
             height: 50%;
             width: 3px;
-            background: #22d3ee;
+            background: #00F2FF;
             border-radius: 0 4px 4px 0;
-            box-shadow: 0 0 10px #22d3ee;
+            box-shadow: 0 0 10px #00F2FF;
         }
         
         .sidebar-group-label {
@@ -72,21 +72,21 @@
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.3em;
-            color: rgba(34, 211, 238, 0.4);
+            color: rgba(0, 242, 255, 0.4);
         }
 
         .icon-glow {
-            filter: drop-shadow(0 0 4px rgba(34, 211, 238, 0.4));
+            filter: drop-shadow(0 0 4px rgba(0, 242, 255, 0.4));
         }
 
         /* Custom Scrollbar */
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 20px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(34, 211, 238, 0.3); }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(0, 242, 255, 0.3); }
 
         /* Text Utilities */
-        .text-teal-main { color: #0f4c5c; }
+        .text-teal-main { color: #0E5F71; }
     </style>
     <script>
         tailwind.config = {
@@ -99,14 +99,14 @@
                     colors: {
                         teal: { 
                             950: '#062d38',
-                            900: '#093b48',
+                            900: '#0E5F71',
                             800: '#0f4c5c',
                         },
                         cyan: {
-                            400: '#22d3ee',
+                            400: '#00F2FF',
                         },
                         gold: { 
-                            400: '#fbbf24', 
+                            400: '#F59E0B', 
                             500: '#d4a373',
                             600: '#b45309'
                         }
@@ -184,7 +184,12 @@
                 <span>Berita Utama</span>
             </a>
 
-            <div class="sidebar-group-label" style="letter-spacing: 0.2rem;">Ekonomi & Pasar</div>
+            <a href="{{ route('admin.islamic-videos.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.islamic-videos.*') ? 'active' : '' }}">
+                <i class="fas fa-play-circle w-5 {{ request()->routeIs('admin.islamic-videos.*') ? 'icon-glow' : '' }}"></i>
+                <span>Media Kajian</span>
+            </a>
+
+            <div class="sidebar-group-label" style="letter-spacing: 0.2rem;">Ekonomi & Finansial</div>
 
             <a href="{{ route('admin.shop.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.shop.*') ? 'active' : '' }}">
                 <i class="fas fa-store w-5 {{ request()->routeIs('admin.shop.*') ? 'icon-glow' : '' }}"></i>
@@ -206,24 +211,49 @@
                 <span>Data Afiliasi</span>
             </a>
 
-            <div class="sidebar-group-label" style="letter-spacing: 0.2rem;">Spiritual & Ibadah</div>
-
-            <a href="{{ route('admin.prayers.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.prayers.*') ? 'active' : '' }}">
-                <i class="fas fa-mosque w-5 {{ request()->routeIs('admin.prayers.*') ? 'icon-glow' : '' }}"></i>
-                <span>Setting Sholat</span>
+            <a href="{{ route('admin.reports.revenue') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.reports.revenue') ? 'active' : '' }}">
+                <i class="fas fa-chart-pie w-5 {{ request()->routeIs('admin.reports.revenue') ? 'icon-glow' : '' }}"></i>
+                <span>Laporan Revenue</span>
             </a>
 
-            <a href="{{ route('admin.prayer-logs.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.prayer-logs.*') ? 'active' : '' }}">
-                <i class="fas fa-clipboard-list w-5 {{ request()->routeIs('admin.prayer-logs.*') ? 'icon-glow' : '' }}"></i>
-                <span>Log Ibadah</span>
+            <a href="{{ route('admin.distribution-categories.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.distribution-categories.*') ? 'active' : '' }}">
+                <i class="fas fa-layer-group w-5 {{ request()->routeIs('admin.distribution-categories.*') ? 'icon-glow' : '' }}"></i>
+                <span>Master Alokasi SHU</span>
             </a>
 
-            <a href="{{ route('admin.islamic-videos.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.islamic-videos.*') ? 'active' : '' }}">
-                <i class="fas fa-play-circle w-5 {{ request()->routeIs('admin.islamic-videos.*') ? 'icon-glow' : '' }}"></i>
-                <span>Media Kajian</span>
+            <div class="sidebar-group-label" style="letter-spacing: 0.2rem;">Manajemen Donasi</div>
+
+            <a href="{{ route('admin.donations.submissions') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->is('admin/donations/submissions') ? 'active' : '' }}">
+                <i class="fas fa-file-import w-5 {{ request()->is('admin/donations/submissions') ? 'icon-glow' : '' }}"></i>
+                <span>Pengajuan Baru</span>
             </a>
 
-            <div class="sidebar-group-label" style="letter-spacing: 0.2rem;">Konfigurasi & Master</div>
+            <a href="{{ route('admin.donations.my-campaigns') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->is('admin/donations/my-campaigns') ? 'active' : '' }}">
+                <i class="fas fa-hand-holding-heart w-5 {{ request()->is('admin/donations/my-campaigns') ? 'icon-glow' : '' }}"></i>
+                <span>Donasi Gua</span>
+            </a>
+
+            <a href="{{ route('admin.donations.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ (request()->routeIs('admin.donations.*') && !request()->is('admin/donations/submissions') && !request()->is('admin/donations/my-campaigns') && !request()->is('admin/donations/organizers')) ? 'active' : '' }}">
+                <i class="fas fa-list-ul w-5 {{ (request()->routeIs('admin.donations.*') && !request()->is('admin/donations/submissions') && !request()->is('admin/donations/my-campaigns') && !request()->is('admin/donations/organizers')) ? 'icon-glow' : '' }}"></i>
+                <span>Daftar Kampanye</span>
+            </a>
+
+            <a href="{{ route('admin.donation-reports.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.donation-reports.*') ? 'active' : '' }}">
+                <i class="fas fa-clipboard-check w-5 {{ request()->routeIs('admin.donation-reports.*') ? 'icon-glow' : '' }}"></i>
+                <span>Laporan Penyaluran</span>
+            </a>
+
+            <a href="{{ route('admin.donations.organizers') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->is('admin/donations/organizers') ? 'active' : '' }}">
+                <i class="fas fa-user-tie w-5 {{ request()->is('admin/donations/organizers') ? 'icon-glow' : '' }}"></i>
+                <span>Penyelenggara</span>
+            </a>
+
+            <div class="sidebar-group-label" style="letter-spacing: 0.2rem;">Master Data</div>
+
+            <a href="{{ route('admin.quest-types.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.quest-types.*') ? 'active' : '' }}">
+                <i class="fas fa-layer-group w-5 {{ request()->routeIs('admin.quest-types.*') ? 'icon-glow' : '' }}"></i>
+                <span>Tipe Misi</span>
+            </a>
 
             <a href="{{ route('admin.daily-task-categories.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.daily-task-categories.*') ? 'active' : '' }}">
                 <i class="fas fa-tags w-5 {{ request()->routeIs('admin.daily-task-categories.*') ? 'icon-glow' : '' }}"></i>
@@ -237,17 +267,29 @@
 
             <a href="{{ route('admin.islamic-video-categories.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.islamic-video-categories.*') ? 'active' : '' }}">
                 <i class="fas fa-film w-5 {{ request()->routeIs('admin.islamic-video-categories.*') ? 'icon-glow' : '' }}"></i>
-                <span>Kategori Kajian</span>
-            </a>
-
-            <a href="{{ route('admin.quest-types.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.quest-types.*') ? 'active' : '' }}">
-                <i class="fas fa-layer-group w-5 {{ request()->routeIs('admin.quest-types.*') ? 'icon-glow' : '' }}"></i>
-                <span>Tipe Misi</span>
+                <span>Kategori Media</span>
             </a>
 
             <a href="{{ route('admin.dungeon-types.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.dungeon-types.*') ? 'active' : '' }}">
                 <i class="fas fa-door-open w-5 {{ request()->routeIs('admin.dungeon-types.*') ? 'icon-glow' : '' }}"></i>
-                <span>Kategori Raid</span>
+                <span>Jenis Raid</span>
+            </a>
+
+            <div class="sidebar-group-label" style="letter-spacing: 0.2rem;">Konfigurasi Sistem</div>
+
+            <a href="{{ route('admin.settings.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
+                <i class="fas fa-cogs w-5 {{ request()->routeIs('admin.settings.*') ? 'icon-glow' : '' }}"></i>
+                <span>Sistem Pembayaran</span>
+            </a>
+
+            <a href="{{ route('admin.prayers.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.prayers.*') ? 'active' : '' }}">
+                <i class="fas fa-clock w-5 {{ request()->routeIs('admin.prayers.*') ? 'icon-glow' : '' }}"></i>
+                <span>Setting Sholat</span>
+            </a>
+
+            <a href="{{ route('admin.prayer-logs.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.prayer-logs.*') ? 'active' : '' }}">
+                <i class="fas fa-square-poll-vertical w-5 {{ request()->routeIs('admin.prayer-logs.*') ? 'icon-glow' : '' }}"></i>
+                <span>Log Ibadah</span>
             </a>
 
             <a href="{{ route('admin.rank-tiers.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.rank-tiers.*') ? 'active' : '' }}">

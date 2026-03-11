@@ -26,7 +26,7 @@
         
         <div class="flex items-center gap-6">
             <div class="hidden md:flex items-center gap-4 text-[10px] font-bold uppercase tracking-widest text-slate-500">
-                <a href="{{ route('hunter.dashboard') }}" class="hover:text-orange-500 transition-colors">Status</a>
+                <a href="{{ route('dashboard') }}" class="hover:text-orange-500 transition-colors">Status</a>
                 <a href="#" class="hover:text-orange-500 transition-colors">Quests</a>
                 <a href="#" class="hover:text-orange-500 transition-colors">Dungeons</a>
                 <a href="#" class="hover:text-orange-500 transition-colors">Shop</a>

@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             MasterSeeder::class,
             AdminSeeder::class,
+            DonationSeeder::class,
             QuestSeeder::class,
             TaskTemplateSeeder::class,
             DailyTaskSeeder::class,

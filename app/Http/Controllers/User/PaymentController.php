@@ -47,6 +47,17 @@ class PaymentController extends Controller
         return $cleaned;
     }
 
+    public function methods()
+    {
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'manual' => \App\Models\Setting::get('payment_method_manual', true),
+                'plink' => \App\Models\Setting::get('payment_method_plink', true),
+            ]
+        ]);
+    }
+
     public function createLink(Request $request)
     {
         $request->validate([
@@ -54,6 +65,13 @@ class PaymentController extends Controller
             'payment_method' => 'string|in:VA,QR',
             'bank_code'      => 'string',
         ]);
+
+        if (!\App\Models\Setting::get('payment_method_plink', true)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Metode pembayaran otomatis sedang dinonaktifkan sistem.'
+            ], 403);
+        }
 
         $cfg         = $this->getConfig();
         $user        = $request->user();
@@ -286,6 +304,13 @@ class PaymentController extends Controller
         $request->validate([
             'amount' => 'required|numeric|min:1000',
         ]);
+
+        if (!\App\Models\Setting::get('payment_method_manual', true)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Metode transfer bank manual sedang dinonaktifkan sistem.'
+            ], 403);
+        }
 
         $user = $request->user();
         

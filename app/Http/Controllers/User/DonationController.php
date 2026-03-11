@@ -34,14 +34,57 @@ class DonationController extends Controller
      */
     public function show($id)
     {
-        $campaign = DonationCampaign::with(['organizer', 'category', 'reports' => function($q) {
-            $q->latest();
-        }])->findOrFail($id);
+        $campaign = DonationCampaign::with([
+            'organizer', 
+            'category', 
+            'reports' => function($q) {
+                $q->latest();
+            },
+            'donations' => function($q) {
+                // Only show completed/paid donations to avoid duplicates/pending attempts
+                $q->where('status', 'completed')->latest()->take(10);
+            }
+        ])->findOrFail($id);
 
         return response()->json([
             'success' => true,
             'data' => $campaign
         ]);
+    }
+
+    private function getConfig(): array
+
+    {
+        return [
+            'merchant_id' => config('services.prisma.merchant_id'),
+            'key_id'      => config('services.prisma.key_id'),
+            'secret_key'  => config('services.prisma.secret_key'),
+            'base_url'    => config('services.prisma.api_url', 'https://api-staging.plink.co.id/gateway/v2'),
+            'backend_callback'  => config('services.prisma.backend_callback'),
+            'frontend_callback' => config('services.prisma.frontend_callback'),
+        ];
+    }
+
+    private function generateMac(string $rawJson, string $secretKey): string
+    {
+        return strtoupper(hash_hmac('sha256', $rawJson, trim($secretKey)));
+    }
+
+    private function getTimestamp(): string
+    {
+        return now('Asia/Jakarta')->format('Y-m-d H:i:s.v O');
+    }
+
+    private function formatPhone(?string $phone): string
+    {
+        if (!$phone) return '+628123456789';
+        $cleaned = preg_replace('/\D/', '', $phone);
+        if (str_starts_with($cleaned, '0')) {
+            $cleaned = '62' . substr($cleaned, 1);
+        } elseif (!str_starts_with($cleaned, '62')) {
+            $cleaned = '62' . $cleaned;
+        }
+        return $cleaned;
     }
 
     /**
@@ -54,62 +97,148 @@ class DonationController extends Controller
             'amount'               => 'required|numeric|min:1000',
             'donator_name'         => 'nullable|string',
             'is_anonymous'         => 'boolean',
-            'message'              => 'nullable|string'
+            'message'              => 'nullable|string',
+            'payment_method'       => 'nullable|string|in:VA,QR',
         ]);
 
-        $user = $request->user();
+        $cfg      = $this->getConfig();
+        $user     = $request->user();
         $campaign = DonationCampaign::findOrFail($request->donation_campaign_id);
 
         if ($campaign->status !== 'active') {
             return response()->json([
                 'success' => false,
-                'message' => 'Kampanye ini sedah tidak aktif atau sudah selesai.'
+                'message' => 'Kampanye ini sedang tidak aktif atau sudah selesai.'
             ], 400);
         }
 
-        // We use the same Plink integration as PaymentController
-        // For simplicity, we create a 'pending' donation and a 'pending' payment
-        // The actual payment creation logic (MAC generation, API call) 
-        // should ideally be in a Service, but for now, we'll mimic the link creation
-        // or let the frontend call separate endpoints?
-        // Actually, let's keep it simple: 
-        // 1. Create Donation & Payment entry
-        // 2. Return Payment info for frontend to proceed
-        
-        $refNo = 'DON-' . $user->id . '-' . time();
+        if (!\App\Models\Setting::get('payment_method_plink', true)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gateway pembayaran sedang dinonaktifkan sementara.'
+            ], 403);
+        }
+
+        $amount    = (int) $request->amount;
+        $method    = strtoupper($request->input('payment_method', 'QR'));
+        $refNo     = 'DON-' . $user->id . '-' . time();
+        $timestamp = $this->getTimestamp();
+
+        $items = [[
+            'item_code'  => 'DON-' . $campaign->id,
+            'item_title' => 'Donasi: ' . substr($campaign->title, 0, 40),
+            'quantity'   => 1,
+            'total'      => (string) $amount,
+            'currency'   => 'IDR',
+        ]];
+
+        $externalId  = 'EXT-' . $user->id . '-' . Str::random(6);
+
+        $bankMap = [
+            'BCA'     => '014', 'MANDIRI' => '008', 'BNI'     => '009',
+            'BRI'     => '002', 'PERMATA' => '013', 'DANAMON' => '011',
+            'CIMB'    => '022',
+        ];
+
+        $payload = [
+            'merchant_key_id'        => $cfg['key_id'],
+            'merchant_id'            => $cfg['merchant_id'],
+            'merchant_ref_no'        => $refNo,
+            'backend_callback_url'   => $cfg['backend_callback'],
+            'frontend_callback_url'  => $cfg['frontend_callback'],
+            'transaction_date_time'  => $timestamp,
+            'transmission_date_time' => $timestamp,
+            'transaction_currency'   => 'IDR',
+            'transaction_amount'     => (int) $amount,
+            'product_details'        => json_encode($items),
+            'user_id'                => (string) $user->id,
+            'user_name'              => substr($request->donator_name ?? $user->username ?? $user->name ?? $user->email, 0, 50),
+            'user_email'             => substr($user->email, 0, 50),
+            'user_phone_number'      => $this->formatPhone($user->phone ?? null),
+            'remarks'                => 'Donasi: ' . $campaign->title,
+            'user_device_id'         => 'DEVICE-' . $user->id,
+            'user_ip_address'        => $request->ip() ?? '127.0.0.1',
+            'shipping_details'       => json_encode([
+                'address'         => '-',
+                'telephoneNumber' => $this->formatPhone($user->phone ?? null),
+                'handphoneNumber' => $this->formatPhone($user->phone ?? null),
+            ]),
+            'payment_method'         => $method,
+            'other_bills'            => '[]',
+            'invoice_number'         => $refNo,
+            'integration_type'       => '02',
+            'external_id'            => $externalId,
+            'action_id'              => '01',
+        ];
+
+        if ($method === 'VA') {
+            $payload['bank_id'] = $bankMap['BCA']; // Default BCA for now
+        }
+
 
         DB::beginTransaction();
         try {
-            $payment = Payment::create([
-                'user_id'        => $user->id,
-                'external_id'    => $refNo,
-                'amount'         => $request->amount,
-                'status'         => 'pending',
-                'payment_method' => $request->input('payment_method', 'QR'),
-                'payload'        => json_encode(['type' => 'donation', 'campaign_id' => $campaign->id])
-            ]);
+            $rawJson = json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+            $mac = $this->generateMac($rawJson, $cfg['secret_key']);
 
-            $donation = Donation::create([
-                'user_id'              => $user->id,
-                'donation_campaign_id' => $campaign->id,
-                'payment_id'           => $payment->id,
-                'amount'               => $request->amount,
-                'donator_name'         => $request->donator_name ?? $user->username,
-                'is_anonymous'         => $request->is_anonymous ?? false,
-                'message'              => $request->message,
-                'status'               => 'pending'
-            ]);
+            $endpoint = $cfg['base_url'] . '/payment/integration/transaction/api/submit-trx';
+            $response = \Illuminate\Support\Facades\Http::timeout(20)->withHeaders([
+                'Content-Type' => 'application/json',
+                'mac'          => $mac,
+            ])->withBody($rawJson, 'application/json')->post($endpoint);
 
-            DB::commit();
+            $respData = $response->json();
+            
+            if (($respData['response_code'] ?? '') === 'PL000' || ($respData['response_code'] ?? '') === '00') {
+                $vaNumber = null;
+                if (!empty($respData['va_number_list'])) {
+                    $vaList = is_string($respData['va_number_list']) ? json_decode($respData['va_number_list'], true) : $respData['va_number_list'];
+                    $vaNumber = $vaList[0]['va'] ?? null;
+                }
+                $qrString = $respData['qris_data'] ?? $respData['qr_string'] ?? null;
+                $paymentUrl = $respData['payment_url'] ?? null;
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Donasi berhasil diinisialisasi. Silakan selesaikan pembayaran.',
-                'data' => [
-                    'donation' => $donation,
-                    'payment'  => $payment
-                ]
-            ]);
+                $payment = Payment::create([
+                    'user_id'        => $user->id,
+                    'external_id'    => $refNo,
+                    'amount'         => $amount,
+                    'status'         => 'pending',
+                    'payment_url'    => $paymentUrl,
+                    'qr_string'      => $qrString,
+                    'va_number'      => $vaNumber,
+                    'bank_code'      => ($method === 'VA') ? 'BCA' : null,
+                    'payment_method' => $method,
+                    'payload'        => json_encode(['type' => 'donation', 'campaign_id' => $campaign->id])
+                ]);
+
+                $donation = Donation::create([
+                    'user_id'              => $user->id,
+                    'donation_campaign_id' => $campaign->id,
+                    'payment_id'           => $payment->id,
+                    'amount'               => $amount,
+                    'donator_name'         => $request->donator_name ?? $user->username,
+                    'is_anonymous'         => $request->is_anonymous ?? false,
+                    'message'              => $request->message,
+                    'status'               => 'pending'
+                ]);
+
+                DB::commit();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Donasi berhasil diinisialisasi.',
+                    'data' => [
+                        'donation'       => $donation,
+                        'payment'        => $payment,
+                        'payment_url'    => $paymentUrl,
+                        'qr_string'      => $qrString,
+                        'va_number'      => $vaNumber,
+                        'payment_method' => $method,
+                    ]
+                ]);
+            }
+
+            throw new \Exception($respData['response_description'] ?? $respData['response_message'] ?? 'Gagal menghubungi gateway pembayaran');
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -119,6 +248,7 @@ class DonationController extends Controller
             ], 500);
         }
     }
+
 
     /**
      * Organizer: List their own campaigns
@@ -130,7 +260,8 @@ class DonationController extends Controller
             return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
         }
 
-        $campaigns = DonationCampaign::where('organizer_id', $user->id)
+        $campaigns = DonationCampaign::with(['reports', 'category'])
+            ->where('organizer_id', $user->id)
             ->latest()
             ->get();
 
@@ -156,8 +287,16 @@ class DonationController extends Controller
             'description'   => 'required|string',
             'target_amount' => 'required|numeric|min:10000',
             'deadline'      => 'nullable|date',
-            'image'         => 'nullable|string' // Usually file upload in real app
+            'image'         => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120'
         ]);
+
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = time() . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads/campaigns'), $filename);
+            $imagePath = url('uploads/campaigns/' . $filename);
+        }
 
         $campaign = DonationCampaign::create([
             'organizer_id'  => $user->id,
@@ -166,9 +305,9 @@ class DonationController extends Controller
             'slug'          => Str::slug($request->title) . '-' . time(),
             'description'   => $request->description,
             'target_amount' => $request->target_amount,
-            'status'        => 'pending', // Needs admin approval
+            'status'        => 'pending',
             'deadline'      => $request->deadline,
-            'image'         => $request->image
+            'image'         => $imagePath ?? $request->image
         ]);
 
         return response()->json([
@@ -194,15 +333,24 @@ class DonationController extends Controller
             'title'        => 'required|string|max:255',
             'content'      => 'required|string',
             'amount_spent' => 'nullable|numeric',
-            'images'       => 'nullable|array'
+            'images.*'     => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120'
         ]);
+
+        $imagePaths = [];
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $file) {
+                $filename = time() . '_' . Str::random(5) . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('uploads/reports'), $filename);
+                $imagePaths[] = url('uploads/reports/' . $filename);
+            }
+        }
 
         $report = DonationReport::create([
             'donation_campaign_id' => $campaign->id,
             'title'                => $request->title,
             'content'              => $request->content,
             'amount_spent'         => $request->amount_spent ?? 0,
-            'images'               => $request->images
+            'images'               => !empty($imagePaths) ? $imagePaths : null
         ]);
 
         return response()->json([

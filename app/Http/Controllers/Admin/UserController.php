@@ -18,7 +18,8 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::with(['rankTier'])->latest()->paginate(15);
+        // Hanya nampilin yang role-nya 'user' (Para Hunter)
+        $users = User::where('role', 'user')->with(['rankTier'])->latest()->paginate(15);
         return view('admin.hunters.index', compact('users'));
     }
 
@@ -54,9 +55,25 @@ class UserController extends Controller
 
     public function show(User $hunter)
     {
+        // Jika dia Penyelenggara, kasih tampilan profil Mitra (Bukan Profil Gamer)
+        if ($hunter->role === 'organizer') {
+            $campaigns = \App\Models\DonationCampaign::where('organizer_id', $hunter->id)->latest()->get();
+            $totalFunds = $campaigns->sum('collected_amount');
+            $activeCount = $campaigns->where('status', 'active')->count();
+            
+            return view('admin.donations.organizer_show', [
+                'organizer' => $hunter,
+                'campaigns' => $campaigns,
+                'stats' => [
+                    'total_funds' => $totalFunds,
+                    'active_campaigns' => $activeCount,
+                    'total_campaigns' => $campaigns->count()
+                ]
+            ]);
+        }
+
         $hunter->load(['rankTier']);
-        
-        // 1. Total Surah (Completed Surahs from progress table)
+        // ... rest of spiritual stats logic ...
         $totalSurah = DB::table('user_quran_progress')
             ->where('user_id', $hunter->id)
             ->where('is_completed', true)

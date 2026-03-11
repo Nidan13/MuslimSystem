@@ -42,4 +42,18 @@ class DonationCampaign extends Model
     {
         return $this->hasMany(DonationReport::class);
     }
+
+    protected static function booted()
+    {
+        static::deleting(function ($campaign) {
+            // Delete related reports
+            $campaign->reports()->delete();
+            
+            // Delete related donations
+            $campaign->donations()->delete();
+            
+            // Note: If you have payments strictly tied to these donations without their own lifecycle, 
+            // you might need to handle them, but usually payments are independent records.
+        });
+    }
 }
