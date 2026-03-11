@@ -22,9 +22,14 @@
             @csrf @method('PUT')
             
             <div class="space-y-8">
+                <div class="text-center py-5 bg-slate-50 rounded-[24px] border-2 border-slate-100 mb-2">
+                    <div class="text-[9px] font-black text-slate-400 uppercase tracking-[0.5em] mb-2">Signature Gerbang</div>
+                    <div class="text-2xl font-serif font-black text-teal-900 uppercase italic tracking-tighter">Tier {{ $dungeon->rankTier->slug ?? 'Open' }} // {{ $dungeon->name }}</div>
+                </div>
+
                 <!-- Identitas -->
                 <div class="space-y-3">
-                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Identitas Rift (Nama)</label>
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Penamaan Ulang Protokol (Nama)</label>
                     <input type="text" name="name" value="{{ old('name', $dungeon->name) }}" required 
                         class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-red-400 focus:outline-none text-xl font-serif font-black text-teal-950 transition-all placeholder-slate-200 uppercase tracking-tight" 
                         placeholder="MANDAT OPERASIONAL AKTIF...">
@@ -35,8 +40,8 @@
                     <div class="space-y-3">
                         <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Klasifikasi Gate</label>
                         <select name="dungeon_type_id" required class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-cyan-400 focus:outline-none text-sm font-black transition-all appearance-none cursor-pointer uppercase tracking-widest text-teal-900">
-                            @foreach($dungeonTypes as $type)
-                            <option value="{{ $type->id }}" {{ $dungeon->dungeon_type_id == $type->id ? 'selected' : '' }}>{{ $type->name }} (Max: {{ $type->max_participants }} People)</option>
+                            @foreach($types as $type)
+                                <option value="{{ $type->id }}" {{ $dungeon->dungeon_type_id == $type->id ? 'selected' : '' }}>{{ $type->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -45,8 +50,8 @@
                         <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Rank Otoritas</label>
                         <select name="rank_tier_id" class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-cyan-400 focus:outline-none text-sm font-black transition-all appearance-none cursor-pointer uppercase tracking-widest text-teal-900">
                             <option value="">OPEN-RANK (SEMUA TIER)</option>
-                            @foreach($rankTiers as $tier)
-                            <option value="{{ $tier->id }}" {{ $dungeon->rank_tier_id == $tier->id ? 'selected' : '' }}>TIER {{ $tier->slug }} - {{ $tier->name }}</option>
+                            @foreach($rankTiers as $rank)
+                                <option value="{{ $rank->id }}" {{ $dungeon->rank_tier_id == $rank->id ? 'selected' : '' }}>TIER {{ $rank->slug }} - {{ $rank->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -74,11 +79,11 @@
                             <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Tipe Objektif</label>
                             <select name="objective_type" required class="w-full px-5 py-3.5 bg-white border border-slate-200 rounded-xl focus:border-cyan-400 focus:outline-none text-[11px] font-black transition-all appearance-none cursor-pointer uppercase tracking-widest text-teal-900 shadow-sm">
                                 <option value="">-- PILIH TIPE MISI --</option>
-                                <option value="quran" {{ $dungeon->objective_type == 'quran' ? 'selected' : '' }}>📖 Tadaruz Qur'an (Halaman)</option>
-                                <option value="prayer" {{ $dungeon->objective_type == 'prayer' ? 'selected' : '' }}>🕌 Sholat Berjamaah (Waktu)</option>
-                                <option value="kajian" {{ $dungeon->objective_type == 'kajian' ? 'selected' : '' }}>🎧 Kajian Bersama (Menit)</option>
-                                <option value="habit" {{ $dungeon->objective_type == 'habit' ? 'selected' : '' }}>🌙 Kebiasaan Baik (Count)</option>
-                                <option value="journal" {{ $dungeon->objective_type == 'journal' ? 'selected' : '' }}>📝 Jurnal Harian (Count)</option>
+                                <option value="quran" {{ (old('objective_type') ?? $dungeon->objective_type) == 'quran' ? 'selected' : '' }}>📖 Tadaruz Qur'an (Halaman)</option>
+                                <option value="prayer" {{ (old('objective_type') ?? $dungeon->objective_type) == 'prayer' ? 'selected' : '' }}>🕌 Sholat Berjamaah (Waktu)</option>
+                                <option value="kajian" {{ (old('objective_type') ?? $dungeon->objective_type) == 'kajian' ? 'selected' : '' }}>🎧 Kajian Bersama (Menit)</option>
+                                <option value="habit" {{ (old('objective_type') ?? $dungeon->objective_type) == 'habit' ? 'selected' : '' }}>🌙 Kebiasaan Baik (Count)</option>
+                                <option value="journal" {{ (old('objective_type') ?? $dungeon->objective_type) == 'journal' ? 'selected' : '' }}>📝 Jurnal Harian (Count)</option>
                             </select>
                         </div>
 

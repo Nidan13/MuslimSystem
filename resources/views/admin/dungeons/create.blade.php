@@ -35,8 +35,10 @@
                     <div class="space-y-3">
                         <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Klasifikasi Gate</label>
                         <select name="dungeon_type_id" required class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-cyan-400 focus:outline-none text-sm font-black transition-all appearance-none cursor-pointer uppercase tracking-widest text-teal-900">
-                            @foreach($dungeonTypes as $type)
-                            <option value="{{ $type->id }}">{{ $type->name }} (Max: {{ $type->max_participants }} People)</option>
+                            @foreach($types as $type)
+                                <option value="{{ $type->id }}" {{ old('dungeon_type_id') == $type->id ? 'selected' : '' }}>
+                                    {{ $type->name }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
@@ -45,8 +47,10 @@
                         <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Rank Otoritas</label>
                         <select name="rank_tier_id" class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-cyan-400 focus:outline-none text-sm font-black transition-all appearance-none cursor-pointer uppercase tracking-widest text-teal-900">
                             <option value="">OPEN-RANK (SEMUA TIER)</option>
-                            @foreach($rankTiers as $tier)
-                            <option value="{{ $tier->id }}">TIER {{ $tier->slug }} - {{ $tier->name }}</option>
+                            @foreach($rankTiers as $rank)
+                                <option value="{{ $rank->id }}" {{ old('rank_tier_id') == $rank->id ? 'selected' : '' }}>
+                                    TIER {{ $rank->slug }} - {{ $rank->name }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
@@ -104,7 +108,7 @@
                     <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Briefing Dokumentasi (Deskripsi)</label>
                     <textarea name="description" rows="4" 
                         class="w-full p-6 bg-slate-50 border border-slate-100 rounded-3xl focus:bg-white focus:border-cyan-400 focus:outline-none text-sm font-medium transition-all placeholder-slate-200 italic leading-relaxed" 
-                        placeholder="Jelaskan parameter rift dan data historis..."></textarea>
+                        placeholder="Jelaskan parameter rift dan data historis...">{{ old('description') }}</textarea>
                 </div>
             </div>
 

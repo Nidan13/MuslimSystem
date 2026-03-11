@@ -67,17 +67,36 @@
                         <div class="flex gap-4">
                             <label class="flex-1 cursor-pointer group">
                                 <input type="radio" name="gender" value="Male" checked class="hidden peer">
-                                <div class="py-3 rounded-xl border border-slate-100 bg-slate-50 text-slate-400 font-black text-center peer-checked:bg-teal-900 peer-checked:text-white transition-all uppercase tracking-widest text-[9px]">
-                                    Laki-laki
+                                <div class="py-4 rounded-xl border border-slate-100 bg-slate-50 text-slate-400 font-black text-center peer-checked:bg-teal-900 peer-checked:text-white transition-all uppercase tracking-widest text-[9px]">
+                                    <i class="fas fa-mars mr-1"></i> Laki-laki
                                 </div>
                             </label>
                             <label class="flex-1 cursor-pointer group">
                                 <input type="radio" name="gender" value="Female" class="hidden peer">
-                                <div class="py-3 rounded-xl border border-slate-100 bg-slate-50 text-slate-400 font-black text-center peer-checked:bg-teal-900 peer-checked:text-white transition-all uppercase tracking-widest text-[9px]">
-                                    Perempuan
+                                <div class="py-4 rounded-xl border border-slate-100 bg-slate-50 text-slate-400 font-black text-center peer-checked:bg-pink-500 peer-checked:text-white transition-all uppercase tracking-widest text-[9px]">
+                                    <i class="fas fa-venus mr-1"></i> Perempuan
                                 </div>
                             </label>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Level, EXP, Soul Points -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="space-y-3">
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Level Hunter</label>
+                        <input type="number" name="level" value="{{ old('level', 1) }}" required 
+                            class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-cyan-400 focus:outline-none text-lg font-mono font-black text-teal-900 transition-all">
+                    </div>
+                    <div class="space-y-3">
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Current EXP</label>
+                        <input type="number" name="current_exp" value="{{ old('current_exp', 0) }}" required 
+                            class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-cyan-400 focus:outline-none text-lg font-mono font-black text-teal-900 transition-all">
+                    </div>
+                    <div class="space-y-3">
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Soul Points (SP)</label>
+                        <input type="number" name="soul_points" value="{{ old('soul_points', 0) }}" required 
+                            class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-cyan-400 focus:outline-none text-lg font-mono font-black text-teal-900 transition-all">
                     </div>
                 </div>
             </div>

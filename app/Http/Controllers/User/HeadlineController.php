@@ -13,7 +13,8 @@ class HeadlineController extends Controller
      */
     public function index()
     {
-        $headlines = Headline::where('is_active', true)
+        $headlines = Headline::with('category')
+            ->where('is_active', true)
             ->latest()
             ->get();
 
@@ -28,7 +29,7 @@ class HeadlineController extends Controller
      */
     public function show($id)
     {
-        $headline = Headline::findOrFail($id);
+        $headline = Headline::with('category')->findOrFail($id);
 
         return response()->json([
             'success' => true,

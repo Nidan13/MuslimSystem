@@ -18,76 +18,90 @@ use App\Http\Controllers\Admin\PrayerController as AdminMasterPrayerController;
 use App\Http\Controllers\Admin\IslamicVideoController;
 use App\Http\Controllers\Admin\AffiliateController;
 use App\Http\Controllers\Admin\WithdrawalController;
+
 use Illuminate\Support\Facades\Route;
 
 // Public Routes (Inertia - React)
-Route::get('/', fn() => inertia('LandingPage'))->name('home');
-Route::get('/features', fn() => inertia('Features'))->name('features');
-Route::get('/about', fn() => inertia('About'))->name('about');
-Route::get('/faq', fn() => inertia('FAQ'))->name('faq');
-Route::get('/privacy', fn() => inertia('PrivacyPolicy'))->name('privacy');
+Route::get('/', function () {
+    return inertia('LandingPage', [
+    'appName' => config('app.name'),
+    'downloadUrl' => env('APK_DOWNLOAD_URL', '#'),
+    ]);
+})->name('home');
+
+Route::get('/features', fn() => inertia('Features', ['appName' => config('app.name')]))->name('features');
+Route::get('/about', fn() => inertia('About', ['appName' => config('app.name')]))->name('about');
+Route::get('/faq', fn() => inertia('FAQ', ['appName' => config('app.name')]))->name('faq');
+Route::get('/privacy', fn() => inertia('PrivacyPolicy', ['appName' => config('app.name')]))->name('privacy');
 
 // Public Download Route (Optional, could be the same as landing)
 Route::get('/download', fn() => redirect()->route('home'))->name('download');
 
-// Guest Routes (Login tetap ada)
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login')->middleware('guest');
-Route::post('/login', [AuthController::class, 'login'])->middleware('guest');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+// Guest Routes
+Route::get('/login', [AuthController::class , 'showLogin'])->name('login')->middleware('guest');
+Route::post('/login', [AuthController::class , 'login'])->middleware('guest');
+Route::post('/logout', [AuthController::class , 'logout'])->name('logout');
 
 // Authenticated Routes
 Route::middleware(['auth'])->group(function () {
 
     // 1. Redirect Central: Menentukan arah berdasarkan rank saat akses /dashboard
-    Route::get('/dashboard', function() {
-        $user = auth()->user()->load('rankTier');
-        // Logika: Hanya ID 1 atau Rank S yang ke Admin
-        if ($user->id === 1 || (optional($user->rankTier)->slug === 'S')) {
-            return redirect()->route('admin.dashboard');
+    Route::get('/dashboard', function () {
+            $user = auth()->user()->load('rankTier');
+            // Logika: Hanya ID 1 atau Rank S yang ke Admin
+            if ($user->id === 1 || (optional($user->rankTier)->slug === 'S')) {
+                return redirect()->route('admin.dashboard');
+            }
+            return response()->json(['message' => 'Please use the mobile app.']);
         }
-        return response()->json(['message' => 'Please use the mobile app.']);
-    })->name('dashboard');
+        )->name('dashboard');
 
-    // 2. Admin Group
-    Route::prefix('admin')->name('admin.')->group(function () {
-        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+        // 2. Admin Group
+        Route::prefix('admin')->name('admin.')->group(function () {
+            Route::get('/dashboard', [AdminDashboardController::class , 'index'])->name('dashboard');
 
-        Route::resource('quests', QuestController::class);
-        Route::resource('headlines', \App\Http\Controllers\Admin\HeadlineController::class);
-        Route::resource('dungeons', DungeonController::class);
-        Route::resource('shop', ShopController::class);
-        Route::resource('hunters', UserController::class)->except(['edit', 'update']);
-        Route::resource('quest-types', QuestTypeController::class);
-        Route::resource('rank-tiers', RankTierController::class);
-        Route::resource('dungeon-types', DungeonTypeController::class);
-        Route::resource('level-configs', LevelConfigController::class)->parameters([
-            'level-configs' => 'level_config'
-        ]);
-        
-        Route::resource('circles', CircleController::class);
-        Route::resource('islamic-videos', IslamicVideoController::class);
-    
-        // Daily Tasks (Master)
-        Route::resource('daily-tasks', AdminDailyTaskController::class);
-        Route::get('/users-with-custom-tasks', [AdminDailyTaskController::class, 'usersWithCustomTasks'])->name('daily-tasks.users');
-        Route::get('/users/{user}/custom-tasks', [AdminDailyTaskController::class, 'userCustomTasks'])->name('daily-tasks.user-tasks');
+            Route::resource('quests', QuestController::class);
 
-        // Logs & Journal
-        Route::resource('prayer-logs', PrayerLogController::class)->only(['index', 'destroy']);
-        Route::resource('activity-logs', ActivityLogController::class)->only(['index', 'destroy']);
+            Route::resource('headline-categories', \App\Http\Controllers\Admin\HeadlineCategoryController::class);
+            Route::resource('islamic-video-categories', \App\Http\Controllers\Admin\IslamicVideoCategoryController::class);
+            Route::resource('quest-categories', \App\Http\Controllers\Admin\QuestCategoryController::class);
+            Route::resource('headlines', \App\Http\Controllers\Admin\HeadlineController::class);
+            Route::resource('dungeons', DungeonController::class);
+            Route::resource('shop', ShopController::class);
+            Route::resource('hunters', UserController::class);
+            Route::resource('quest-types', QuestTypeController::class);
+            Route::resource('rank-tiers', RankTierController::class);
+            Route::resource('dungeon-types', DungeonTypeController::class);
+            Route::resource('level-configs', LevelConfigController::class)->parameters([
+                'level-configs' => 'level_config'
+            ]);
 
-        // Affiliate & Commissions
-        Route::get('/affiliates', [AffiliateController::class, 'index'])->name('affiliates.index');
-        Route::get('/affiliates/{user}', [AffiliateController::class, 'show'])->name('affiliates.show');
-        Route::get('/withdrawals', [WithdrawalController::class, 'index'])->name('withdrawals.index');
-        Route::patch('/withdrawals/{withdrawal}', [WithdrawalController::class, 'update'])->name('withdrawals.update');
+            Route::resource('circles', CircleController::class);
+            Route::resource('islamic-videos', IslamicVideoController::class);
 
-        // Manual Payments
-        Route::get('/payments/manual', [\App\Http\Controllers\Admin\ManualPaymentController::class, 'index'])->name('payments.manual.index');
-        Route::post('/payments/manual/{payment}/approve', [\App\Http\Controllers\Admin\ManualPaymentController::class, 'approve'])->name('payments.manual.approve');
-        Route::post('/payments/manual/{payment}/reject', [\App\Http\Controllers\Admin\ManualPaymentController::class, 'reject'])->name('payments.manual.reject');
+            // Daily Tasks (Master)
+            Route::resource('daily-tasks', AdminDailyTaskController::class);
+            Route::resource('daily-task-categories', \App\Http\Controllers\Admin\DailyTaskCategoryController::class);
+            Route::get('/users-with-custom-tasks', [AdminDailyTaskController::class , 'usersWithCustomTasks'])->name('daily-tasks.users');
+            Route::get('/users/{user}/custom-tasks', [AdminDailyTaskController::class , 'userCustomTasks'])->name('daily-tasks.user-tasks');
 
-        // Master Data Sholat
-        Route::resource('prayers', AdminMasterPrayerController::class)->except(['create', 'store', 'show', 'destroy']);
+            // Logs & Journal
+            Route::resource('prayer-logs', PrayerLogController::class)->only(['index', 'destroy']);
+            Route::resource('activity-logs', ActivityLogController::class)->only(['index', 'destroy']);
+
+            // Affiliate & Commissions
+            Route::get('/affiliates', [AffiliateController::class , 'index'])->name('affiliates.index');
+            Route::get('/affiliates/{user}', [AffiliateController::class , 'show'])->name('affiliates.show');
+            Route::get('/withdrawals', [WithdrawalController::class , 'index'])->name('withdrawals.index');
+            Route::patch('/withdrawals/{withdrawal}', [WithdrawalController::class , 'update'])->name('withdrawals.update');
+
+            // Manual Payments
+            Route::get('/payments/manual', [\App\Http\Controllers\Admin\ManualPaymentController::class , 'index'])->name('payments.manual.index');
+            Route::post('/payments/manual/{payment}/approve', [\App\Http\Controllers\Admin\ManualPaymentController::class , 'approve'])->name('payments.manual.approve');
+            Route::post('/payments/manual/{payment}/reject', [\App\Http\Controllers\Admin\ManualPaymentController::class , 'reject'])->name('payments.manual.reject');
+
+            // Master Data Sholat
+            Route::resource('prayers', AdminMasterPrayerController::class)->except(['create', 'store', 'show', 'destroy']);
+        }
+        );
     });
-});

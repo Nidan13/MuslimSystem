@@ -57,7 +57,7 @@
                                     </span>
                                     @if($headline->category)
                                     <span class="px-2.5 py-1 rounded-lg bg-slate-50 border border-slate-100 text-slate-400 text-[8px] font-black uppercase tracking-widest">
-                                        {{ $headline->category }}
+                                        {{ $headline->category->name }}
                                     </span>
                                     @endif
                                 </div>

@@ -14,13 +14,15 @@ class IslamicVideo extends Model
         'channel',
         'video_url',
         'duration',
-        'category',
+        'category_id',
         'is_active',
     ];
 
-    /**
-     * Helper to extract YouTube video ID from URL
-     */
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
+
     public function getVideoIdAttribute()
     {
         preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $this->video_url, $match);

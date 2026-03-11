@@ -69,12 +69,13 @@
                     <div>
                         <label class="block text-[10px] font-black text-teal-900/40 uppercase mb-3 tracking-[0.3em] ml-1">Klasifikasi (Kategori)</label>
                         <div class="relative">
-                            <select name="category" class="w-full bg-slate-50 border-2 border-slate-200 rounded-[24px] text-teal-900 p-6 focus:border-cyan-400 focus:bg-white outline-none appearance-none cursor-pointer font-black text-sm uppercase tracking-widest shadow-inner transition-all">
-                                <option value="General">Umum</option>
-                                <option value="Kajian">Kajian Intensif</option>
-                                <option value="Podcast">Siniar Islami</option>
-                                <option value="Sejarah">Sejarah Islam</option>
-                                <option value="Amalan">Panduan Amalan</option>
+                            <select name="category_id" class="w-full bg-slate-50 border-2 border-slate-200 rounded-[24px] text-teal-900 p-6 focus:border-cyan-400 focus:bg-white outline-none appearance-none cursor-pointer font-black text-sm uppercase tracking-widest shadow-inner transition-all">
+                                <option value="">-- TANPA KATEGORI --</option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                        {{ $category->name }}
+                                    </option>
+                                @endforeach
                             </select>
                             <div class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-cyan-500">
                                 <i class="fas fa-chevron-down text-sm"></i>

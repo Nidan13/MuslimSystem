@@ -30,27 +30,39 @@
                         placeholder="MISAL: SHOLAT BERJAMAAH DI MASJID">
                 </div>
 
-                <!-- Grid Type & Rank -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="space-y-3">
-                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Kategori Misi</label>
-                        <select name="quest_type_id" required 
-                            class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-cyan-400 focus:outline-none text-sm font-black transition-all appearance-none cursor-pointer uppercase tracking-widest text-teal-900">
-                            @foreach($questTypes as $type)
-                            <option value="{{ $type->id }}">{{ $type->name }}</option>
-                            @endforeach
-                        </select>
+                <!-- Type and Rank Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div class="space-y-4">
+                        <label class="text-[11px] font-black text-teal-900/40 uppercase tracking-[0.4em] ml-2 block">Klasifikasi Strategis</label>
+                        <div class="relative group">
+                            <div class="absolute inset-y-0 left-0 pl-8 flex items-center pointer-events-none">
+                                <i class="fas fa-layer-group text-slate-300 group-focus-within:text-cyan-500 transition-colors"></i>
+                            </div>
+                            <select name="quest_type_id" required 
+                                class="w-full pl-18 pr-12 py-6 bg-slate-50 border-2 border-slate-100 rounded-[28px] focus:bg-white focus:border-teal-900 focus:outline-none text-sm font-black transition-all appearance-none cursor-pointer shadow-inner uppercase tracking-[0.2em] text-teal-900">
+                                @foreach($types as $type)
+                                <option value="{{ $type->id }}" {{ old('quest_type_id') == $type->id ? 'selected' : '' }}>{{ $type->name }}</option>
+                                @endforeach
+                            </select>
+                            <i class="fas fa-chevron-down absolute right-8 top-1/2 -translate-y-1/2 text-cyan-500 pointer-events-none group-hover:rotate-180 transition-transform"></i>
+                        </div>
                     </div>
 
-                    <div class="space-y-3">
-                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Batas Rank (Tier)</label>
-                        <select name="rank_tier_id" 
-                            class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-cyan-400 focus:outline-none text-sm font-black transition-all appearance-none cursor-pointer uppercase tracking-widest text-teal-900">
-                            <option value="">OTORITAS TERBUKA (OPEN)</option>
-                            @foreach($rankTiers as $tier)
-                            <option value="{{ $tier->id }}">TIER {{ $tier->slug }} - {{ $tier->name }}</option>
-                            @endforeach
-                        </select>
+                    <div class="space-y-4">
+                        <label class="text-[11px] font-black text-teal-900/40 uppercase tracking-[0.4em] ml-2 block">Batas Otoritas (Rank)</label>
+                        <div class="relative group">
+                            <div class="absolute inset-y-0 left-0 pl-8 flex items-center pointer-events-none">
+                                <i class="fas fa-shield-halved text-slate-300 group-focus-within:text-cyan-500 transition-colors"></i>
+                            </div>
+                            <select name="rank_tier_id" 
+                                class="w-full pl-18 pr-12 py-6 bg-slate-50 border-2 border-slate-100 rounded-[28px] focus:bg-white focus:border-teal-900 focus:outline-none text-sm font-black transition-all appearance-none cursor-pointer shadow-inner uppercase tracking-[0.2em] text-teal-900">
+                                <option value="">OTORITAS TERBUKA</option>
+                                @foreach($rankTiers as $rank)
+                                <option value="{{ $rank->id }}" {{ old('rank_tier_id') == $rank->id ? 'selected' : '' }}>TIER {{ $rank->slug }} - {{ $rank->name }}</option>
+                                @endforeach
+                            </select>
+                            <i class="fas fa-chevron-down absolute right-8 top-1/2 -translate-y-1/2 text-cyan-500 pointer-events-none group-hover:rotate-180 transition-transform"></i>
+                        </div>
                     </div>
                 </div>
 
@@ -60,6 +72,7 @@
                     <textarea name="description" rows="4" 
                         class="w-full p-6 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-cyan-400 focus:outline-none text-sm font-medium transition-all placeholder-slate-300 italic leading-relaxed"
                         placeholder="Detail instruksi untuk hunter...">{{ old('description') }}</textarea>
+                </div>
                 </div>
 
                 <!-- Rewards Grid -->

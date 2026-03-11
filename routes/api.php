@@ -180,5 +180,16 @@ Route::get('/run-seeders', function() {
             // Headline News Routes
             Route::get('/headlines', [\App\Http\Controllers\User\HeadlineController::class, 'index']);
             Route::get('/headlines/{id}', [\App\Http\Controllers\User\HeadlineController::class, 'show']);
+
+            // Donation API
+            Route::prefix('donations')->group(function () {
+                Route::get('/', [\App\Http\Controllers\User\DonationController::class, 'index']);
+                Route::get('/my', [\App\Http\Controllers\User\DonationController::class, 'organizerIndex']);
+                Route::get('/{id}', [\App\Http\Controllers\User\DonationController::class, 'show']);
+                Route::post('/donate', [\App\Http\Controllers\User\DonationController::class, 'donate']);
+                Route::post('/campaign', [\App\Http\Controllers\User\DonationController::class, 'storeCampaign']);
+                Route::post('/report/{campaignId}', [\App\Http\Controllers\User\DonationController::class, 'storeReport']);
+            });
         });
+
     });

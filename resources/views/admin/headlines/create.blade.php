@@ -17,7 +17,7 @@
 
     <!-- Main Form Card -->
     <div class="glass-panel p-10 rounded-[40px] bg-white border-2 border-slate-50 shadow-xl relative overflow-hidden">
-        <form action="{{ route('admin.headlines.store') }}" method="POST" class="space-y-10 relative z-10">
+        <form action="{{ route('admin.headlines.store') }}" method="POST" enctype="multipart/form-data" class="space-y-10 relative z-10">
             @csrf
             
             <div class="space-y-8">
@@ -27,6 +27,7 @@
                     <input type="text" name="title" value="{{ old('title') }}" required
                         class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-cyan-400 focus:outline-none text-lg font-black transition-all placeholder-slate-200 uppercase tracking-tight"
                         placeholder="MISAL: UPDATE SISTEM RAMADHAN">
+                    @error('title') <p class="text-red-500 text-[10px] font-black mt-1 ml-1">{{ $message }}</p> @enderror
                 </div>
 
                 <!-- Grid Tag & Category -->
@@ -35,29 +36,60 @@
                         <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Tag (Short Label)</label>
                         <input type="text" name="tag" value="{{ old('tag', 'NEWS') }}" required
                             class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-cyan-400 focus:outline-none text-sm font-black transition-all uppercase tracking-widest text-teal-900">
+                        @error('tag') <p class="text-red-500 text-[10px] font-black mt-1 ml-1">{{ $message }}</p> @enderror
                     </div>
 
                     <div class="space-y-3">
                         <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Kategori (Optional)</label>
-                        <input type="text" name="category" value="{{ old('category') }}"
-                            class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-cyan-400 focus:outline-none text-sm font-black transition-all uppercase tracking-widest text-teal-900">
+                        <select name="category_id"
+                            class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-cyan-400 focus:outline-none text-sm font-black transition-all uppercase tracking-widest text-teal-900 appearance-none">
+                            <option value="">-- TANPA KATEGORI --</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('category_id') <p class="text-red-500 text-[10px] font-black mt-1 ml-1">{{ $message }}</p> @enderror
                     </div>
                 </div>
 
-                <!-- Image URL -->
+                <!-- Upload Gambar Banner -->
                 <div class="space-y-3">
-                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">URL Gambar (Banner)</label>
-                    <input type="url" name="image_url" value="{{ old('image_url') }}"
-                        class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-cyan-400 focus:outline-none text-[10px] font-mono transition-all placeholder-slate-300"
-                        placeholder="https://example.com/banner.jpg">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Upload Gambar Banner</label>
+                    <div class="relative group">
+                        <!-- Clickable Area -->
+                        <div id="drop-zone-create" onclick="document.getElementById('image-input-create').click()" 
+                            class="w-full h-48 bg-slate-50 border-2 border-dashed border-slate-200 rounded-3xl flex flex-col items-center justify-center transition-all hover:border-cyan-400 hover:bg-cyan-50/20 group-hover:shadow-lg cursor-pointer">
+                            <i class="fas fa-cloud-upload-alt text-4xl text-slate-300 mb-3 group-hover:text-cyan-400 transition-colors"></i>
+                            <p class="text-[10px] font-black text-slate-300 uppercase tracking-widest">Klik atau seret gambar ke sini</p>
+                            <p class="text-[9px] text-slate-200 mt-1">JPG, PNG, WEBP • Maks 2MB</p>
+                        </div>
+                        
+                        <!-- Preview Container -->
+                        <div id="preview-container-create" class="hidden absolute inset-0">
+                            <img id="image-preview-create" src="" alt="Preview" class="w-full h-48 object-cover rounded-3xl border-2 border-cyan-400 shadow-lg">
+                            <!-- Change Button -->
+                            <button type="button" onclick="document.getElementById('image-input-create').click()" class="absolute inset-0 w-full h-full bg-black/20 opacity-0 hover:opacity-100 transition-opacity rounded-3xl flex items-center justify-center">
+                                <span class="bg-white/90 text-teal-900 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-xl">Ganti Gambar</span>
+                            </button>
+                            <!-- Remove button -->
+                            <button type="button" id="remove-image-create" onclick="removeImage('create')" class="absolute top-3 right-3 w-10 h-10 bg-red-500 text-white rounded-2xl flex items-center justify-center hover:bg-red-600 transition-all shadow-lg text-xs z-20">
+                                <i class="fas fa-times text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <input type="file" id="image-input-create" name="image" accept="image/*" class="hidden" onchange="previewImage(this, 'create')">
+                    @error('image') <p class="text-red-500 text-[10px] font-black mt-1 ml-1">{{ $message }}</p> @enderror
                 </div>
 
-                <!-- Content -->
+                <!-- Content / Deskripsi -->
                 <div class="space-y-3">
-                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Isi Konten (Optional)</label>
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Isi Berita / Deskripsi Utama</label>
                     <textarea name="content" rows="6" 
                         class="w-full p-6 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-cyan-400 focus:outline-none text-sm font-medium transition-all placeholder-slate-300 italic leading-relaxed"
                         placeholder="Tuliskan berita lengkap di sini...">{{ old('content') }}</textarea>
+                    @error('content') <p class="text-red-500 text-[10px] font-black mt-1 ml-1">{{ $message }}</p> @enderror
                 </div>
 
                 <!-- Status Switch -->
@@ -81,6 +113,34 @@
         </form>
     </div>
 </div>
+
+<script>
+    function previewImage(input, key) {
+        const file = input.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const preview = document.getElementById('image-preview-' + key);
+            const container = document.getElementById('preview-container-' + key);
+            const dropZone = document.getElementById('drop-zone-' + key);
+            
+            preview.src = e.target.result;
+            container.classList.remove('hidden');
+            dropZone.classList.add('invisible'); // Pakai invisible biar tingginya tetep
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function removeImage(key) {
+        const input = document.getElementById('image-input-' + key);
+        const container = document.getElementById('preview-container-' + key);
+        const dropZone = document.getElementById('drop-zone-' + key);
+        
+        input.value = '';
+        container.classList.add('hidden');
+        dropZone.classList.remove('invisible');
+    }
+</script>
 
 <style>
     .animate-fadeIn { animation: fadeIn 0.6s ease-out forwards; }

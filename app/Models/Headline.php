@@ -11,14 +11,23 @@ class Headline extends Model
 
     protected $fillable = [
         'tag',
-        'category',
+        'category_id',
+        'category_legacy',
         'title',
         'content',
         'image_url',
         'is_active',
     ];
 
-    protected $casts = [
-        'is_active' => 'boolean',
-    ];
+    public function getImageUrlAttribute($value)
+    {
+        if (!$value) return null;
+        if (str_starts_with($value, 'http')) return $value;
+        return url($value);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
 }

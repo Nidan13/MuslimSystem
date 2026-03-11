@@ -6,16 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Models\Dungeon;
 use Illuminate\Http\Request;
 
+use App\Models\Category;
+
 class DungeonController extends Controller
 {
     public function index(Request $request)
     {
         $limit = $request->get('limit', 12);
         $query = Dungeon::with(['dungeonType', 'rankTier'])->latest();
-        
+
         if ($limit === 'all') {
             $dungeons = $query->get();
-        } else {
+        }
+        else {
             $dungeons = $query->paginate((int)$limit);
         }
 
@@ -24,9 +27,9 @@ class DungeonController extends Controller
 
     public function create()
     {
-        $dungeonTypes = \App\Models\DungeonType::all();
-        $rankTiers = \App\Models\RankTier::orderBy('min_level', 'desc')->get();
-        return view('admin.dungeons.create', compact('dungeonTypes', 'rankTiers'));
+        $types = \App\Models\DungeonType::all();
+        $rankTiers = \App\Models\RankTier::all();
+        return view('admin.dungeons.create', compact('types', 'rankTiers'));
     }
 
     public function store(Request $request)
@@ -34,8 +37,8 @@ class DungeonController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'dungeon_type_id' => 'required|exists:dungeon_types,id',
-            'rank_tier_id' => 'nullable|exists:rank_tiers,id',
+            'category_id' => 'required|exists:categories,id',
+            'rank_category_id' => 'nullable|exists:categories,id',
             'min_level_requirement' => 'required|integer|min:1',
             'reward_exp' => 'required|integer|min:0',
             'required_players' => 'required|integer|min:1',
@@ -44,11 +47,14 @@ class DungeonController extends Controller
             'loot_pool' => 'nullable|array',
         ]);
 
-        \Log::info('Dungeon Creation Attempt:', $validated);
+        // Fix: Provide legacy NOT NULL fields if schema hasn't been migrated to nullable yet
+        $validated['dungeon_type_id'] = 1; // Default to first type
+        $validated['rank_tier_id'] = 1; // Default to first tier
+
         try {
-            $dungeon = Dungeon::create($validated);
-            \Log::info('Dungeon Created:', ['id' => $dungeon->id]);
-        } catch (\Exception $e) {
+            Dungeon::create($validated);
+        }
+        catch (\Exception $e) {
             \Log::error('Dungeon Creation Failed: ' . $e->getMessage());
             return back()->withInput()->withErrors(['error' => 'Database error: ' . $e->getMessage()]);
         }
@@ -58,15 +64,15 @@ class DungeonController extends Controller
 
     public function show(Dungeon $dungeon)
     {
-        $dungeon->load(['dungeonType', 'rankTier']);
+        $dungeon->load(['category', 'rankCategory']);
         return view('admin.dungeons.show', compact('dungeon'));
     }
 
     public function edit(Dungeon $dungeon)
     {
-        $dungeonTypes = \App\Models\DungeonType::all();
+        $types = \App\Models\DungeonType::all();
         $rankTiers = \App\Models\RankTier::all();
-        return view('admin.dungeons.edit', compact('dungeon', 'dungeonTypes', 'rankTiers'));
+        return view('admin.dungeons.edit', compact('dungeon', 'types', 'rankTiers'));
     }
 
     public function update(Request $request, Dungeon $dungeon)
@@ -74,8 +80,8 @@ class DungeonController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'dungeon_type_id' => 'required|exists:dungeon_types,id',
-            'rank_tier_id' => 'nullable|exists:rank_tiers,id',
+            'category_id' => 'required|exists:categories,id',
+            'rank_category_id' => 'nullable|exists:categories,id',
             'min_level_requirement' => 'required|integer|min:1',
             'reward_exp' => 'required|integer|min:0',
             'required_players' => 'required|integer|min:1',
@@ -86,7 +92,8 @@ class DungeonController extends Controller
 
         try {
             $dungeon->update($validated);
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
             \Log::error('Dungeon Update Failed: ' . $e->getMessage());
             return back()->withInput()->withErrors(['error' => 'Database error: ' . $e->getMessage()]);
         }
