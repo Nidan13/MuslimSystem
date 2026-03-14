@@ -14,7 +14,7 @@ const Milestone = ({ year, title, description, isLast }) => {
                 </div>
                 {!isLast && <div className="w-1 flex-grow bg-slate-100 group-hover:bg-nu-teal/20 transition-colors"></div>}
             </div>
-            <div className="pb-20 pt-4">
+            <div className="pb-20 pt-[22px]">
                 <h4 className="text-2xl font-serif font-black text-nu-indigo uppercase mb-4 tracking-tighter group-hover:text-nu-teal transition-colors leading-none">{title}</h4>
                 <p className="text-slate-500 font-medium leading-relaxed max-w-lg text-sm">{description}</p>
             </div>
