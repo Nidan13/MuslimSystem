@@ -39,33 +39,28 @@ const HeroDownloadButton = ({ downloadUrl }) => {
 };
 
 const SmartphoneLayered = () => (
-    <div className="relative w-full h-[500px] flex items-center justify-center lg:justify-end perspective-1000" style={{ animation: 'floatComplex 8s ease-in-out infinite' }}>
-        {/* Back Mockup */}
-        <div className="absolute translate-x-12 -translate-y-12 rotate-[15deg] w-[240px] h-[480px] bg-slate-800 rounded-[2.5rem] border-[6px] border-slate-900 shadow-xl overflow-hidden hidden lg:block opacity-40">
-            <div className="w-full h-full bg-nu-teal p-6 flex flex-col justify-end">
-                <div className="h-4 w-3/4 bg-white/20 rounded-full mb-2"></div>
-                <div className="h-2 w-1/2 bg-white/10 rounded-full"></div>
-            </div>
-        </div>
-        {/* Front Mockup */}
-        <div className="relative z-10 w-[260px] h-[520px] bg-slate-900 rounded-[3rem] border-[8px] border-slate-800 shadow-2xl overflow-hidden ring-1 ring-white/10">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-slate-800 rounded-b-2xl z-20"></div>
-            <div className="w-full h-full bg-white flex flex-col pt-12 p-6 space-y-6">
-                <div className="flex justify-between items-center">
-                    <div className="w-10 h-10 bg-nu-teal rounded-xl flex items-center justify-center text-white font-black text-[10px]">MLU</div>
-                    <div className="w-8 h-8 rounded-full bg-slate-50"></div>
-                </div>
-                <div className="space-y-4">
-                    <h4 className="text-nu-indigo font-black text-sm uppercase">Habit Tracker</h4>
-                    <div className="grid grid-cols-7 gap-1">
-                        {[...Array(28)].map((_, i) => (
-                            <div key={i} className={`aspect-square rounded-md ${i < 18 ? 'bg-nu-teal' : 'bg-slate-50'}`}></div>
-                        ))}
-                    </div>
-                </div>
-                <div className="p-4 bg-nu-light rounded-2xl border border-slate-100">
-                    <p className="text-[10px] text-nu-teal font-black uppercase">Statistik Ibadah</p>
-                    <p className="text-xs text-slate-500 font-medium">Progress habit kamu meningkat 75% minggu ini!</p>
+    <div className="relative w-full h-[550px] flex items-center justify-center lg:justify-end perspective-1000">
+        {/* User's Custom Mockup with Premium Border */}
+        <div 
+            className="relative z-10 w-full max-w-[280px] transition-all duration-1000 group"
+            style={{ 
+                animation: 'floatComplex 8s ease-in-out infinite',
+            }}
+        >
+            {/* Phone Frame */}
+            <div className="relative p-[12px] bg-slate-900 rounded-[3rem] shadow-2xl border-[6px] border-slate-800 ring-1 ring-white/10 transform rotate-y-6 rotate-x-2 group-hover:rotate-0 transition-transform duration-1000">
+                {/* Notch */}
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-slate-800 rounded-b-2xl z-20"></div>
+                
+                {/* Screen Content (User's Foto) */}
+                <div className="w-full h-full overflow-hidden rounded-[2rem] bg-nu-indigo relative aspect-[9/19.5]">
+                    <img 
+                        src="/storage/landing-page/app-mockup-v2.png" 
+                        alt="Muslim Level Up Mockup" 
+                        className="w-full h-full object-cover"
+                    />
+                    {/* Screen Reflection/Glass Effect */}
+                    <div className="absolute inset-0 bg-gradient-to-tr from-white/5 via-transparent to-transparent pointer-events-none"></div>
                 </div>
             </div>
         </div>
@@ -213,8 +208,12 @@ const DynamicSection = ({ section, downloadUrl }) => {
                 <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center relative z-10">
                     <RevealSection className={`${isReversed ? 'lg:order-2' : 'lg:order-1'}`} direction={isReversed ? "right" : "left"}>
                         {section.subtitle && <p className={`text-[10px] font-black uppercase tracking-[0.5em] mb-4 ${isDark ? 'text-nu-teal' : 'text-white/80'}`}>{section.subtitle}</p>}
-                        <h1 className={`text-5xl lg:text-7xl font-serif font-black leading-[0.95] mb-8 uppercase tracking-tighter ${isDark ? 'text-white' : 'text-white'}`}>
-                            {section.title}
+                        <h1 className={`text-5xl lg:text-8xl font-serif font-black leading-[0.9] mb-8 uppercase tracking-tighter ${isDark ? 'text-white' : 'text-white'}`}>
+                            {section.title.split(' ').map((word, i) => (
+                                <span key={i} className={i === 0 ? 'block' : i === section.title.split(' ').length - 1 ? 'block text-nu-teal-light drop-shadow-sm' : ''}>
+                                    {word}{' '}
+                                </span>
+                            ))}
                         </h1>
                         {section.content && <div className={`text-lg font-medium mb-10 max-w-lg leading-relaxed whitespace-pre-line ${isDark ? 'text-white/70' : 'text-white/80'}`}>{section.content}</div>}
 
@@ -261,10 +260,10 @@ const DynamicSection = ({ section, downloadUrl }) => {
                         <div className="grid grid-cols-2 gap-6">
                             {section.items && section.items.map((item, i) => (
                                 <RevealSection key={i} delay={`${i * 100}ms`} direction="up">
-                                    <div className={`p-8 rounded-[2.5rem] border transition-all duration-500 hover:shadow-xl ${isDark ? 'bg-white/5 border-white/10' : 'bg-slate-50 border-slate-100'}`}>
-                                        <div className="text-4xl mb-6">{item.icon || '✨'}</div>
-                                        <h4 className={`text-sm font-black uppercase tracking-widest mb-3 ${textIndigoClass}`}>{item.title}</h4>
-                                        <p className={`text-xs font-medium leading-relaxed ${textMutedClass}`}>{item.description}</p>
+                                    <div className={`p-10 rounded-[3rem] border transition-all duration-700 hover:shadow-2xl group ${isDark ? 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-nu-teal/30' : 'bg-white border-slate-100 hover:shadow-cyan-500/10 hover:border-nu-teal/50'}`}>
+                                        <div className="w-16 h-16 rounded-2xl bg-nu-teal/10 flex items-center justify-center text-4xl mb-8 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500">{item.icon || '✨'}</div>
+                                        <h4 className={`text-base font-black uppercase tracking-widest mb-4 ${textIndigoClass}`}>{item.title}</h4>
+                                        <p className={`text-sm font-medium leading-relaxed ${textMutedClass} opacity-80 group-hover:opacity-100 transition-opacity`}>{item.description}</p>
                                     </div>
                                 </RevealSection>
                             ))}
@@ -368,6 +367,7 @@ export default function LandingPage({ appName, downloadUrl, latestNews = [], sec
                     66% { transform: translateY(-5px) rotate(-1.5deg) scale(0.98); }
                     100% { transform: translateY(0px) rotate(0deg) scale(1); }
                 }
+                .text-nu-teal-light { color: #2dd4bf; } /* Teal 400 */
             `}} />
             {/* Animation CSS for Aesthetic & Utility Section */}
             <style>{`@keyframes fadeSlide{0%{opacity:0;transform:translateY(20px);}100%{opacity:1;transform:translateY(0);}} .animate-fade-slide{animation:fadeSlide 0.8s ease-out forwards;}`}</style>
@@ -394,29 +394,30 @@ export default function LandingPage({ appName, downloadUrl, latestNews = [], sec
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                             {latestNews.map((news, i) => (
                                 <RevealSection key={i} delay={`${i * 200}ms`} direction="up">
-                                    <div className="group bg-white rounded-[2.5rem] border border-slate-100 overflow-hidden hover:shadow-2xl hover:shadow-nu-indigo/5 transition-all duration-500">
+                                    <div className="group bg-white rounded-[3rem] border border-slate-100 overflow-hidden hover:shadow-[0_40px_80px_-15px_rgba(10,47,76,0.1)] transition-all duration-700 hover:-translate-y-4">
                                         <div className="aspect-[16/10] overflow-hidden relative">
-                                            <div className="absolute top-6 left-6 z-10 flex gap-2">
-                                                <span className="px-4 py-1.5 bg-white/90 backdrop-blur-md text-[10px] font-black uppercase tracking-widest text-nu-indigo rounded-full shadow-sm">
+                                            <div className="absolute top-8 left-8 z-10 flex gap-2">
+                                                <span className="px-5 py-2 bg-white/95 backdrop-blur-md text-[10px] font-black uppercase tracking-widest text-nu-indigo rounded-2xl shadow-xl">
                                                     {news.category ? news.category.name : 'Warta'}
                                                 </span>
                                             </div>
                                             <img
                                                 src={news.image_url || 'https://images.unsplash.com/photo-1584281723358-132d431f47f9?q=80&w=800&auto=format&fit=crop'}
                                                 alt={news.title}
-                                                className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                                                className="w-full h-full object-cover transform scale-100 group-hover:scale-110 transition-transform duration-1000"
                                             />
+                                            <div className="absolute inset-0 bg-nu-indigo/10 group-hover:bg-transparent transition-colors duration-700"></div>
                                         </div>
-                                        <div className="p-8">
-                                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">{new Date(news.published_at || news.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
-                                            <h3 className="text-xl font-serif font-black text-nu-indigo mb-4 group-hover:text-nu-teal transition-colors leading-tight line-clamp-2">
+                                        <div className="p-10">
+                                            <p className="text-[10px] font-bold text-nu-teal uppercase tracking-[0.3em] mb-4">{new Date(news.published_at || news.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+                                            <h3 className="text-2xl font-serif font-black text-nu-indigo mb-5 group-hover:text-nu-teal transition-colors leading-tight line-clamp-2 uppercase tracking-tight">
                                                 {news.title}
                                             </h3>
-                                            <p className="text-slate-500 text-sm leading-relaxed line-clamp-2 mb-8">
+                                            <p className="text-slate-500 text-sm font-medium leading-relaxed line-clamp-3 mb-10 opacity-70">
                                                 {news.summary}
                                             </p>
-                                            <Link href={`/news/${news.slug}`} className="text-[10px] font-black uppercase tracking-[0.2em] text-nu-indigo flex items-center gap-2 group/link">
-                                                Baca Selengkapnya <span className="transform group-hover/link:translate-x-1 transition-transform">→</span>
+                                            <Link href={`/news/${news.slug}`} className="text-[10px] font-black uppercase tracking-[0.3em] text-nu-indigo flex items-center gap-3 group/link">
+                                                Explore Story <span className="w-8 h-[2px] bg-nu-teal transform origin-left scale-x-50 group-hover/link:scale-x-100 transition-transform"></span>
                                             </Link>
                                         </div>
                                     </div>
