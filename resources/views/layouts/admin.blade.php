@@ -97,6 +97,8 @@
                         serif: ['Cinzel', 'serif'],
                     },
                     colors: {
+                        'nu-teal': '#008b76',
+                        'nu-indigo': '#0a2f4c',
                         teal: { 
                             950: '#062d38',
                             900: '#0E5F71',
@@ -148,6 +150,11 @@
             <a href="{{ route('admin.dashboard') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                 <i class="fas fa-th-large w-5 {{ request()->routeIs('admin.dashboard') ? 'icon-glow' : '' }}"></i>
                 <span>Dashboard Admin</span>
+            </a>
+
+            <a href="{{ route('admin.landing-page.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.landing-page.*') ? 'active' : '' }}">
+                <i class="fas fa-laptop-code w-5 {{ request()->routeIs('admin.landing-page.*') ? 'icon-glow' : '' }}"></i>
+                <span>Landing Page CMS</span>
             </a>
 
             <div class="sidebar-group-label" style="letter-spacing: 0.2rem;">Sistem Misi & Tugas</div>

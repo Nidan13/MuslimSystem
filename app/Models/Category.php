@@ -39,4 +39,12 @@ class Category extends Model
     {
         return $query->where('is_active', true);
     }
+
+    /**
+     * Get the headlines associated with the category.
+     */
+    public function headlines()
+    {
+        return $this->hasMany(Headline::class);
+    }
 }

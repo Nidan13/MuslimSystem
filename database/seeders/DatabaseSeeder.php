@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             TaskTemplateSeeder::class,
             DailyTaskSeeder::class,
             HeadlineSeeder::class,
+            LandingPageSeeder::class,
         ]);
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Headline;
 use App\Http\Requests\Admin\HeadlineRequest;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class HeadlineController extends Controller
 {
@@ -26,8 +27,13 @@ class HeadlineController extends Controller
     {
         $validated = $request->validated();
         
-        // Handle boolean is_active
+        // Handle booleans
         $validated['is_active'] = $request->has('is_active');
+        $validated['is_for_user'] = $request->has('is_for_user');
+        $validated['is_for_landing_page'] = $request->has('is_for_landing_page');
+
+        // Generate slug
+        $validated['slug'] = Str::slug($validated['title']);
 
         // Handle category_id if empty string
         if (empty($validated['category_id'])) {
@@ -56,8 +62,13 @@ class HeadlineController extends Controller
     {
         $validated = $request->validated();
         
-        // Handle boolean is_active
+        // Handle booleans
         $validated['is_active'] = $request->has('is_active');
+        $validated['is_for_user'] = $request->has('is_for_user');
+        $validated['is_for_landing_page'] = $request->has('is_for_landing_page');
+
+        // Generate slug
+        $validated['slug'] = Str::slug($validated['title']);
 
         // Handle category_id if empty string
         if (empty($validated['category_id'])) {

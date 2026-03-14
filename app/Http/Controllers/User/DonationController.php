@@ -359,4 +359,84 @@ class DonationController extends Controller
             'data' => $report
         ]);
     }
+
+    /**
+     * Organizer: Update campaign
+     */
+    public function updateCampaign(Request $request, $id)
+    {
+        $user = $request->user();
+        $campaign = DonationCampaign::findOrFail($id);
+
+        if ($campaign->organizer_id !== $user->id && $user->role !== 'admin') {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+
+        $request->validate([
+            'title'         => 'sometimes|string|max:255',
+            'category_id'   => 'nullable|exists:categories,id',
+            'description'   => 'sometimes|string',
+            'target_amount' => 'sometimes|numeric|min:1000',
+            'deadline'      => 'nullable|date',
+            'image'         => 'nullable' // could be string URL or file
+        ]);
+
+        $data = $request->only(['title', 'category_id', 'description', 'target_amount', 'deadline', 'status']);
+        
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = time() . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads/campaigns'), $filename);
+            $data['image'] = url('uploads/campaigns/' . $filename);
+        }
+
+        $campaign->update($data);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Kampanye berhasil diperbarui.',
+            'data' => $campaign
+        ]);
+    }
+
+    /**
+     * Organizer: Update report
+     */
+    public function updateReport(Request $request, $id)
+    {
+        $user = $request->user();
+        $report = DonationReport::with('campaign')->findOrFail($id);
+
+        if ($report->campaign->organizer_id !== $user->id && $user->role !== 'admin') {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+
+        $request->validate([
+            'title'        => 'sometimes|string|max:255',
+            'content'      => 'sometimes|string',
+            'amount_spent' => 'nullable|numeric',
+        ]);
+
+        $data = $request->only(['title', 'content', 'amount_spent']);
+        
+        $imagePaths = is_array($report->images) ? $report->images : [];
+        if ($request->hasFile('images')) {
+            // If new images provided, we append or replace? Let's replace for simplicity in editing
+            $imagePaths = []; 
+            foreach ($request->file('images') as $file) {
+                $filename = time() . '_' . Str::random(5) . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('uploads/reports'), $filename);
+                $imagePaths[] = url('uploads/reports/' . $filename);
+            }
+            $data['images'] = $imagePaths;
+        }
+
+        $report->update($data);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Laporan penyaluran berhasil diperbarui.',
+            'data' => $report
+        ]);
+    }
 }

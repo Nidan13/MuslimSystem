@@ -30,6 +30,15 @@
                     @error('title') <p class="text-red-500 text-[10px] font-black mt-1 ml-1">{{ $message }}</p> @enderror
                 </div>
 
+                <!-- Summary -->
+                <div class="space-y-3">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Ringkasan (Summary)</label>
+                    <textarea name="summary" rows="3"
+                        class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-cyan-400 focus:outline-none text-sm font-medium transition-all placeholder-slate-300 italic"
+                        placeholder="Tuliskan intisari/ringkasan singkat dari berita ini... (Tampil di card Landing Page)">{{ old('summary') }}</textarea>
+                    @error('summary') <p class="text-red-500 text-[10px] font-black mt-1 ml-1">{{ $message }}</p> @enderror
+                </div>
+
                 <!-- Grid Tag & Category -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div class="space-y-3">
@@ -93,14 +102,36 @@
                 </div>
 
                 <!-- Status Switch -->
-                <div class="flex items-center gap-4 bg-slate-50 p-6 rounded-3xl border border-slate-100">
-                    <label class="flex items-center cursor-pointer gap-4">
-                        <div class="relative">
-                            <input type="checkbox" name="is_active" class="sr-only peer" checked>
-                            <div class="w-14 h-8 bg-slate-200 rounded-full peer peer-focus:ring-2 peer-focus:ring-cyan-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-1 after:left-1 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-teal-900"></div>
-                        </div>
-                        <span class="text-[10px] font-black text-teal-900 uppercase tracking-[0.2em]">Aktifkan Segera</span>
-                    </label>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="flex items-center gap-4 bg-slate-50 p-6 rounded-3xl border border-slate-100">
+                        <label class="flex items-center cursor-pointer gap-4">
+                            <div class="relative">
+                                <input type="checkbox" name="is_active" class="sr-only peer" checked>
+                                <div class="w-14 h-8 bg-slate-200 rounded-full peer peer-focus:ring-2 peer-focus:ring-cyan-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-1 after:left-1 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-teal-900"></div>
+                            </div>
+                            <span class="text-[10px] font-black text-teal-900 uppercase tracking-[0.2em]">Aktifkan Segera</span>
+                        </label>
+                    </div>
+
+                    <div class="flex items-center gap-4 bg-slate-50 p-6 rounded-3xl border border-slate-100">
+                        <label class="flex items-center cursor-pointer gap-4">
+                            <div class="relative">
+                                <input type="checkbox" name="is_for_user" class="sr-only peer" checked>
+                                <div class="w-14 h-8 bg-slate-200 rounded-full peer peer-focus:ring-2 peer-focus:ring-cyan-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-1 after:left-1 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-nu-indigo"></div>
+                            </div>
+                            <span class="text-[10px] font-black text-nu-indigo uppercase tracking-[0.2em]">Tampil di User App</span>
+                        </label>
+                    </div>
+
+                    <div class="flex items-center gap-4 bg-slate-50 p-6 rounded-3xl border border-slate-100">
+                        <label class="flex items-center cursor-pointer gap-4">
+                            <div class="relative">
+                                <input type="checkbox" name="is_for_landing_page" class="sr-only peer">
+                                <div class="w-14 h-8 bg-slate-200 rounded-full peer peer-focus:ring-2 peer-focus:ring-cyan-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-1 after:left-1 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-nu-teal"></div>
+                            </div>
+                            <span class="text-[10px] font-black text-nu-teal uppercase tracking-[0.2em]">Tampil di Web Publik</span>
+                        </label>
+                    </div>
                 </div>
             </div>
 

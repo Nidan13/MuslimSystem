@@ -45,6 +45,11 @@ class HandleInertiaRequests extends Middleware
             'flash' => [
                 'message' => fn () => $request->session()->get('message'),
             ],
+            'theme' => [
+                'primary' => \App\Models\Setting::get('landing_page_primary_color', '#008b76'),
+                'navbar' => \App\Models\Setting::get('landing_page_navbar_color', '#008b76'),
+                'footer' => \App\Models\Setting::get('landing_page_footer_color', '#0a2f4c'),
+            ],
         ];
     }
 }

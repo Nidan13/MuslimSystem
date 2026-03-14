@@ -35,6 +35,7 @@ class DonationSeeder extends Seeder
                 'gender' => 'Male',
                 'referral_code' => 'MITRA001',
                 'is_active' => true,
+                'level' => 1,
             ]
         );
 
@@ -71,17 +72,21 @@ class DonationSeeder extends Seeder
 
         foreach ($campaigns as $camp) {
             $cat = Category::where('slug', $camp['category_slug'])->first();
-            DonationCampaign::create([
-                'organizer_id' => $organizer->id,
-                'category_id' => $cat->id ?? null,
-                'title' => $camp['title'],
-                'slug' => Str::slug($camp['title']),
-                'description' => $camp['description'],
-                'target_amount' => $camp['target_amount'],
-                'collected_amount' => $camp['collected_amount'],
-                'status' => $camp['status'],
-                'image' => $camp['image']
-            ]);
+            $slug = Str::slug($camp['title']);
+            
+            DonationCampaign::updateOrCreate(
+                ['slug' => $slug],
+                [
+                    'organizer_id' => $organizer->id,
+                    'category_id' => $cat->id ?? null,
+                    'title' => $camp['title'],
+                    'description' => $camp['description'],
+                    'target_amount' => $camp['target_amount'],
+                    'collected_amount' => $camp['collected_amount'],
+                    'status' => $camp['status'],
+                    'image' => $camp['image']
+                ]
+            );
         }
     }
 }

@@ -22,12 +22,13 @@ use App\Http\Controllers\Admin\WithdrawalController;
 use Illuminate\Support\Facades\Route;
 
 // Public Routes (Inertia - React)
-Route::get('/', function () {
-    return inertia('LandingPage', [
-    'appName' => config('app.name'),
-    'downloadUrl' => env('APK_DOWNLOAD_URL', '#'),
-    ]);
-})->name('home');
+use App\Http\Controllers\LandingPage\LandingPageController;
+use App\Http\Controllers\LandingPage\PublicNewsController;
+
+Route::get('/', [LandingPageController::class, 'index'])->name('home');
+// Public News Routes
+Route::get('/news', [PublicNewsController::class, 'index'])->name('news.index');
+Route::get('/news/{slug}', [PublicNewsController::class, 'show'])->name('news.show');
 
 Route::get('/features', fn() => inertia('Features', ['appName' => config('app.name')]))->name('features');
 Route::get('/about', fn() => inertia('About', ['appName' => config('app.name')]))->name('about');
@@ -59,6 +60,13 @@ Route::middleware(['auth'])->group(function () {
         // 2. Admin Group
         Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/dashboard', [AdminDashboardController::class , 'index'])->name('dashboard');
+
+            Route::group(['prefix' => 'landing-page', 'as' => 'landing-page.'], function () {
+                Route::get('/', [\App\Http\Controllers\LandingPage\AdminSectionController::class, 'hub'])->name('index');
+                Route::post('/update-theme', [\App\Http\Controllers\LandingPage\AdminSectionController::class, 'updateTheme'])->name('update-theme');
+                Route::resource('sections', \App\Http\Controllers\LandingPage\AdminSectionController::class);
+                Route::resource('news', \App\Http\Controllers\LandingPage\AdminNewsController::class);
+            });
 
             Route::resource('quests', QuestController::class);
 
