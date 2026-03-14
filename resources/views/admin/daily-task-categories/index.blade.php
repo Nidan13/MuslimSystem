@@ -114,4 +114,8 @@
     @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     .glass-panel { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); }
 </style>
+<<<<<<< HEAD
 @endsection
+=======
+@endsection
+>>>>>>> main

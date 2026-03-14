@@ -21,6 +21,7 @@ class QuestController extends Controller
 
     public function index(Request $request)
     {
+<<<<<<< HEAD
         $query = Quest::with(['category', 'rankCategory'])->latest();
 
         if ($request->has('category_id')) {
@@ -31,13 +32,31 @@ class QuestController extends Controller
         $categories = \App\Models\Category::byType('quest')->active()->get();
 
         return view('admin.quests.index', compact('quests', 'categories'));
+=======
+        $query = Quest::with(['questType', 'rankTier'])->latest();
+
+        if ($request->has('quest_type_id')) {
+            $query->where('quest_type_id', $request->quest_type_id);
+        }
+
+        $quests = $query->paginate($request->get('limit', 10));
+        $types = QuestType::all();
+
+        return view('admin.quests.index', compact('quests', 'types'));
+>>>>>>> main
     }
 
     public function create()
     {
+<<<<<<< HEAD
         $categories = \App\Models\Category::byType('quest')->active()->get();
         $rankCategories = \App\Models\Category::byType('rank')->active()->get();
         return view('admin.quests.create', compact('categories', 'rankCategories'));
+=======
+        $types = QuestType::all();
+        $rankTiers = RankTier::all();
+        return view('admin.quests.create', compact('types', 'rankTiers'));
+>>>>>>> main
     }
 
     public function store(QuestRequest $request)
@@ -73,9 +92,15 @@ class QuestController extends Controller
 
     public function edit(Quest $quest)
     {
+<<<<<<< HEAD
         $categories = \App\Models\Category::byType('quest')->active()->get();
         $rankCategories = \App\Models\Category::byType('rank')->active()->get();
         return view('admin.quests.edit', compact('quest', 'categories', 'rankCategories'));
+=======
+        $types = QuestType::all();
+        $rankTiers = RankTier::all();
+        return view('admin.quests.edit', compact('quest', 'types', 'rankTiers'));
+>>>>>>> main
     }
 
     public function update(QuestRequest $request, Quest $quest)

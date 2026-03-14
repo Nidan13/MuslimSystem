@@ -69,4 +69,8 @@ class DailyTaskCategoryController extends Controller
         $dailyTaskCategory->delete();
         return redirect()->route('admin.daily-task-categories.index')->with('success', 'Kategori Tugas Harian berhasil dihapus.');
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> main

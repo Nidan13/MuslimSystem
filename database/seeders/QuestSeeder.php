@@ -9,18 +9,18 @@ class QuestSeeder extends Seeder
 {
     public function run(): void
     {
-        $daily = \App\Models\QuestType::where('slug', 'daily')->first();
-        $hidden = \App\Models\QuestType::where('slug', 'hidden')->first();
-        $trial = \App\Models\QuestType::where('slug', 'trial')->first();
-        $rankE = \App\Models\RankTier::where('slug', 'E')->first();
+        $daily = \App\Models\Category::where('slug', 'main-quest-quest')->first();
+        $hidden = \App\Models\Category::where('slug', 'side-quest-quest')->first();
+        $trial = \App\Models\Category::where('slug', 'event-quest-quest')->first();
+        $rankE = \App\Models\Category::where('slug', 'bronze-rank')->first();
 
         // 1. Daily Quests (Mandatory)
         Quest::updateOrCreate(
             ['title' => 'The Preparation to be Great'],
             [
                 'description' => 'Daily ritual to strengthen the soul and body.',
-                'quest_type_id' => $daily->id,
-                'rank_tier_id' => $rankE->id,
+                'category_id' => $daily ? $daily->id : null,
+                'rank_category_id' => $rankE ? $rankE->id : null,
                 'reward_exp' => 500,
                 'reward_soul_points' => 100,
                 'is_mandatory' => true,
@@ -39,8 +39,8 @@ class QuestSeeder extends Seeder
             ['title' => 'Midnight Connection'],
             [
                 'description' => 'A secret quest that appears in the stillness of the night.',
-                'quest_type_id' => $hidden->id,
-                'rank_tier_id' => $rankE->id,
+                'category_id' => $hidden ? $hidden->id : null,
+                'rank_category_id' => $rankE ? $rankE->id : null,
                 'reward_exp' => 2000,
                 'reward_soul_points' => 500,
                 'is_mandatory' => false,
@@ -56,8 +56,8 @@ class QuestSeeder extends Seeder
             ['title' => 'Rank-Up Trial: Consistency'],
             [
                 'description' => 'Prove your worth by maintaining discipline.',
-                'quest_type_id' => $trial->id,
-                'rank_tier_id' => $rankE->id,
+                'category_id' => $trial ? $trial->id : null,
+                'rank_category_id' => $rankE ? $rankE->id : null,
                 'reward_exp' => 1000,
                 'reward_soul_points' => 1000,
                 'is_mandatory' => false,

@@ -57,7 +57,11 @@
                                     </span>
                                     @if($headline->itemCategory)
                                     <span class="px-2.5 py-1 rounded-lg bg-slate-50 border border-slate-100 text-slate-400 text-[8px] font-black uppercase tracking-widest">
+<<<<<<< HEAD
                                         {{ $headline->itemCategory->name }}
+=======
+                                        {{ $headline->category->name }}
+>>>>>>> main
                                     </span>
                                     @endif
                                 </div>
@@ -72,17 +76,27 @@
                             </div>
                         </td>
                         <td class="py-6 px-4 text-center">
-                            @if($headline->is_active)
-                                <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-100 text-[9px] font-black uppercase tracking-widest shadow-sm">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] animate-pulse"></span>
-                                    Aktif
-                                </span>
-                            @else
-                                <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-50 text-slate-300 border border-slate-100 text-[9px] font-black uppercase tracking-widest px-4">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
-                                    Off
-                                </span>
-                            @endif
+                            <div class="flex flex-col gap-2 items-center">
+                                @if($headline->is_active)
+                                    <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-100 text-[9px] font-black uppercase tracking-widest shadow-sm">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] animate-pulse"></span>
+                                        Aktif
+                                    </span>
+                                @else
+                                    <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-50 text-slate-300 border border-slate-100 text-[9px] font-black uppercase tracking-widest px-4">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+                                        Off
+                                    </span>
+                                @endif
+                                <div class="flex gap-1 justify-center mt-1">
+                                    @if($headline->is_for_user)
+                                        <span class="px-2 py-0.5 rounded bg-nu-indigo/10 text-nu-indigo text-[7px] font-black uppercase tracking-wider" title="Visible in App">App</span>
+                                    @endif
+                                    @if($headline->is_for_landing_page)
+                                        <span class="px-2 py-0.5 rounded bg-nu-teal/10 text-nu-teal text-[7px] font-black uppercase tracking-wider" title="Visible on Landing Page">Web</span>
+                                    @endif
+                                </div>
+                            </div>
                         </td>
                         <td class="py-6 px-4 text-right whitespace-nowrap">
                             <div class="flex justify-end gap-3 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-4 group-hover:translate-x-0">

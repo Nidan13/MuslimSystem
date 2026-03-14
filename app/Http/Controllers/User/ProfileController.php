@@ -97,6 +97,7 @@ class ProfileController extends Controller
                     'is_menstruating' => (bool)$user->is_menstruating,
                     'is_active' => (bool)$user->is_active,
                     'balance' => (float)($user->balance ?? 0),
+                    'role' => $user->role,
                 ]
             ]
         ]);
@@ -467,6 +468,33 @@ class ProfileController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Kata sandi berhasil diperbarui'
+        ]);
+    }
+
+    public function storeFeedback(Request $request)
+    {
+        $request->validate([
+            'message' => 'required|string',
+            'category' => 'nullable|string',
+        ]);
+
+        $user = Auth::user();
+        $messageContent = $request->message;
+        $category = $request->category ?? 'General Feedback';
+
+        // Send Email (Logged if mail not configured)
+        try {
+            \Illuminate\Support\Facades\Mail::raw("Feedback from: {$user->username} ({$user->email})\nCategory: {$category}\n\nMessage:\n{$messageContent}", function ($message) use ($user) {
+                $message->to(env('ADMIN_EMAIL', 'admin@muslimapp.com'))
+                        ->subject("App Feedback: " . $user->username);
+            });
+        } catch (\Exception $e) {
+            \Log::error("Failed to send feedback email: " . $e->getMessage());
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Feedback berhasil terkirim! Makasih ya wok masukannya.'
         ]);
     }
 }

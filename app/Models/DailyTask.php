@@ -30,18 +30,21 @@ class DailyTask extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
+
     public function userCompletions()
     {
         return $this->hasMany(UserDailyTask::class);
     }
 
-    // Scope for master tasks (created by admin)
     public function scopeMaster($query)
     {
         return $query->whereNull('user_id');
     }
 
-    // Scope for user custom tasks
     public function scopeCustom($query, $userId)
     {
         return $query->where('user_id', $userId);

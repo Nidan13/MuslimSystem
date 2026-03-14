@@ -70,4 +70,8 @@ class HeadlineCategoryController extends Controller
         $headlineCategory->delete();
         return redirect()->route('admin.headline-categories.index')->with('success', 'Kategori Berita berhasil dihapus.');
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> main

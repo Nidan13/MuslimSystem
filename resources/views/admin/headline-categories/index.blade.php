@@ -109,4 +109,8 @@
     .icon-glow { filter: drop-shadow(0 0 5px rgba(34, 211, 238, 0.5)); }
     .glass-panel { backdrop-filter: blur(16px); }
 </style>
+<<<<<<< HEAD
 @endsection
+=======
+@endsection
+>>>>>>> main

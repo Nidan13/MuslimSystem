@@ -24,8 +24,24 @@ class User extends Authenticatable
         'username', 'email', 'password', 'gender', 'rank_tier_id', 'level', 
         'current_exp', 'overflow_exp', 'soul_points', 'fatigue',
         'referral_code', 'referred_by_id', 'hp', 'max_hp', 'is_menstruating',
-        'menstruation_started_at', 'balance', 'is_active'
+        'menstruation_started_at', 'balance', 'is_active', 'role'
     ];
+
+    public function isOrganizer()
+    {
+        return $this->role === 'organizer';
+    }
+
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isUser()
+    {
+        return $this->role === 'user';
+    }
+
 
     public function getExperienceAttribute()
     {

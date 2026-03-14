@@ -22,12 +22,13 @@ use App\Http\Controllers\Admin\WithdrawalController;
 use Illuminate\Support\Facades\Route;
 
 // Public Routes (Inertia - React)
-Route::get('/', function () {
-    return inertia('LandingPage', [
-    'appName' => config('app.name'),
-    'downloadUrl' => env('APK_DOWNLOAD_URL', '#'),
-    ]);
-})->name('home');
+use App\Http\Controllers\LandingPage\LandingPageController;
+use App\Http\Controllers\LandingPage\PublicNewsController;
+
+Route::get('/', [LandingPageController::class, 'index'])->name('home');
+// Public News Routes
+Route::get('/news', [PublicNewsController::class, 'index'])->name('news.index');
+Route::get('/news/{slug}', [PublicNewsController::class, 'show'])->name('news.show');
 
 Route::get('/features', fn() => inertia('Features', ['appName' => config('app.name')]))->name('features');
 Route::get('/about', fn() => inertia('About', ['appName' => config('app.name')]))->name('about');
@@ -60,6 +61,13 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/dashboard', [AdminDashboardController::class , 'index'])->name('dashboard');
 
+            Route::group(['prefix' => 'landing-page', 'as' => 'landing-page.'], function () {
+                Route::get('/', [\App\Http\Controllers\LandingPage\AdminSectionController::class, 'hub'])->name('index');
+                Route::post('/update-theme', [\App\Http\Controllers\LandingPage\AdminSectionController::class, 'updateTheme'])->name('update-theme');
+                Route::resource('sections', \App\Http\Controllers\LandingPage\AdminSectionController::class);
+                Route::resource('news', \App\Http\Controllers\LandingPage\AdminNewsController::class);
+            });
+
             Route::resource('quests', QuestController::class);
 
             Route::resource('headline-categories', \App\Http\Controllers\Admin\HeadlineCategoryController::class);
@@ -71,6 +79,16 @@ Route::middleware(['auth'])->group(function () {
             Route::resource('hunters', UserController::class);
             Route::resource('quest-types', QuestTypeController::class);
             Route::resource('rank-tiers', RankTierController::class);
+            
+            // Donation Sub-system
+            Route::prefix('donations')->name('donations.')->group(function () {
+                Route::get('/submissions', [\App\Http\Controllers\Admin\DonationCampaignController::class, 'submissions'])->name('submissions');
+                Route::get('/my-campaigns', [\App\Http\Controllers\Admin\DonationCampaignController::class, 'myCampaigns'])->name('my-campaigns');
+                Route::get('/organizers', [\App\Http\Controllers\Admin\DonationCampaignController::class, 'organizers'])->name('organizers');
+            });
+            Route::resource('donations', \App\Http\Controllers\Admin\DonationCampaignController::class);
+            Route::resource('donation-reports', \App\Http\Controllers\Admin\DonationReportController::class);
+            
             Route::resource('dungeon-types', DungeonTypeController::class);
             Route::resource('level-configs', LevelConfigController::class)->parameters([
                 'level-configs' => 'level_config'
@@ -99,6 +117,16 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/payments/manual', [\App\Http\Controllers\Admin\ManualPaymentController::class , 'index'])->name('payments.manual.index');
             Route::post('/payments/manual/{payment}/approve', [\App\Http\Controllers\Admin\ManualPaymentController::class , 'approve'])->name('payments.manual.approve');
             Route::post('/payments/manual/{payment}/reject', [\App\Http\Controllers\Admin\ManualPaymentController::class , 'reject'])->name('payments.manual.reject');
+
+            // Configurasi / Settings
+            Route::get('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
+            Route::put('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
+
+            // Reports / Revenue
+            Route::get('/reports/revenue', [\App\Http\Controllers\Admin\RevenueReportController::class, 'index'])->name('reports.revenue');
+
+            // Master Data Alokasi SHU
+            Route::resource('distribution-categories', \App\Http\Controllers\Admin\DistributionCategoryController::class);
 
             // Master Data Sholat
             Route::resource('prayers', AdminMasterPrayerController::class)->except(['create', 'store', 'show', 'destroy']);

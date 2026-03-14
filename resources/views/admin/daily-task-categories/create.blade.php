@@ -66,4 +66,8 @@
     .animate-fadeIn { animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 </style>
+<<<<<<< HEAD
 @endsection
+=======
+@endsection
+>>>>>>> main

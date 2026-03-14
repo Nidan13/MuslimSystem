@@ -13,16 +13,27 @@
         
         <!-- Category Filtration Tabs -->
         <div class="flex items-center gap-4 mt-4 overflow-x-auto no-scrollbar py-2">
+<<<<<<< HEAD
             <a href="{{ route('admin.quests.index') }}" class="px-4 py-2 rounded-xl text-[9px] font-black tracking-widest transition-all {{ !request('category_id') ? 'bg-teal-900 text-white shadow-md' : 'bg-slate-50 text-slate-400 hover:text-teal-900 border border-slate-100' }}">SEMUA PROTOKOL</a>
             @foreach($categories as $cat)
                 <a href="{{ route('admin.quests.index', ['category_id' => $cat->id]) }}" class="px-4 py-2 rounded-xl text-[9px] font-black tracking-widest transition-all {{ request('category_id') == $cat->id ? 'text-white' : 'bg-slate-50 text-slate-400 hover:text-teal-900 border border-slate-100' }}" style="{{ request('category_id') == $cat->id ? 'background-color: ' . ($cat->color ?? '#0f4c5c') . '; box-shadow: 0 4px 10px ' . ($cat->color ?? '#0f4c5c') . '40' : '' }}">
                     {{ strtoupper($cat->name) }}
+=======
+            <a href="{{ route('admin.quests.index') }}" class="px-4 py-2 rounded-xl text-[9px] font-black tracking-widest transition-all {{ !request('quest_type_id') ? 'bg-teal-900 text-white shadow-md' : 'bg-slate-50 text-slate-400 hover:text-teal-900 border border-slate-100' }}">SEMUA PROTOKOL</a>
+            @foreach($types as $type)
+                <a href="{{ route('admin.quests.index', ['quest_type_id' => $type->id]) }}" class="px-4 py-2 rounded-xl text-[9px] font-black tracking-widest transition-all {{ request('quest_type_id') == $type->id ? 'bg-teal-900 text-white shadow-md' : 'bg-slate-50 text-slate-400 hover:text-teal-900 border border-slate-100' }}">
+                    {{ strtoupper($type->name) }}
+>>>>>>> main
                 </a>
             @endforeach
         </div>
 
         <div class="flex items-center gap-3">
+<<<<<<< HEAD
             <a href="{{ route('admin.quest-categories.index') }}" class="w-12 h-12 rounded-2xl bg-white border border-slate-100 flex items-center justify-center text-slate-400 hover:text-teal-900 transition-all shadow-sm active:scale-95 group" title="Kategori Misi">
+=======
+            <a href="{{ route('admin.quest-types.index') }}" class="w-12 h-12 rounded-2xl bg-white border border-slate-100 flex items-center justify-center text-slate-400 hover:text-teal-900 transition-all shadow-sm active:scale-95 group" title="Tipe Misi">
+>>>>>>> main
                 <i class="fas fa-tags text-sm group-hover:scale-110 transition-transform"></i>
             </a>
             <a href="{{ route('admin.quests.create') }}" class="group flex items-center gap-3 px-8 py-4 rounded-2xl bg-teal-900 text-white shadow-xl shadow-teal-950/20 hover:bg-teal-800 transition-all active:scale-95 font-serif uppercase tracking-widest text-[10px] font-black">
@@ -76,17 +87,26 @@
                 </thead>
                 <tbody class="divide-y divide-slate-50" id="quest-body">
                     @forelse($quests as $quest)
+<<<<<<< HEAD
                     @php
                         $slug = $quest->category->slug ?? 'default';
                         $color = $quest->category->color ?? '#0f4c5c';
                     @endphp
                     <tr class="quest-row group hover:bg-slate-50/50 transition-colors" data-rank="{{ $quest->rankCategory->slug ?? 'OPEN' }}">
+=======
+                    <tr class="quest-row group hover:bg-slate-50/50 transition-colors" data-rank="{{ $quest->rankTier->slug ?? 'OPEN' }}">
+>>>>>>> main
                         <td class="py-6 px-4">
                             <span class="text-[10px] font-black text-slate-300 font-mono tracking-tighter uppercase whitespace-nowrap">#QST-{{ str_pad($quest->id, 4, '0', STR_PAD_LEFT) }}</span>
                         </td>
                         <td class="py-6 px-6">
+<<<<<<< HEAD
                             <span class="inline-flex items-center px-4 py-1.5 rounded-xl border-2 text-[9px] font-black uppercase tracking-widest shadow-sm" style="background-color: {{ $color }}10; color: {{ $color }}; border-color: {{ $color }}30">
                                 {{ $quest->category->name ?? 'Protocol' }}
+=======
+                            <span class="inline-flex items-center px-4 py-1.5 rounded-xl border-2 text-[9px] font-black uppercase tracking-widest shadow-sm bg-teal-900/10 text-teal-900 border-teal-900/30">
+                                {{ $quest->questType->name ?? 'Protocol' }}
+>>>>>>> main
                             </span>
                         </td>
                         <td class="py-6 px-6">
@@ -100,10 +120,16 @@
                             </div>
                         </td>
                         <td class="py-6 px-6 text-center">
+<<<<<<< HEAD
                             @if($quest->rankCategory)
                                 @php $rankSlug = str_replace('-rank', '', $quest->rankCategory->slug); @endphp
                                 <span class="text-xl font-serif font-black {{ $quest->rankCategory->metadata['color'] ?? 'text-teal-900' }} italic">
                                     {{ strtoupper($rankSlug) }}
+=======
+                            @if($quest->rankTier)
+                                <span class="text-xl font-serif font-black text-teal-900 italic">
+                                    {{ strtoupper($quest->rankTier->slug) }}
+>>>>>>> main
                                 </span>
                             @else
                                 <span class="text-[9px] font-black text-slate-200 uppercase tracking-widest">OPEN</span>

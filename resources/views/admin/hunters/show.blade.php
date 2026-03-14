@@ -27,8 +27,12 @@
                 <div class="flex flex-col md:flex-row md:items-center gap-4 mb-2">
                     <h1 class="text-4xl font-serif font-black text-teal-950 tracking-tighter">{{ $user->username }}</h1>
                     @if($user->rankTier)
-                    <span class="px-4 py-1.5 rounded-xl bg-teal-900/5 border border-teal-900/10 text-[9px] font-black uppercase tracking-widest shadow-sm w-fit mx-auto md:mx-0" style="color: {{ $user->rankTier->color_code ?? '#0d2d35' }}">
+                    <span class="px-4 py-1.5 rounded-xl bg-teal-900/5 border border-teal-900/10 text-[9px] font-black uppercase tracking-widest shadow-sm w-fit mx-auto md:mx-0" style="color: {{ $user->rankTier->color_code ?? '#00F2FF' }}">
                         {{ $user->rankTier->name }}
+                    </span>
+                    @else
+                    <span class="px-4 py-1.5 rounded-xl bg-slate-50 border border-slate-100 text-[9px] font-black uppercase tracking-widest shadow-sm w-fit mx-auto md:mx-0 text-slate-400">
+                        Otoritas: Open Rank
                     </span>
                     @endif
                 </div>
@@ -49,9 +53,9 @@
                     <p class="text-2xl font-black text-teal-900 font-mono tracking-tighter">{{ number_format($user->current_exp) }}</p>
                     <div class="mt-2 h-1 w-12 bg-cyan-400 mx-auto rounded-full opacity-0 group-hover:opacity-100 transition-all"></div>
                 </div>
-                <div class="p-6 bg-teal-900 rounded-[32px] border-2 border-slate-800 text-center text-white shadow-2xl shadow-teal-900/30 group hover:border-cyan-400 transition-all">
-                    <p class="text-[10px] font-black text-cyan-400 uppercase tracking-widest mb-2">Tier Otoritas</p>
-                    <p class="text-2xl font-black font-serif italic tracking-tighter" style="{{ $user->rankTier->color_code ? 'color: ' . $user->rankTier->color_code : '' }}">
+                <div class="p-6 bg-[#0E5F71] rounded-[32px] border-2 border-slate-800 text-center text-white shadow-2xl shadow-teal-900/30 group hover:border-[#00F2FF] transition-all">
+                    <p class="text-[10px] font-black text-[#00F2FF] uppercase tracking-widest mb-2">Tier Otoritas</p>
+                    <p class="text-2xl font-black font-serif italic tracking-tighter" style="{{ $user->rankTier ? 'color: ' . ($user->rankTier->color_code ?? '#00F2FF') : '' }}">
                         {{ $user->rankTier->slug ?? 'E' }}
                     </p>
                     <div class="mt-2 h-1 w-12 bg-white mx-auto rounded-full opacity-20 group-hover:opacity-100 transition-all"></div>

@@ -24,7 +24,11 @@
             <div class="space-y-8">
                 <div class="text-center py-5 bg-slate-50 rounded-[24px] border-2 border-slate-100 mb-2">
                     <div class="text-[9px] font-black text-slate-400 uppercase tracking-[0.5em] mb-2">Signature Gerbang</div>
+<<<<<<< HEAD
                     <div class="text-2xl font-serif font-black text-teal-900 uppercase italic tracking-tighter">Tier {{ str_replace('-rank', '', $dungeon->rankCategory->slug ?? 'Open') }} // {{ $dungeon->name }}</div>
+=======
+                    <div class="text-2xl font-serif font-black text-teal-900 uppercase italic tracking-tighter">Tier {{ $dungeon->rankTier->slug ?? 'Open' }} // {{ $dungeon->name }}</div>
+>>>>>>> main
                 </div>
 
                 <!-- Identitas -->
@@ -39,9 +43,15 @@
                     <!-- Tipe & Rank -->
                     <div class="space-y-3">
                         <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Klasifikasi Gate</label>
+<<<<<<< HEAD
                         <select name="category_id" required class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-cyan-400 focus:outline-none text-sm font-black transition-all appearance-none cursor-pointer uppercase tracking-widest text-teal-900">
                             @foreach($dungeonCategories as $cat)
                                 <option value="{{ $cat->id }}" {{ $dungeon->category_id == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
+=======
+                        <select name="dungeon_type_id" required class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-cyan-400 focus:outline-none text-sm font-black transition-all appearance-none cursor-pointer uppercase tracking-widest text-teal-900">
+                            @foreach($types as $type)
+                                <option value="{{ $type->id }}" {{ $dungeon->dungeon_type_id == $type->id ? 'selected' : '' }}>{{ $type->name }}</option>
+>>>>>>> main
                             @endforeach
                         </select>
                     </div>
@@ -50,8 +60,13 @@
                         <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Rank Otoritas</label>
                         <select name="rank_category_id" class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-cyan-400 focus:outline-none text-sm font-black transition-all appearance-none cursor-pointer uppercase tracking-widest text-teal-900">
                             <option value="">OPEN-RANK (SEMUA TIER)</option>
+<<<<<<< HEAD
                             @foreach($rankCategories as $rank)
                                 <option value="{{ $rank->id }}" {{ $dungeon->rank_category_id == $rank->id ? 'selected' : '' }}>TIER {{ strtoupper(str_replace('-rank', '', $rank->slug)) }} - {{ $rank->name }}</option>
+=======
+                            @foreach($rankTiers as $rank)
+                                <option value="{{ $rank->id }}" {{ $dungeon->rank_tier_id == $rank->id ? 'selected' : '' }}>TIER {{ $rank->slug }} - {{ $rank->name }}</option>
+>>>>>>> main
                             @endforeach
                         </select>
                     </div>

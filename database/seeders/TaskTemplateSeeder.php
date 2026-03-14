@@ -13,36 +13,38 @@ class TaskTemplateSeeder extends Seeder
     public function run(): void
     {
         $templates = [
-            // Daily Tasks
-            ['name' => 'Sholat Tahajud', 'description' => 'Sholat sunnah di sepertiga malam', 'category' => 'Ibadah', 'icon' => '🌙', 'soul_points' => 20, 'type' => 'task'],
-            ['name' => 'Sholat Witir', 'description' => 'Sholat sunnah penutup sholat malam', 'category' => 'Ibadah', 'icon' => '🕌', 'soul_points' => 15, 'type' => 'task'],
-            ['name' => 'Sholat Rawatib', 'description' => 'Sholat sunnah sebelum/sesudah sholat fardhu', 'category' => 'Ibadah', 'icon' => '✨', 'soul_points' => 10, 'type' => 'task'],
-            ['name' => 'Sholat Subuh', 'description' => 'Menunaikan sholat subuh berjamaah', 'category' => 'Ibadah', 'icon' => '🌄', 'soul_points' => 10, 'type' => 'task'],
-            ['name' => 'Sholat Dzuhur', 'description' => 'Menunaikan sholat dzuhur tepat waktu', 'category' => 'Ibadah', 'icon' => '☀️', 'soul_points' => 10, 'type' => 'task'],
-            ['name' => 'Sholat Ashar', 'description' => 'Menunaikan sholat ashar tepat waktu', 'category' => 'Ibadah', 'icon' => '🌅', 'soul_points' => 10, 'type' => 'task'],
-            ['name' => 'Sholat Magrib', 'description' => 'Menunaikan sholat magrib berjamaah', 'category' => 'Ibadah', 'icon' => '🌇', 'soul_points' => 10, 'type' => 'task'],
-            ['name' => 'Sholat Isya', 'description' => 'Menunaikan sholat isya berjamaah', 'category' => 'Ibadah', 'icon' => '🌌', 'soul_points' => 10, 'type' => 'task'],
-            ['name' => 'Shodaqoh Shubuh', 'description' => 'Bersedekah setelah sholat subuh', 'category' => 'Ibadah', 'icon' => '💰', 'soul_points' => 15, 'type' => 'task'],
-            ['name' => 'Harwat (Hadir Tepat Waktu)', 'description' => 'Berada di masjid sebelum adzan', 'category' => 'Personal', 'icon' => '⌚', 'soul_points' => 10, 'type' => 'task'],
-            ['name' => 'Baca Quran', 'description' => 'Membaca Al-Quran harian', 'category' => 'Ibadah', 'icon' => '📖', 'soul_points' => 15, 'type' => 'task'],
-            ['name' => 'Hafalan', 'description' => 'Menambah atau murojaah hafalan', 'category' => 'Ibadah', 'icon' => '🧠', 'soul_points' => 20, 'type' => 'task'],
-            ['name' => 'Baca Buku', 'description' => 'Membaca buku pengetahuan/agama', 'category' => 'Productive', 'icon' => '📚', 'soul_points' => 10, 'type' => 'task'],
-            ['name' => 'Jalan Pagi', 'description' => 'Berjalan santai menghirup udara segar', 'category' => 'Health', 'icon' => '🚶', 'soul_points' => 10, 'type' => 'task'],
-            ['name' => 'Work Out', 'description' => 'Olahraga rutin menjaga stamina', 'category' => 'Health', 'icon' => '💪', 'soul_points' => 15, 'type' => 'task'],
-            ['name' => 'Berkebun', 'description' => 'Merawat tanaman di halaman', 'category' => 'Personal', 'icon' => '🌿', 'soul_points' => 10, 'type' => 'task'],
-            ['name' => 'Sholat Tobat', 'description' => 'Sholat memohon ampunan Allah', 'category' => 'Ibadah', 'icon' => '🤲', 'soul_points' => 20, 'type' => 'task'],
+            // --- DAILY TASKS (Ibadah & Discipline) ---
+            ['name' => 'Midnight Connection (Tahajud)', 'description' => 'Sholat sunnah di sepertiga malam terakhir.', 'category' => 'Spiritual', 'icon' => '🌌', 'soul_points' => 30, 'type' => 'task'],
+            ['name' => 'Dawn Prayer (Subuh)', 'description' => 'Menunaikan sholat subuh tepat waktu.', 'category' => 'Spiritual', 'icon' => '🌅', 'soul_points' => 15, 'type' => 'task'],
+            ['name' => 'Zenith Prayer (Dzuhur)', 'description' => 'Menunaikan sholat dzuhur tepat waktu.', 'category' => 'Spiritual', 'icon' => '☀️', 'soul_points' => 10, 'type' => 'task'],
+            ['name' => 'Golden Hour Prayer (Ashar)', 'description' => 'Menunaikan sholat ashar tepat waktu.', 'category' => 'Spiritual', 'icon' => '🌤️', 'soul_points' => 10, 'type' => 'task'],
+            ['name' => 'Twilight Prayer (Maghrib)', 'description' => 'Menunaikan sholat maghrib tepat waktu.', 'category' => 'Spiritual', 'icon' => '🌇', 'soul_points' => 10, 'type' => 'task'],
+            ['name' => 'Starlight Prayer (Isya)', 'description' => 'Menunaikan sholat isya tepat waktu.', 'category' => 'Spiritual', 'icon' => '🌃', 'soul_points' => 10, 'type' => 'task'],
+            ['name' => 'Sacred Recitation', 'description' => 'Membaca Al-Quran harian dengan tadabbur.', 'category' => 'Spiritual', 'icon' => '📖', 'soul_points' => 20, 'type' => 'task'],
+            ['name' => 'Memorization Flow', 'description' => 'Menambah atau mengulang hafalan hari ini.', 'category' => 'Spiritual', 'icon' => '🧠', 'soul_points' => 25, 'type' => 'task'],
+            ['name' => 'Morning Alms', 'description' => 'Sedekah subuh untuk membuka pintu rezeki.', 'category' => 'Social', 'icon' => '🪙', 'soul_points' => 20, 'type' => 'task'],
+            ['name' => 'Spiritual Shield (Dzikir)', 'description' => 'Dzikir pagi dan petang untuk perlindungan.', 'category' => 'Spiritual', 'icon' => '📿', 'soul_points' => 15, 'type' => 'task'],
 
-            // Habits
-            ['name' => 'Minum Air Putih 2L', 'description' => 'Jaga hidrasi tubuh sepanjang hari', 'category' => 'Kesehatan', 'icon' => '💧', 'soul_points' => 5, 'type' => 'habit'],
-            ['name' => 'Bangun Subuh', 'description' => 'Bangun sebelum adzan subuh', 'category' => 'Disiplin', 'icon' => '⏰', 'soul_points' => 10, 'type' => 'habit'],
-            ['name' => 'Dzikir Pagi Petang', 'description' => 'Senantiasa mengingat Allah', 'category' => 'Spiritual', 'icon' => '📿', 'soul_points' => 10, 'type' => 'habit'],
-            ['name' => 'Sabar & Gak Ngeluh', 'description' => 'Menjaga lisan dari keluhan', 'category' => 'Karakter', 'icon' => '🤐', 'soul_points' => 15, 'type' => 'habit'],
+            // --- HABITS (Self-Improvement) ---
+            ['name' => 'Hydro Hero (2L Water)', 'description' => 'Menjaga hidrasi tubuh tetap optimal.', 'category' => 'Health', 'icon' => '💧', 'soul_points' => 10, 'type' => 'habit'],
+            ['name' => 'Sugar-Free Zone', 'description' => 'Menghindari konsumsi gula berlebih hari ini.', 'category' => 'Health', 'icon' => '🚫🍩', 'soul_points' => 15, 'type' => 'habit'],
+            ['name' => 'Deep Reading', 'description' => 'Membaca buku minimal 15-30 menit.', 'category' => 'Education', 'icon' => '📑', 'soul_points' => 15, 'type' => 'habit'],
+            ['name' => 'Night Rest (Before 11PM)', 'description' => 'Istirahat lebih awal untuk stamina esok hari.', 'category' => 'Health', 'icon' => '🛌', 'soul_points' => 15, 'type' => 'habit'],
+            ['name' => 'Full Power Workout', 'description' => 'Latihan fisik atau olahraga rutin.', 'category' => 'Health', 'icon' => '💪', 'soul_points' => 20, 'type' => 'habit'],
 
-            // To-Dos
-            ['name' => 'Khatam Quran Ramadan', 'description' => 'Target menyelesaikan 30 Juz', 'category' => 'Target', 'icon' => '📜', 'soul_points' => 100, 'type' => 'todo'],
-            ['name' => 'Kunjungi Orang Tua', 'description' => 'Silaturahmi ke rumah orang tua', 'category' => 'Relasi', 'icon' => '🤝', 'soul_points' => 50, 'type' => 'todo'],
-            ['name' => 'Kursus Tahsin', 'description' => 'Memperbaiki bacaan Al-Quran', 'category' => 'Ilmu', 'icon' => '🎓', 'soul_points' => 30, 'type' => 'todo'],
+            // --- TO-DOS (Goals) ---
+            ['name' => 'Grand Khatam Mission', 'description' => 'Menyelesaikan target 30 Juz Al-Quran.', 'category' => 'Spiritual', 'icon' => '📜', 'soul_points' => 100, 'type' => 'todo'],
+            ['name' => 'Project Launchpad', 'description' => 'Menyelesaikan milestone besar pekerjaan.', 'category' => 'Career', 'icon' => '🚀', 'soul_points' => 50, 'type' => 'todo'],
+            ['name' => 'Inner Circle Reunion', 'description' => 'Berkumpul dengan keluarga atau orang tua.', 'category' => 'Social', 'icon' => '🏠', 'soul_points' => 30, 'type' => 'todo'],
+            ['name' => 'Skill Level Up', 'description' => 'Menyelesaikan kursus atau sertifikasi baru.', 'category' => 'Education', 'icon' => '🎓', 'soul_points' => 40, 'type' => 'todo'],
+
+            // --- JOURNALS (Reflection) ---
+            ['name' => 'Gratitude Spark', 'description' => 'Mencatat 3 hal yang disyukuri hari ini.', 'category' => 'Personal', 'icon' => '💖', 'soul_points' => 15, 'type' => 'task'],
+            ['name' => 'Daily Insight', 'description' => 'Refleksi pencapaian dan pelajaran hari ini.', 'category' => 'Personal', 'icon' => '📝', 'soul_points' => 15, 'type' => 'task'],
+            ['name' => 'Soul Review', 'description' => 'Muhasabah diri sebelum tidur.', 'category' => 'Personal', 'icon' => '📓', 'soul_points' => 15, 'type' => 'task'],
         ];
+
+        TaskTemplate::truncate();
 
         foreach ($templates as $template) {
             TaskTemplate::create($template);

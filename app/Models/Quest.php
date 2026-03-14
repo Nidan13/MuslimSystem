@@ -9,10 +9,17 @@ class Quest extends Model
     protected $fillable = [
         'title',
         'description',
+<<<<<<< HEAD
         'category_id',
         'rank_category_id',
         'quest_type_id', // Legacy
         'rank_tier_id', // Legacy
+=======
+        'quest_type_id',
+        'rank_tier_id',
+        'category_id',
+        'rank_category_id',
+>>>>>>> main
         'reward_exp',
         'reward_soul_points',
         'is_mandatory',
@@ -25,6 +32,7 @@ class Quest extends Model
         'end_time',
     ];
 
+<<<<<<< HEAD
     public function questType()
     {
         return $this->belongsTo(QuestType::class);
@@ -45,6 +53,8 @@ class Quest extends Model
         return $this->belongsTo(RankTier::class);
     }
 
+=======
+>>>>>>> main
     protected $casts = [
         'requirements' => 'array',
         'is_mandatory' => 'boolean',
@@ -53,6 +63,26 @@ class Quest extends Model
         'start_time' => 'datetime',
         'end_time' => 'datetime',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
+
+    public function rankCategory()
+    {
+        return $this->belongsTo(Category::class, 'rank_category_id');
+    }
+
+    public function questType()
+    {
+        return $this->belongsTo(QuestType::class, 'quest_type_id');
+    }
+
+    public function rankTier()
+    {
+        return $this->belongsTo(RankTier::class, 'rank_tier_id');
+    }
 
     public function userQuests()
     {

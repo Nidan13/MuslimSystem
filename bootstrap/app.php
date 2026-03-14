@@ -23,9 +23,10 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Http\Middleware\HandleInertiaRequests::class,
         ]);
 
-        // Register active_user middleware alias
+        // Register middleware aliases
         $middleware->alias([
             'active_user' => \App\Http\Middleware\ActiveUser::class,
+            'admin' => \App\Http\Middleware\Admin::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

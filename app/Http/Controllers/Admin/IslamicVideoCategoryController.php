@@ -70,4 +70,8 @@ class IslamicVideoCategoryController extends Controller
         $islamicVideoCategory->delete();
         return redirect()->route('admin.islamic-video-categories.index')->with('success', 'Kategori Kajian berhasil dihapus.');
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> main

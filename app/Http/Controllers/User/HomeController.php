@@ -75,7 +75,8 @@ class HomeController extends Controller
             ->count();
             
         // 6. Active Headlines
-        $headlines = Headline::where('is_active', true)
+        $headlines = Headline::with('category')
+            ->where('is_active', true)
             ->orderBy('created_at', 'desc')
             ->get();
             

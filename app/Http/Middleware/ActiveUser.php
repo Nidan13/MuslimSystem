@@ -15,7 +15,7 @@ class ActiveUser
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->user() && !$request->user()->is_active) {
+        if ($request->user() && !$request->user()->is_active && $request->user()->role === 'user') {
             return response()->json([
                 'success' => false,
                 'message' => 'Akun lu belum aktif wok, silahkan infaq seikhlasnya dulu buat aktivasi!',

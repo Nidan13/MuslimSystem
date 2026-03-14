@@ -69,4 +69,8 @@ class QuestCategoryController extends Controller
         $questCategory->delete();
         return redirect()->route('admin.quest-categories.index')->with('success', 'Kategori Misi berhasil dihapus.');
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> main

@@ -13,8 +13,12 @@ class DungeonController extends Controller
     public function index(Request $request)
     {
         $limit = $request->get('limit', 12);
+<<<<<<< HEAD
         // Eager load relationships for performance
         $query = Dungeon::with(['category', 'rankCategory', 'dungeonType', 'rankTier'])->latest();
+=======
+        $query = Dungeon::with(['dungeonType', 'rankTier'])->latest();
+>>>>>>> main
 
         if ($limit === 'all') {
             $dungeons = $query->get();
@@ -28,9 +32,15 @@ class DungeonController extends Controller
 
     public function create()
     {
+<<<<<<< HEAD
         $dungeonCategories = Category::byType(Category::TYPE_DUNGEON)->active()->get();
         $rankCategories = Category::byType(Category::TYPE_RANK)->active()->get();
         return view('admin.dungeons.create', compact('dungeonCategories', 'rankCategories'));
+=======
+        $types = \App\Models\DungeonType::all();
+        $rankTiers = \App\Models\RankTier::all();
+        return view('admin.dungeons.create', compact('types', 'rankTiers'));
+>>>>>>> main
     }
 
     public function store(Request $request)
@@ -71,9 +81,15 @@ class DungeonController extends Controller
 
     public function edit(Dungeon $dungeon)
     {
+<<<<<<< HEAD
         $dungeonCategories = Category::byType(Category::TYPE_DUNGEON)->active()->get();
         $rankCategories = Category::byType(Category::TYPE_RANK)->active()->get();
         return view('admin.dungeons.edit', compact('dungeon', 'dungeonCategories', 'rankCategories'));
+=======
+        $types = \App\Models\DungeonType::all();
+        $rankTiers = \App\Models\RankTier::all();
+        return view('admin.dungeons.edit', compact('dungeon', 'types', 'rankTiers'));
+>>>>>>> main
     }
 
     public function update(Request $request, Dungeon $dungeon)

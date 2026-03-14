@@ -15,7 +15,11 @@
         </div>
         
         <div class="flex items-center gap-3">
+<<<<<<< HEAD
             <a href="{{ route('admin.dungeon-types.index') }}" class="w-12 h-12 rounded-2xl bg-white border border-slate-100 flex items-center justify-center text-slate-400 hover:text-teal-900 transition-all shadow-sm active:scale-95 group" title="Kategori Gerbang">
+=======
+            <a href="{{ route('admin.dungeon-types.index') }}" class="w-12 h-12 rounded-2xl bg-white border border-slate-100 flex items-center justify-center text-slate-400 hover:text-teal-900 transition-all shadow-sm active:scale-95 group" title="Tipe Gerbang">
+>>>>>>> main
                 <i class="fas fa-tags text-sm group-hover:scale-110 transition-transform"></i>
             </a>
             <a href="{{ route('admin.dungeons.create') }}" class="group flex items-center gap-3 px-8 py-4 rounded-2xl bg-teal-900 text-white shadow-xl shadow-teal-950/20 hover:bg-teal-800 transition-all active:scale-95 font-serif uppercase tracking-widest text-[10px] font-black">
@@ -40,8 +44,13 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-12" id="rift-container">
         @forelse($dungeons as $d)
         @php
+<<<<<<< HEAD
             $rankSlug = $d->rankCategory->slug ?? 'OPEN';
             $rankColor = match(strtoupper(str_replace('-rank', '', $rankSlug))) {
+=======
+            $rankSlug = $d->rankTier->slug ?? 'OPEN';
+            $rankColor = match(strtoupper($rankSlug)) {
+>>>>>>> main
                 'S' => 'red',
                 'A' => 'orange',
                 'B' => 'purple',
@@ -60,11 +69,19 @@
                 <!-- Category/ID Icon Row -->
                 <div class="flex justify-between items-start mb-6 shrink-0">
                     <div class="w-12 h-12 rounded-2xl bg-teal-900 border border-teal-800 flex items-center justify-center text-cyan-400 shadow-lg shadow-teal-950/20 group-hover:scale-110 transition-transform">
+<<<<<<< HEAD
                         <i class="fas {{ ($d->category->slug ?? '') == 'raid-dungeon' ? 'fa-skull-crossbones' : 'fa-dungeon' }} text-lg"></i>
                     </div>
                     <div class="text-right">
                         <span class="px-3 py-1 rounded-lg bg-{{ $rankColor }}-50 text-{{ $rankColor }}-600 border border-{{ $rankColor }}-100 text-[10px] font-black uppercase tracking-widest italic group-hover:bg-{{ $rankColor }}-500 group-hover:text-white transition-colors">
                             {{ $d->rankCategory->name ?? 'RANK ' . $rankSlug }}
+=======
+                        <i class="fas {{ ($d->dungeonType->slug ?? '') == 'raid' ? 'fa-skull-crossbones' : 'fa-dungeon' }} text-lg"></i>
+                    </div>
+                    <div class="text-right">
+                        <span class="px-3 py-1 rounded-lg bg-{{ $rankColor }}-50 text-{{ $rankColor }}-600 border border-{{ $rankColor }}-100 text-[10px] font-black uppercase tracking-widest italic group-hover:bg-{{ $rankColor }}-500 group-hover:text-white transition-colors">
+                            {{ $d->rankTier->name ?? 'RANK ' . $rankSlug }}
+>>>>>>> main
                         </span>
                         <p class="text-[8px] font-black text-slate-300 mt-2 uppercase tracking-widest">GATE #{{ str_pad($d->id, 4, '0', STR_PAD_LEFT) }}</p>
                     </div>
