@@ -152,4 +152,16 @@ class DonationCampaignController extends Controller
 
         return view('admin.donations.organizers', compact('organizers'));
     }
+
+    public function approve(DonationCampaign $donation)
+    {
+        $donation->update(['status' => 'active']);
+        return back()->with('success', 'Kampanye disetujui dan sekarang aktif.');
+    }
+
+    public function reject(DonationCampaign $donation)
+    {
+        $donation->update(['status' => 'rejected']);
+        return back()->with('success', 'Kampanye telah ditolak.');
+    }
 }

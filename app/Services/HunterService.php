@@ -18,14 +18,12 @@ class HunterService
             
             $user = User::create($data);
             
-            // Initialize basic stats
+            // Initialize basic stats (Match Database Schema: str, int, wis, vit)
             $user->userStat()->create([
-                'strength' => 10,
-                'agility' => 10,
-                'intelligence' => 10,
-                'vitality' => 10,
-                'sense' => 10,
-                'remaining_points' => 0,
+                'str' => 10,
+                'int' => 10,
+                'wis' => 10,
+                'vit' => 10
             ]);
 
             return $user;

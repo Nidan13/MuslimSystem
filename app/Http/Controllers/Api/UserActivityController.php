@@ -37,7 +37,7 @@ class UserActivityController extends Controller
             ]
         );
 
-        $activity->increment('seconds_spent', $request->seconds_spent);
+        $activity->increment('seconds_spent', $seconds);
 
         return response()->json([
             'status' => 'success',

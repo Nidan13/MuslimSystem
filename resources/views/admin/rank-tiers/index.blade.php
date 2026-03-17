@@ -113,8 +113,15 @@
                 <!-- Action Bar -->
                 <div class="mt-auto p-4 flex gap-3 z-10">
                     <a href="{{ route('admin.rank-tiers.edit', $tier) }}" class="flex-1 py-3.5 bg-white/80 backdrop-blur-md border border-slate-200 rounded-2xl text-[9px] text-center font-black text-teal-900 uppercase tracking-[0.2em] hover:bg-white hover:border-cyan-400 hover:text-cyan-600 transition-all shadow-sm active:scale-95">
-                        Edit Pangkat
+                        Edit
                     </a>
+                    <form action="{{ route('admin.rank-tiers.destroy', $tier) }}" method="POST" class="inline flex-1">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" onclick="confirmDelete(this, '{{ $tier->name }}')" class="w-full py-3.5 bg-rose-50 border border-rose-100 rounded-2xl text-[9px] text-center font-black text-rose-500 uppercase tracking-[0.2em] hover:bg-rose-500 hover:text-white transition-all shadow-sm active:scale-95">
+                            Hapus
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

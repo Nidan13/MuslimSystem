@@ -29,7 +29,8 @@ class DungeonController extends Controller
     {
         $types = \App\Models\DungeonType::all();
         $rankTiers = \App\Models\RankTier::all();
-        return view('admin.dungeons.create', compact('types', 'rankTiers'));
+        $categories = \App\Models\Category::all();
+        return view('admin.dungeons.create', compact('types', 'rankTiers', 'categories'));
     }
 
     public function store(Request $request)
@@ -72,7 +73,8 @@ class DungeonController extends Controller
     {
         $types = \App\Models\DungeonType::all();
         $rankTiers = \App\Models\RankTier::all();
-        return view('admin.dungeons.edit', compact('dungeon', 'types', 'rankTiers'));
+        $categories = \App\Models\Category::all();
+        return view('admin.dungeons.edit', compact('dungeon', 'types', 'rankTiers', 'categories'));
     }
 
     public function update(Request $request, Dungeon $dungeon)

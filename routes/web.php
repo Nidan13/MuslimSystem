@@ -85,6 +85,8 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/submissions', [\App\Http\Controllers\Admin\DonationCampaignController::class, 'submissions'])->name('submissions');
                 Route::get('/my-campaigns', [\App\Http\Controllers\Admin\DonationCampaignController::class, 'myCampaigns'])->name('my-campaigns');
                 Route::get('/organizers', [\App\Http\Controllers\Admin\DonationCampaignController::class, 'organizers'])->name('organizers');
+                Route::post('/{donation}/approve', [\App\Http\Controllers\Admin\DonationCampaignController::class, 'approve'])->name('approve');
+                Route::post('/{donation}/reject', [\App\Http\Controllers\Admin\DonationCampaignController::class, 'reject'])->name('reject');
             });
             Route::resource('donations', \App\Http\Controllers\Admin\DonationCampaignController::class);
             Route::resource('donation-reports', \App\Http\Controllers\Admin\DonationReportController::class);

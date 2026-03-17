@@ -17,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->validateCsrfTokens(except: [
             'api/prismalink/webhook',
             'api/payments/callback',
+            'api/payments/system-support',
         ]);
 
         $middleware->web(append: [

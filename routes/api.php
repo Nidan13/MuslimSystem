@@ -21,7 +21,7 @@ Route::post('/auth/google', [AuthController::class, 'googleLogin']);
 Route::get('/islamic-videos', [\App\Http\Controllers\User\IslamicVideoController::class, 'index']);
 Route::prefix('donations')->group(function () {
     Route::get('/', [\App\Http\Controllers\User\DonationController::class, 'index']);
-    Route::get('/{id}', [\App\Http\Controllers\User\DonationController::class, 'show']);
+    Route::get('/{id}', [\App\Http\Controllers\User\DonationController::class, 'show'])->where('id', '[0-9]+');
 });
 Route::get('/payment-methods', [\App\Http\Controllers\User\PaymentController::class, 'methods']);
 Route::post('/islamic-videos/complete', [\App\Http\Controllers\User\IslamicVideoController::class, 'logCompletion'])->middleware('auth:sanctum');
@@ -50,6 +50,7 @@ Route::get('/run-seeders', function() {
         
         // Auth routes
         Route::post('/logout', [AuthController::class, 'logout']);
+        Route::post('/payments/system-support', [\App\Http\Controllers\User\PaymentController::class, 'systemSupport']);
         Route::post('/toggle-menstruation', [AuthController::class, 'toggleMenstruation']);
         
         // Payments & Profile (Allowed even if inactive)
@@ -59,9 +60,6 @@ Route::get('/run-seeders', function() {
         Route::post('/profile/update', [\App\Http\Controllers\User\ProfileController::class, 'update']);
         Route::post('/profile/change-password', [\App\Http\Controllers\User\ProfileController::class, 'changePassword']);
         Route::post('/profile/log-activity', [\App\Http\Controllers\Api\UserActivityController::class, 'log']);
-        Route::post('/payments/create-link', [\App\Http\Controllers\User\PaymentController::class, 'createLink']);
-        Route::post('/payments/system-support', [\App\Http\Controllers\User\PaymentController::class, 'systemSupport']);
-
         Route::get('/payments/status', [\App\Http\Controllers\User\PaymentController::class, 'status']);
         Route::post('/payments/inquiry', [\App\Http\Controllers\User\PaymentController::class, 'inquiry']);
         Route::post('/payments/manual-notify', [\App\Http\Controllers\User\PaymentController::class, 'notifyManual']);

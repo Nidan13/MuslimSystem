@@ -321,14 +321,24 @@
                             @forelse($userActivities as $act)
                             <tr class="group hover:bg-white transition-all">
                                 <td class="px-8 py-5">
-                                    <p class="text-[10px] font-bold text-slate-400">{{ \Carbon\Carbon::parse($act->active_date)->format('d M Y') }}</p>
+                                    <div class="flex flex-col">
+                                        <p class="text-[10px] font-bold text-slate-400">{{ \Carbon\Carbon::parse($act->updated_at)->format('d M Y') }}</p>
+                                        <div class="flex items-center gap-1.5 mt-0.5">
+                                            <span class="w-1 h-1 rounded-full bg-cyan-400 animate-pulse"></span>
+                                            <p class="text-[9px] font-black text-cyan-600 font-mono italic">LAST: {{ \Carbon\Carbon::parse($act->updated_at)->format('H:i') }}</p>
+                                        </div>
+                                    </div>
                                 </td>
                                 <td class="px-8 py-5 text-xs font-black text-teal-900 group-hover:text-cyan-500 transition-colors uppercase tracking-widest">
                                     {{ $act->page_name }}
                                 </td>
                                 <td class="px-8 py-5 text-right">
                                     <span class="px-3 py-1 bg-white border border-slate-200 rounded-lg text-[10px] font-black font-mono text-slate-500">
-                                        {{ round($act->seconds_spent / 60, 1) }}m
+                                        @if($act->seconds_spent < 60)
+                                            {{ $act->seconds_spent }}s
+                                        @else
+                                            {{ round($act->seconds_spent / 60, 1) }}m
+                                        @endif
                                     </span>
                                 </td>
                             </tr>

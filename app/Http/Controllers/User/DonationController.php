@@ -263,10 +263,14 @@ class DonationController extends Controller
             return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
         }
 
-        $campaigns = DonationCampaign::with(['reports', 'category'])
-            ->where('organizer_id', $user->id)
-            ->latest()
-            ->get();
+        $query = DonationCampaign::with(['reports', 'category']);
+        
+        // Fix: Admin dapat melihat semua kampanye, sedangkan organizer hanya melihat miliknya sendiri
+        if ($user->role !== 'admin') {
+            $query->where('organizer_id', $user->id);
+        }
+
+        $campaigns = $query->latest()->get();
 
         return response()->json([
             'success' => true,

@@ -162,6 +162,21 @@
                         </td>
                         <td class="py-8 px-8 text-right whitespace-nowrap">
                             <div class="flex items-center justify-end gap-3">
+                                @if($campaign->status == 'pending')
+                                    <form action="{{ route('admin.donations.approve', $campaign) }}" method="POST" class="inline">
+                                        @csrf
+                                        <button type="button" onclick="confirmApprove(this, '{{ $campaign->organizer->username ?? 'Organizer' }}')" class="w-11 h-11 flex items-center justify-center bg-emerald-500 text-white rounded-2xl hover:bg-emerald-600 transition-all shadow-lg shadow-emerald-500/20" title="Setujui">
+                                            <i class="fas fa-check text-xs"></i>
+                                        </button>
+                                    </form>
+                                    <form action="{{ route('admin.donations.reject', $campaign) }}" method="POST" class="inline">
+                                        @csrf
+                                        <button type="submit" class="w-11 h-11 flex items-center justify-center bg-rose-500 text-white rounded-2xl hover:bg-rose-600 transition-all shadow-lg shadow-rose-500/20" title="Tolak">
+                                            <i class="fas fa-times text-xs"></i>
+                                        </button>
+                                    </form>
+                                @endif
+
                                 <a href="{{ route('admin.donations.show', $campaign) }}" class="w-11 h-11 flex items-center justify-center bg-white border border-slate-100 text-[#0E5F71] hover:bg-[#0E5F71] hover:text-white rounded-2xl transition-all shadow-sm group/btn relative overflow-hidden">
                                      <div class="absolute inset-0 bg-gradient-to-tr from-[#0E5F71] to-[#2C9EB0] opacity-0 group-hover/btn:opacity-100 transition-opacity"></div>
                                     <i class="fas fa-eye text-xs relative z-10"></i>
