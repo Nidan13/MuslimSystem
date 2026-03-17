@@ -26,7 +26,7 @@ class WithdrawalController extends Controller
     {
         $request->validate([
             'status' => 'required|in:completed,rejected',
-            'rejection_reason' => 'required_if:status,rejected'
+            'rejection_reason' => 'nullable|string'
         ]);
 
         try {

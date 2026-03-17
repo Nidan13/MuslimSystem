@@ -29,17 +29,15 @@ class AuthController extends Controller
             'referral_code' => 'nullable|string|exists:users,referral_code',
         ]);
 
-        // Normalize gender to Title Case for DB enum
+        // normalize gender
         $gender = ucfirst(strtolower($validated['gender']));
 
-        // Handle referral logic
         $referrerId = null;
         if (!empty($validated['referral_code'])) {
             $referrer = User::where('referral_code', $validated['referral_code'])->first();
             $referrerId = $referrer?->id;
         }
 
-        // Generate unique referral code
         $referralCode = 'REF-' . strtoupper(uniqid());
 
         $user = User::create([
@@ -47,7 +45,7 @@ class AuthController extends Controller
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'gender' => $gender,
-            'rank_tier_id' => 1, // Default rank (pastikan ID 1 ada di DB)
+            'rank_tier_id' => 1,
             'level' => 1,
             'hp' => 100,
             'max_hp' => 100,
@@ -57,26 +55,16 @@ class AuthController extends Controller
             'referral_code' => $referralCode,
             'referred_by_id' => $referrerId,
             'is_active' => false,
+            'role' => 'user' // FIX
         ]);
 
-        // Create token
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
             'success' => true,
             'message' => 'Registration successful! Welcome, Hunter!',
             'data' => [
-                'user' => [
-                    'id' => $user->id,
-                    'username' => $user->username,
-                    'email' => $user->email,
-                    'gender' => $user->gender,
-                    'level' => $user->level,
-                    'soul_points' => $user->soul_points,
-                    'referral_code' => $user->referral_code,
-                    'is_active' => (bool)$user->is_active,
-                    'role' => $user->role,
-                ],
+                'user' => $user,
                 'token' => $token,
             ],
         ], 201);
@@ -108,7 +96,6 @@ class AuthController extends Controller
 
         // Create new token
         $token = $user->createToken('auth_token')->plainTextToken;
-
         return response()->json([
             'success' => true,
             'message' => 'Login successful! Welcome back, Hunter!',

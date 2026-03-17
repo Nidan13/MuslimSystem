@@ -58,7 +58,10 @@ Route::get('/run-seeders', function() {
         Route::get('/profile/{id}', [\App\Http\Controllers\User\ProfileController::class, 'show']);
         Route::post('/profile/update', [\App\Http\Controllers\User\ProfileController::class, 'update']);
         Route::post('/profile/change-password', [\App\Http\Controllers\User\ProfileController::class, 'changePassword']);
+        Route::post('/profile/log-activity', [\App\Http\Controllers\Api\UserActivityController::class, 'log']);
         Route::post('/payments/create-link', [\App\Http\Controllers\User\PaymentController::class, 'createLink']);
+        Route::post('/payments/system-support', [\App\Http\Controllers\User\PaymentController::class, 'systemSupport']);
+
         Route::get('/payments/status', [\App\Http\Controllers\User\PaymentController::class, 'status']);
         Route::post('/payments/inquiry', [\App\Http\Controllers\User\PaymentController::class, 'inquiry']);
         Route::post('/payments/manual-notify', [\App\Http\Controllers\User\PaymentController::class, 'notifyManual']);

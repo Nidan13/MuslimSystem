@@ -69,6 +69,7 @@
         <button onclick="switchTab('profile')" id="tab-profile" class="tab-btn active px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] transition-all">Profil Statistik</button>
         <button onclick="switchTab('protocols')" id="tab-protocols" class="tab-btn px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] transition-all text-slate-400 hover:text-teal-900">Task Log</button>
         <button onclick="switchTab('patterns')" id="tab-patterns" class="tab-btn px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] transition-all text-slate-400 hover:text-teal-900">Habit Node</button>
+        <button onclick="switchTab('activity')" id="tab-activity" class="tab-btn px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] transition-all text-slate-400 hover:text-teal-900">Interest & Activity</button>
         <button onclick="switchTab('objectives')" id="tab-objectives" class="tab-btn px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] transition-all text-slate-400 hover:text-teal-900">Objective</button>
     </div>
 
@@ -233,6 +234,115 @@
                     </div>
                 </div>
                 @endforelse
+            </div>
+        </div>
+    </div>
+
+    <!-- Interest & Activity Tab -->
+    <div id="content-activity" class="tab-content hidden animate-slideUp">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+            <!-- Top Interests -->
+            <div class="glass-panel p-10 rounded-[50px] bg-white border-2 border-slate-50 shadow-xl overflow-hidden relative lg:col-span-1">
+                <h3 class="text-[10px] font-black text-slate-300 uppercase tracking-[0.5em] mb-10 border-b border-slate-50 pb-6 flex items-center gap-3 font-serif">
+                    <i class="fas fa-bullseye text-teal-900"></i> Top Interests
+                </h3>
+                
+                <div class="space-y-8">
+                    @forelse($topPages as $page)
+                    @php
+                        $percentage = ($stats['totalSeconds'] > 0) ? ($page->total_seconds / $stats['totalSeconds']) * 100 : 0;
+                        $color = ['teal', 'cyan', 'indigo', 'emerald', 'amber'][$loop->index % 5];
+                    @endphp
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-end">
+                            <span class="text-xs font-black text-slate-600 uppercase tracking-widest">{{ $page->page_name }}</span>
+                            <span class="text-[10px] font-bold text-slate-400">{{ round($page->total_seconds / 60, 1) }} min</span>
+                        </div>
+                        <div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+                            <div class="h-full bg-{{ $color }}-500 rounded-full transition-all duration-1000" style="width:{{ $percentage }}%"></div>
+                        </div>
+                    </div>
+                    @empty
+                    <p class="text-[10px] font-black text-slate-300 uppercase text-center py-10">Data Minat Terbatas</p>
+                    @endforelse
+                </div>
+
+                <div class="mt-8 grid grid-cols-1 gap-4">
+                    <div class="p-6 bg-slate-50 rounded-[30px] border border-slate-100 text-center">
+                        <p class="text-[9px] font-black text-slate-300 uppercase tracking-widest mb-2">Rata-rata / Hari</p>
+                        <p class="text-3xl font-serif font-black text-teal-900 italic tracking-tighter">{{ round($stats['avgDailySeconds'] / 60, 1) }}m</p>
+                    </div>
+                    <div class="p-6 bg-teal-900 rounded-[30px] border border-slate-100 text-center text-white shadow-lg shadow-teal-900/20">
+                        <p class="text-[9px] font-black text-white/30 uppercase tracking-widest mb-2">Total Jam Aktif</p>
+                        <p class="text-3xl font-serif font-black italic tracking-tighter">{{ round($stats['totalSeconds'] / 3600, 1) }}h</p>
+                    </div>
+                </div>
+
+                <!-- Last 7 Days Activity Trend -->
+                <div class="mt-8 border-t border-slate-50 pt-8">
+                    <p class="text-[9px] font-black text-slate-300 uppercase tracking-widest mb-4 italic">7-Day Consistency</p>
+                    <div class="flex items-end justify-between gap-1 h-12">
+                        @foreach(range(6, 0) as $i)
+                            @php
+                                $date = now()->subDays($i)->toDateString();
+                                $dayStat = $dailyActivityTrend->firstWhere('active_date', $date);
+                                $seconds = $dayStat ? $dayStat->total_seconds : 0;
+                                $maxPossible = 3600; // 1hr max for visualization
+                                $height = min(100, ($seconds / $maxPossible) * 100);
+                            @endphp
+                            <div class="flex-1 bg-slate-100 rounded-t-lg relative group h-full">
+                                <div class="absolute bottom-0 left-0 right-0 bg-cyan-500 rounded-t-lg transition-all duration-500 group-hover:bg-teal-900" style="height: {{ $height }}%"></div>
+                                <!-- Tooltip -->
+                                <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[8px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-20">
+                                    {{ round($seconds / 60) }} min ({{ date('D', strtotime($date)) }})
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Log -->
+            <div class="glass-panel p-10 rounded-[50px] bg-white border-2 border-slate-50 shadow-xl overflow-hidden relative lg:col-span-2">
+                <h3 class="text-[10px] font-black text-slate-300 uppercase tracking-[0.5em] mb-10 border-b border-slate-50 pb-6 flex items-center gap-3 font-serif">
+                    <i class="fas fa-shoe-prints text-teal-900"></i> Activity Footprints
+                </h3>
+
+                <div class="overflow-hidden bg-slate-50 rounded-[35px] border border-slate-100">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="border-b border-slate-200">
+                                <th class="px-8 py-5 text-[9px] font-black text-slate-400 uppercase tracking-widest">Waktu</th>
+                                <th class="px-8 py-5 text-[9px] font-black text-slate-400 uppercase tracking-widest">Halaman / Fitur</th>
+                                <th class="px-8 py-5 text-[9px] font-black text-slate-400 uppercase tracking-widest text-right">Durasi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            @forelse($userActivities as $act)
+                            <tr class="group hover:bg-white transition-all">
+                                <td class="px-8 py-5">
+                                    <p class="text-[10px] font-bold text-slate-400">{{ \Carbon\Carbon::parse($act->active_date)->format('d M Y') }}</p>
+                                </td>
+                                <td class="px-8 py-5 text-xs font-black text-teal-900 group-hover:text-cyan-500 transition-colors uppercase tracking-widest">
+                                    {{ $act->page_name }}
+                                </td>
+                                <td class="px-8 py-5 text-right">
+                                    <span class="px-3 py-1 bg-white border border-slate-200 rounded-lg text-[10px] font-black font-mono text-slate-500">
+                                        {{ round($act->seconds_spent / 60, 1) }}m
+                                    </span>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="3" class="px-8 py-20 text-center italic text-slate-300">
+                                    <i class="fas fa-radar text-3xl mb-4 block"></i>
+                                    <p class="text-[10px] font-black uppercase tracking-[0.3em]">Belum ada data jejak digital</p>
+                                </td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

@@ -25,12 +25,22 @@ class RevenueReportController extends Controller
         ];
 
         // 2. Get Real SHU Breakdown from PaymentDistribution Table (Historical Data)
+        $allocatedSHU = \App\Models\PaymentDistribution::whereHas('payment', function($q) {
+                $q->where('status', 'paid');
+            })
+            ->sum('amount');
+
         $shu_breakdown = \App\Models\PaymentDistribution::whereHas('payment', function($q) {
                 $q->where('status', 'paid');
             })
+            ->where('category_name', 'NOT ILIKE', '%afiliasi%')
+            ->where('category_name', 'NOT ILIKE', '%referral%')
+            ->where('category_name', 'NOT ILIKE', '%komisi%')
             ->select('category_name as name', DB::raw('SUM(amount) as amount'))
             ->groupBy('category_name')
             ->get();
+
+        $stats['net_admin_balance'] = $totalSystemFee - $allocatedSHU;
 
         // 3. Monthly Stats (Last 6 Months) - Fixed for PostgreSQL
         $monthlyData = Payment::where('status', 'paid')
@@ -48,7 +58,6 @@ class RevenueReportController extends Controller
         // Recent Revenue Logs
         $logs = Payment::with(['user:id,username'])
             ->where('status', 'paid')
-            ->where('system_fee', '>', 0)
             ->orderBy('paid_at', 'desc')
             ->paginate(15);
 

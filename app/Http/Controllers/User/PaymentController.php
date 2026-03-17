@@ -191,6 +191,131 @@ class PaymentController extends Controller
         }
     }
 
+    public function systemSupport(Request $request)
+    {
+        $request->validate([
+            'amount'         => 'required|numeric|min:1000',
+            'payment_method' => 'string|in:VA,QR',
+            'bank_code'      => 'string',
+        ]);
+
+        if (!\App\Models\Setting::get('payment_method_plink', true)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Metode pembayaran otomatis sedang dinonaktifkan sistem.'
+            ], 403);
+        }
+
+        $cfg         = $this->getConfig();
+        $user        = $request->user();
+        $amount      = (int) $request->amount;
+        $method      = strtoupper($request->input('payment_method', 'QR'));
+        $bankCode    = strtoupper($request->input('bank_code', 'BCA'));
+        $refNo       = 'SUP-' . $user->id . '-' . time();
+        $externalId  = 'EXT-' . $user->id . '-' . Str::random(6);
+        $timestamp   = $this->getTimestamp();
+
+        $bankMap = [
+            'BCA'     => '014', 'MANDIRI' => '008', 'BNI'     => '009',
+            'BRI'     => '002', 'PERMATA' => '013', 'DANAMON' => '011',
+            'CIMB'    => '022',
+        ];
+
+        $items = [[
+            'item_code'  => 'SYSTEM_SUPPORT',
+            'item_title' => 'Infaq Dukungan Pengembangan Muslim Hub',
+            'quantity'   => 1,
+            'total'      => (string) $amount,
+            'currency'   => 'IDR',
+        ]];
+
+        $payload = [
+            'merchant_key_id'        => $cfg['key_id'],
+            'merchant_id'            => $cfg['merchant_id'],
+            'merchant_ref_no'        => $refNo,
+            'backend_callback_url'   => $cfg['backend_callback'],
+            'frontend_callback_url'  => $cfg['frontend_callback'],
+            'transaction_date_time'  => $timestamp,
+            'transmission_date_time' => $timestamp,
+            'transaction_currency'   => 'IDR',
+            'transaction_amount'     => (int) $amount,
+            'product_details'        => json_encode($items),
+            'user_id'                => (string) $user->id,
+            'user_name'              => substr($request->donator_name ?? $user->username ?? $user->name ?? $user->email, 0, 50),
+            'user_email'             => substr($user->email, 0, 50),
+            'user_phone_number'      => $this->formatPhone($user->phone ?? null),
+            'remarks'                => 'Infak Pengembangan Muslim Hub',
+            'user_device_id'         => 'DEVICE-' . $user->id,
+            'user_ip_address'        => $request->ip() ?? '127.0.0.1',
+            'shipping_details'       => json_encode([
+                'address'         => '-',
+                'telephoneNumber' => $this->formatPhone($user->phone ?? null),
+                'handphoneNumber' => $this->formatPhone($user->phone ?? null),
+            ]),
+            'payment_method'         => $method,
+            'other_bills'            => '[]',
+            'invoice_number'         => $refNo,
+            'integration_type'       => '02',
+            'external_id'            => $externalId,
+            'action_id'              => '01',
+        ];
+
+        if ($method === 'VA') {
+            $payload['bank_id'] = $bankMap[$bankCode] ?? '014';
+        }
+
+        $rawJson = json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $mac = $this->generateMac($rawJson, $cfg['secret_key']);
+
+        try {
+            $endpoint = $cfg['base_url'] . '/payment/integration/transaction/api/submit-trx';
+            $response = Http::timeout(20)->withHeaders([
+                'Content-Type' => 'application/json',
+                'mac'          => $mac,
+            ])->withBody($rawJson, 'application/json')->post($endpoint);
+
+            $respData = $response->json();
+
+            if (($respData['response_code'] ?? '') === 'PL000' || ($respData['response_code'] ?? '') === '00') {
+                $vaNumber = null;
+                if (!empty($respData['va_number_list'])) {
+                    $vaList = is_string($respData['va_number_list']) ? json_decode($respData['va_number_list'], true) : $respData['va_number_list'];
+                    $vaNumber = $vaList[0]['va'] ?? null;
+                }
+                $qrString = $respData['qris_data'] ?? $respData['qr_string'] ?? null;
+
+                Payment::create([
+                    'user_id'     => $user->id,
+                    'external_id' => $refNo,
+                    'amount'      => $amount,
+                    'status'      => 'pending',
+                    'payment_method' => $method,
+                    'bank_code'   => ($method === 'VA') ? $bankCode : null,
+                    'va_number'   => $vaNumber,
+                    'qr_string'   => $qrString,
+                    'payload'     => json_encode($respData)
+                ]);
+
+                return response()->json([
+                    'success' => true,
+                    'data' => [
+                        'payment_method' => $method,
+                        'bank_code'      => $bankCode,
+                        'va_number'      => $vaNumber,
+                        'qr_string'      => $qrString,
+                        'amount'         => $amount,
+                        'ref_no'         => $refNo,
+                        'expired_at'     => $respData['expired_date_time'] ?? $respData['expiry_date'] ?? null,
+                    ]
+                ]);
+            }
+            
+            return response()->json(['success' => false, 'message' => $respData['response_description'] ?? 'Error'], 400);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
     public function status(Request $request)
     {
         $user = $request->user();
@@ -316,12 +441,13 @@ class PaymentController extends Controller
         
         $payment = Payment::create([
             'user_id' => $user->id,
-            'external_id' => 'MANUAL-' . $user->id . '-' . time(),
+            'external_id' => 'MANUAL-' . ($request->type === 'system_support' ? 'SUP' : 'ACT') . '-' . $user->id . '-' . time(),
             'amount' => $request->amount,
             'payment_method' => 'MANUAL',
             'status' => 'pending',
-            'payload' => json_encode(['note' => 'User reported manual transfer']),
+            'payload' => json_encode(['note' => $request->type === 'system_support' ? 'Dukungan Pengembangan' : 'Aktivasi Akun']),
         ]);
+
 
         return response()->json([
             'success' => true,

@@ -21,10 +21,27 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'username', 'email', 'password', 'gender', 'rank_tier_id', 'level', 
-        'current_exp', 'overflow_exp', 'soul_points', 'fatigue',
-        'referral_code', 'referred_by_id', 'hp', 'max_hp', 'is_menstruating',
-        'menstruation_started_at', 'balance', 'is_active', 'role'
+        'username',
+        'email',
+        'password',
+        'gender',
+        'rank_tier_id',
+        'level',
+        'current_exp',
+        'overflow_exp',
+        'soul_points',
+        'fatigue',
+        'referral_code',
+        'referred_by_id',
+        'hp',
+        'max_hp',
+        'is_menstruating',
+        'menstruation_started_at',
+        'balance',
+        'is_active',
+        'role',
+        'google_id',   // FIX
+        'avatar'       // FIX
     ];
 
     public function isOrganizer()

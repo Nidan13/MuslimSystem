@@ -145,6 +145,39 @@ class UserController extends Controller
             }
         }
 
+        // --- USER ACTIVITY DATA (Engagement Tracking) ---
+        $userActivities = \App\Models\UserActivity::where('user_id', $hunter->id)
+            ->orderBy('active_date', 'desc')
+            ->take(30)
+            ->get();
+
+        $topUserPages = \App\Models\UserActivity::where('user_id', $hunter->id)
+            ->select('page_name', DB::raw('SUM(seconds_spent) as total_seconds'))
+            ->groupBy('page_name')
+            ->orderBy('total_seconds', 'desc')
+            ->take(5)
+            ->get();
+
+        $totalSecondsSpent = \App\Models\UserActivity::where('user_id', $hunter->id)
+            ->sum('seconds_spent');
+
+        // Calculate average per active day
+        $avgDailySeconds = DB::table(function($query) use ($hunter) {
+                $query->from('user_activities')
+                    ->where('user_id', $hunter->id)
+                    ->select('active_date', DB::raw('SUM(seconds_spent) as daily_total'))
+                    ->groupBy('active_date');
+            }, 'daily_stats')
+            ->avg('daily_total') ?? 0;
+
+        // Daily activity for the last 7 days (trend)
+        $dailyActivityTrend = \App\Models\UserActivity::where('user_id', $hunter->id)
+            ->where('active_date', '>=', now()->subDays(7)->toDateString())
+            ->select('active_date', DB::raw('SUM(seconds_spent) as total_seconds'))
+            ->groupBy('active_date')
+            ->orderBy('active_date', 'asc')
+            ->get();
+
         return view('admin.hunters.show', [
             'user' => $hunter,
             'questStats' => $questStats,
@@ -160,7 +193,12 @@ class UserController extends Controller
                 'totalHabit' => $totalHabit,
                 'totalDailyTask' => $totalDailyTask,
                 'dailyTaskToday' => $dailyTaskToday,
+                'totalSeconds' => $totalSecondsSpent,
+                'avgDailySeconds' => $avgDailySeconds,
             ],
+            'topPages' => $topUserPages,
+            'userActivities' => $userActivities,
+            'dailyActivityTrend' => $dailyActivityTrend,
             'radarData' => $radarData
         ]);
     }

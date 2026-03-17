@@ -126,14 +126,32 @@
                         </td>
                         <td class="py-6 px-8 text-right">
                             @if($wd->status == 'pending')
-                            <button onclick="openWdModal({{ $wd->toJson() }}, '{{ $wd->user->username }}')" class="px-6 py-3 bg-teal-900 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-xl hover:bg-teal-800 transition-all shadow-xl shadow-teal-900/10 active:scale-95 flex items-center gap-2 ml-auto">
-                                <i class="fas fa-shield-check text-cyan-400"></i>
-                                Proses Transmisi
-                            </button>
+                            <div class="flex items-center justify-end gap-3">
+                                <form action="{{ route('admin.withdrawals.update', $wd->id) }}" method="POST" class="inline">
+                                    @csrf
+                                    @method('PATCH')
+                                    <input type="hidden" name="status" value="completed">
+                                    <button type="submit" onclick="return confirm('Konfirmasi Approval? Hunter akan menerima transmisi dana.')" 
+                                        class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition-all shadow-sm active:scale-95 group/btn" title="Approve">
+                                        <i class="fas fa-check-double text-sm group-hover/btn:scale-110 transition-transform"></i>
+                                    </button>
+                                </form>
+
+                                <form action="{{ route('admin.withdrawals.update', $wd->id) }}" method="POST" class="inline">
+                                    @csrf
+                                    @method('PATCH')
+                                    <input type="hidden" name="status" value="rejected">
+                                    <input type="hidden" name="rejection_reason" value="Dibatalkan oleh Administrator">
+                                    <button type="submit" onclick="return confirm('Gagalkan Log Penarikan ini?')" 
+                                        class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 border border-rose-100 flex items-center justify-center hover:bg-rose-500 hover:text-white transition-all shadow-sm active:scale-95 group/btn" title="Reject">
+                                        <i class="fas fa-ban text-sm group-hover/btn:scale-110 transition-transform"></i>
+                                    </button>
+                                </form>
+                            </div>
                             @else
                             <div class="flex items-center justify-end">
                                 <span class="text-[9px] font-black text-slate-200 uppercase tracking-widest border border-slate-100 bg-slate-50/50 px-4 py-2 rounded-xl italic">
-                                    Archived Transaction
+                                    Log Archived
                                 </span>
                             </div>
                             @endif
@@ -165,74 +183,7 @@
     </div>
 </div>
 
-<!-- WD Processing Modal -->
-<div id="wdModal" class="fixed inset-0 z-[100] hidden bg-teal-950/60 backdrop-blur-md flex items-center justify-center p-6 animate-fadeIn">
-    <div class="bg-white rounded-[50px] shadow-2xl w-full max-w-xl border-4 border-slate-50 overflow-hidden relative">
-        <div class="absolute -right-20 -top-20 w-80 h-80 bg-cyan-400/5 rounded-full blur-[100px] pointer-events-none"></div>
-        <div class="p-12 relative z-10">
-            <div class="flex justify-between items-start mb-10">
-                <div>
-                    <h2 class="text-3xl font-serif font-black text-teal-900 tracking-tighter mb-2 uppercase italic leading-none">Proses <span class="text-cyan-500 font-sans tracking-normal not-italic mx-1">Transmisi</span></h2>
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">Validasi Integrasi Dana Hunter</p>
-                </div>
-                <button onclick="closeWdModal()" class="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-400 hover:text-red-500 hover:border-red-100 transition-all active:scale-95">
-                    <i class="fas fa-times text-lg"></i>
-                </button>
-            </div>
-            
-            <form id="wdForm" method="POST" action="" class="space-y-10">
-                @csrf
-                @method('PATCH')
-                
-                <div class="grid grid-cols-2 gap-6 p-2 bg-slate-50 rounded-[40px] border-2 border-slate-100/50 shadow-inner">
-                    <div class="p-8 bg-white rounded-[32px] border border-slate-100 shadow-sm text-center">
-                        <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-3">Nilai Hasil</p>
-                        <p id="modalAmount" class="text-2xl font-black bg-gradient-to-br from-blue-600 to-slate-950 bg-clip-text text-transparent font-mono tracking-tighter">0 EXP</p>
-                    </div>
-                    <div class="p-8 bg-white rounded-[32px] border border-slate-100 shadow-sm text-center">
-                        <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-3">Identik Hunter</p>
-                        <p id="modalUser" class="text-sm font-black text-teal-950 uppercase tracking-tight leading-none pt-1">-</p>
-                    </div>
-                </div>
-
-                <div class="space-y-8">
-                    <div>
-                        <label class="text-[10px] font-black text-teal-900/40 uppercase tracking-[0.3em] mb-4 block px-2 italic">Keputusan Jalur Transmisi</label>
-                        <div class="grid grid-cols-2 gap-6">
-                            <button type="button" onclick="setStatus('completed')" id="btnApprove" class="group p-6 rounded-3xl border-2 border-slate-100 bg-white font-black text-[11px] uppercase tracking-widest transition-all flex flex-col items-center justify-center gap-3 hover:border-emerald-200">
-                                <div class="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-300 transition-all group-hover:scale-110 group-[.decision-active]:bg-emerald-500 group-[.decision-active]:text-white">
-                                    <i class="fas fa-check-circle text-xl"></i>
-                                </div>
-                                <span class="text-slate-400 group-[.decision-active]:text-teal-900">Validasi Sukses</span>
-                            </button>
-                            <button type="button" onclick="setStatus('rejected')" id="btnReject" class="group p-6 rounded-3xl border-2 border-slate-100 bg-white font-black text-[11px] uppercase tracking-widest transition-all flex flex-col items-center justify-center gap-3 hover:border-red-200">
-                                <div class="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-300 transition-all group-hover:scale-110 group-[.decision-active]:bg-red-500 group-[.decision-active]:text-white">
-                                    <i class="fas fa-times-circle text-xl"></i>
-                                </div>
-                                <span class="text-slate-400 group-[.decision-active]:text-teal-900">Gagalkan Log</span>
-                            </button>
-                        </div>
-                        <input type="hidden" name="status" id="inputStatus" required>
-                    </div>
-
-                    <div id="rejectionSection" class="hidden animate-slideUp">
-                        <label class="text-[10px] font-black text-teal-900/40 uppercase tracking-[0.3em] mb-3 block px-2">Direktif Kegagalan (Internal Log)</label>
-                        <textarea name="rejection_reason" class="w-full h-32 p-8 bg-slate-50 border-2 border-slate-100 rounded-[32px] focus:border-red-400 focus:bg-white outline-none text-sm transition-all font-medium shadow-inner placeholder-slate-200" placeholder="Jelaskan anomali yang ditemukan..."></textarea>
-                    </div>
-                </div>
-
-                <div class="pt-6">
-                    <button type="submit" class="w-full group relative overflow-hidden bg-teal-900 hover:bg-teal-800 py-6 rounded-[24px] font-serif font-black text-white uppercase tracking-[0.3em] shadow-2xl shadow-teal-950/30 transition-all active:scale-[0.99] border-t border-white/10">
-                        <span class="relative flex items-center justify-center gap-4">
-                            EKSEKUSI TRANSMISI
-                            <i class="fas fa-paper-plane text-cyan-400 icon-glow transition-all group-hover:translate-x-1 group-hover:-translate-y-1"></i>
-                        </span>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+ <!-- Modal removed as requested -->  
 
 @push('scripts')
 <script>
@@ -277,35 +228,7 @@
         rows.forEach(row => tableBody.appendChild(row));
     }
 
-    function openWdModal(wd, username) {
-        const modal = document.getElementById('wdModal');
-        const form = document.getElementById('wdForm');
-        form.action = `/admin/withdrawals/${wd.id}`;
-        document.getElementById('modalAmount').innerText = new Intl.NumberFormat().format(wd.amount) + ' EXP';
-        document.getElementById('modalUser').innerText = username;
-        modal.classList.remove('hidden');
-    }
-
-    function closeWdModal() {
-        document.getElementById('wdModal').classList.add('hidden');
-    }
-
-    function setStatus(status) {
-        document.getElementById('inputStatus').value = status;
-        const btnApprove = document.getElementById('btnApprove');
-        const btnReject = document.getElementById('btnReject');
-        const rejectionSection = document.getElementById('rejectionSection');
-
-        if (status === 'completed') {
-            btnApprove.classList.add('decision-active', 'bg-emerald-50', 'border-emerald-200');
-            btnReject.classList.remove('decision-active', 'bg-red-50', 'border-red-200');
-            rejectionSection.classList.add('hidden');
-        } else {
-            btnReject.classList.add('decision-active', 'bg-red-50', 'border-red-200');
-            btnApprove.classList.remove('decision-active', 'bg-emerald-50', 'border-emerald-200');
-            rejectionSection.classList.remove('hidden');
-        }
-    }
+// JS functions for modal removed  
 
     document.getElementById('wdSearch')?.addEventListener('input', function(e) {
         let val = e.target.value.toLowerCase();

@@ -10,7 +10,13 @@
             <div class="w-1.5 h-12 bg-gradient-to-b from-[#0E5F71] to-[#2C9EB0] rounded-full mr-4 shadow-[0_0_15px_rgba(14,95,113,0.3)]"></div>
             <div>
                 <h1 class="text-3xl font-serif font-black text-[#0E5F71] tracking-tight uppercase">Manajemen SHU Platform</h1>
-                <p class="text-slate-400 text-[10px] font-bold uppercase tracking-[0.3em] mt-1">Kelola pembagian internal dari total pendapatan platform</p>
+                <div class="flex items-center gap-3 mt-1">
+                    <p class="text-slate-400 text-[10px] font-bold uppercase tracking-[0.3em]">Kelola pembagian internal dari total pendapatan platform</p>
+                    @php $totalPorsi = $categories->sum('percentage'); @endphp
+                    <span class="px-2 py-0.5 rounded-md @if($totalPorsi > 100) bg-rose-50 text-rose-600 @else bg-teal-50 text-[#0E5F71] @endif text-[9px] font-black uppercase tracking-widest border border-current opacity-70">
+                        Total Porsi: {{ $totalPorsi }}% @if($totalPorsi < 100) (Sisa {{ 100 - $totalPorsi }}% ke Bersih) @endif
+                    </span>
+                </div>
             </div>
         </div>
         

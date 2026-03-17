@@ -72,8 +72,8 @@ class QuestController extends Controller
 
     // Check user progress for each quest in ONE query for a specific date (Timezone Aware)
     $dateString = $request->query('date', now('Asia/Jakarta')->toDateString());
-    $startOfDay = \Carbon\Carbon::parse($dateString, 'Asia/Jakarta')->startOfDay()->timezone('UTC');
-    $endOfDay = \Carbon\Carbon::parse($dateString, 'Asia/Jakarta')->endOfDay()->timezone('UTC');
+    $startOfDay = \Carbon\Carbon::parse($dateString, 'Asia/Jakarta')->startOfDay();
+    $endOfDay = \Carbon\Carbon::parse($dateString, 'Asia/Jakarta')->endOfDay();
 
     $questIds = $quests->pluck('id');
     $userQuests = UserQuest::where('user_id', $user->id)
@@ -171,8 +171,8 @@ class QuestController extends Controller
 
         // Check if already taken TODAY (Timezone Aware check)
         $now = now('Asia/Jakarta');
-        $startOfDay = $now->copy()->startOfDay()->timezone('UTC');
-        $endOfDay = $now->copy()->endOfDay()->timezone('UTC');
+        $startOfDay = $now->copy()->startOfDay();
+        $endOfDay = $now->copy()->endOfDay();
 
         $existing = UserQuest::where('user_id', $user->id)
             ->where('quest_id', $id)
@@ -350,7 +350,10 @@ class QuestController extends Controller
                 'completed_at' => now('Asia/Jakarta'),
             ]);
 
-            // Give Soul Points Reward removed
+            // Give Soul Points Reward
+            if ($quest->reward_soul_points > 0) {
+                $user->increment('soul_points', $quest->reward_soul_points);
+            }
 
             // Use gainExp to handle XP, Level, Rank, and Circle XP
             $leveledUp = $user->gainExp($quest->reward_exp);

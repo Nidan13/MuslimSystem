@@ -95,6 +95,22 @@
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Net Admin Profit (Remaining SHU) -->
+            <div class="bg-[#0E5F71] p-7 rounded-[40px] border-2 border-teal-800 shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+                <div class="flex items-center gap-4 mb-5">
+                    <div class="w-10 h-10 rounded-xl bg-white/10 text-cyan-300 flex items-center justify-center text-lg shadow-inner group-hover:scale-110 transition-transform">
+                        <i class="fas fa-sack-dollar"></i>
+                    </div>
+                    <div>
+                        <p class="text-[9px] font-black text-cyan-400/60 uppercase tracking-[0.2em] leading-tight">Saldo Bersih Admin</p>
+                    </div>
+                </div>
+                <div class="space-y-1">
+                    <p class="text-xl font-black text-white tracking-tight">Rp {{ number_format($stats['net_admin_balance'], 0, ',', '.') }}</p>
+                    <p class="text-[8px] font-bold text-cyan-300 bg-white/5 px-3 py-1 rounded-full inline-block uppercase tracking-widest italic">Profit Net Platform</p>
+                </div>
+            </div>
+
             @forelse($shu_breakdown as $item)
             <div class="bg-white p-7 rounded-[40px] border-2 border-slate-50 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
                 <div class="flex items-center gap-4 mb-5">

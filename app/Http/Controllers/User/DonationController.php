@@ -171,9 +171,12 @@ class DonationController extends Controller
             'action_id'              => '01',
         ];
 
+        $bankCode = strtoupper($request->input('bank_code', 'BCA'));
+
         if ($method === 'VA') {
-            $payload['bank_id'] = $bankMap['BCA']; // Default BCA for now
+            $payload['bank_id'] = $bankMap[$bankCode] ?? '014';
         }
+
 
 
         DB::beginTransaction();

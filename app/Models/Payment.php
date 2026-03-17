@@ -55,36 +55,34 @@ class Payment extends Model
             $u = $this->user;
             $donation = Donation::where('payment_id', $this->id)->first();
             
-            // 1. Ambil Total Platform Fee Rate dari Setting (Global)
-            // HANYA BERLAKU JIKA BUKAN DONASI (Misal: Aktivasi Akun)
+            // 1. Inisialisasi
             $systemFee = 0;
-            if (!$donation) {
-                $platformRate = (float) \App\Models\Setting::get('total_system_fee_percentage', 0);
-                $systemFee = $this->amount * ($platformRate / 100);
-            }
-            
             $affiliateFee = 0;
-            if (!$donation && $u && $u->referred_by_id) {
-                // Biaya Afiliasi tetap 10% untuk aktivasi
-                $affiliateFee = $this->amount * 0.1;
-            }
-            
-            $netAmount = $this->amount - ($systemFee + $affiliateFee);
+            $isSupport = str_contains($this->external_id, 'SUP');
 
-            // 2. Update status pembayaran & simpan pembagian dana
-            $this->update([
-                'status' => 'paid', 
-                'paid_at' => now(),
-                'system_fee' => $systemFee,
-                'net_amount' => $netAmount,
-                'affiliate_fee' => $affiliateFee
-            ]);
+            // 2. Tentukan Base Alokasi (Contoh: Total 500rb)
+            if (!$donation && $u) {
+                // Potong Affiliate 10% DULU (Jika ada referral & bukan support)
+                if (!$isSupport && $u->referred_by_id) {
+                    $affiliateFee = $this->amount * 0.1; // 50rb
+                }
+                
+                // Sisa inilah yang baru dibagi ke alokasi (Contoh: 450rb)
+                $allocationBase = $this->amount - $affiliateFee;
 
-            // 3. Simpan Detail Distribusi SHU (Potongan Internal Admin)
-            if ($systemFee > 0) {
-                $categories = \App\Models\DistributionCategory::where('is_active', true)->get();
+                // 3. Hitung & Simpan Detail Distribusi SHU (Dari sisa 450rb tadi)
+                $totalAllocated = 0;
+                $categories = \App\Models\DistributionCategory::where('is_active', true)
+                    ->where('name', 'NOT ILIKE', '%afiliasi%')
+                    ->where('name', 'NOT ILIKE', '%referral%')
+                    ->where('name', 'NOT ILIKE', '%komisi%')
+                    ->get();
+
                 foreach ($categories as $cat) {
-                    $distAmount = $systemFee * ($cat->percentage / 100);
+                    // Jatah admin dihitung dari base 450rb tadi
+                    $distAmount = $allocationBase * ($cat->percentage / 100);
+                    $totalAllocated += $distAmount;
+
                     PaymentDistribution::create([
                         'payment_id' => $this->id,
                         'distribution_category_id' => $cat->id,
@@ -93,13 +91,27 @@ class Payment extends Model
                         'amount' => $distAmount
                     ]);
                 }
+
+                // Jatah System (Income Admin) adalah gabungan semua alokasi tadi
+                $systemFee = $totalAllocated;
             }
             
+            $netAmount = $this->amount - $systemFee - $affiliateFee;
+
+            // 4. Update status pembayaran
+            $this->update([
+                'status' => 'paid', 
+                'paid_at' => now(),
+                'system_fee' => $systemFee,
+                'net_amount' => $netAmount,
+                'affiliate_fee' => $affiliateFee
+            ]);
+
             if ($u) {
-                \Log::info('Activating User ID: ' . $u->id);
+                \Log::info('Processing Payment for User ID: ' . $u->id);
                 
-                // 3. Aktifkan akun user baru (jika belum aktif)
-                if (!$u->is_active) {
+                // Aktifkan akun jika ini pendaftaran baru
+                if ($isActivation && !$u->is_active) {
                     $u->update(['is_active' => 1]);
                 }
                 
@@ -109,7 +121,7 @@ class Payment extends Model
                     $campaign = $donation->campaign;
                     if ($campaign) {
                         // YANG MASUK KE KAMPANYE ADALAH NET AMOUNT (SETELAH POTONGAN PLATFORM)
-                        $campaign->increment('collected_amount', $netAmount);
+                        $campaign->increment('collected_amount', $this->amount - $systemFee);
                         
                         // Cek jika sudah mencapai target
                         if ($campaign->collected_amount >= $campaign->target_amount) {
