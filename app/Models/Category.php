@@ -39,4 +39,9 @@ class Category extends Model
     {
         return $query->where('is_active', true);
     }
+
+    public function headlines()
+    {
+        return $this->hasMany(Headline::class, 'category_id');
+    }
 }

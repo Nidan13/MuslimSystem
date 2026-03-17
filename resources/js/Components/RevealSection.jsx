@@ -34,7 +34,7 @@ export default function RevealSection({ children, className = "", delay = "0ms",
         <div
             ref={domRef}
             style={{ transitionDelay: delay }}
-            className={`${className} transition-all duration-1000 transform ${isVisible ? 'opacity-100 translate-y-0 translate-x-0 scale-100' : `opacity-0 ${directionClasses[direction]}`}`}
+            className={`${className} transition-all duration-1000 transform ${isVisible ? 'opacity-100 translate-y-0 translate-x-0 scale-100' : `opacity-0 ${directionClasses[direction] || ''}`}`}
         >
             {children}
         </div>

@@ -29,18 +29,42 @@ const DownloadModal = ({ isOpen, onClose, downloadUrl }) => {
 };
 
 export default function MainLayout({ children }) {
-    const { auth, downloadUrl } = usePage().props;
+    const { auth = {}, downloadUrl = '#', theme: themeRaw = {} } = usePage().props || {};
+    const theme = themeRaw || {};
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
+    const hexToRgba = (hex, alpha = 1) => {
+        if (!hex || typeof hex !== 'string' || !/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) return `rgba(0,139,118,${alpha})`;
+        let r=0, g=0, b=0;
+        try {
+            if (hex.length == 4) {
+                r = parseInt(hex[1]+hex[1], 16);
+                g = parseInt(hex[2]+hex[2], 16);
+                b = parseInt(hex[3]+hex[3], 16);
+            } else if (hex.length == 7) {
+                r = parseInt(hex.substring(1, 3), 16);
+                g = parseInt(hex.substring(3, 5), 16);
+                b = parseInt(hex.substring(5, 7), 16);
+            }
+        } catch(e) {
+            return `rgba(0,139,118,${alpha})`;
+        }
+        return `rgba(${r},${g},${b},${alpha})`;
+    };
+
+    const primaryColor = (theme && theme.primary) ? theme.primary : '#008b76';
+    const navbarColor = (theme && theme.navbar) ? theme.navbar : '#008b76';
+    const footerColor = (theme && theme.footer) ? theme.footer : '#0a2f4c';
 
     return (
         <div className="min-h-screen bg-nu-light font-sans text-nu-indigo antialiased">
             <DownloadModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} downloadUrl={downloadUrl} />
 
             {/* Persistent Navbar */}
-            <nav className="fixed top-0 w-full z-50 bg-nu-teal/95 backdrop-blur-md h-20 border-b border-white/10">
+            <nav className="fixed top-0 w-full z-50 backdrop-blur-md h-20 border-b border-white/10" style={{ backgroundColor: hexToRgba(navbarColor, 0.95) }}>
                 <div className="max-w-7xl mx-auto px-6 h-full flex justify-between items-center text-white">
                     <Link href="/" className="flex items-center gap-3 group">
                         <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center p-1 shadow-sm overflow-hidden group-hover:scale-110 transition-transform">
@@ -51,6 +75,8 @@ export default function MainLayout({ children }) {
 
                     {/* Desktop Links */}
                     <div className="hidden lg:flex gap-8 font-bold text-[10px] uppercase tracking-widest">
+                        <Link href="/" className="hover:text-white/60 transition-colors">Home</Link>
+                        <Link href="/news" className="hover:text-white/60 transition-colors">News</Link>
                         <Link href="/features" className="hover:text-white/60 transition-colors">Features</Link>
                         <Link href="/about" className="hover:text-white/60 transition-colors">About</Link>
                         <Link href="/faq" className="hover:text-white/60 transition-colors">FAQ</Link>
@@ -60,7 +86,7 @@ export default function MainLayout({ children }) {
                     <div className="flex items-center gap-4">
                         <button
                             onClick={() => setIsModalOpen(true)}
-                            className="hidden md:block px-6 py-2.5 bg-white text-nu-teal rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-nu-light transition-all shadow-lg shadow-black/10"
+                            className="hidden md:block px-6 py-2.5 bg-white rounded-xl text-[10px] font-black uppercase tracking-widest transition-all shadow-lg shadow-black/10 text-theme-primary"
                         >
                             Get APK
                         </button>
@@ -112,14 +138,14 @@ export default function MainLayout({ children }) {
                         {/* RPG Badge Area */}
                         <div className="mb-12 p-6 bg-white/5 rounded-3xl border border-white/10">
                             <div className="flex items-center gap-4 mb-4">
-                                <div className="w-12 h-12 bg-nu-teal rounded-xl flex items-center justify-center text-white font-black">Lvl.1</div>
+                                <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-black bg-theme-primary">Lvl.1</div>
                                 <div>
-                                    <p className="text-nu-teal font-black text-[10px] uppercase tracking-widest">Aspirant</p>
+                                    <p className="font-black text-[10px] uppercase tracking-widest text-theme-primary">Aspirant</p>
                                     <h4 className="text-white font-serif font-black uppercase text-sm">Guest Ummah</h4>
                                 </div>
                             </div>
                             <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
-                                <div className="h-full bg-nu-teal w-1/3"></div>
+                                <div className="h-full w-1/3 bg-theme-primary"></div>
                             </div>
                         </div>
 
@@ -128,16 +154,17 @@ export default function MainLayout({ children }) {
                                 <Link
                                     href="/dashboard"
                                     onClick={() => setIsSidebarOpen(false)}
-                                    className="group flex items-center gap-4 p-4 rounded-2xl bg-nu-teal/10 border border-nu-teal/20"
+                                    className="group flex items-center gap-4 p-4 rounded-2xl bg-theme-primary-10 border border-theme-primary-20"
                                 >
                                     <span className="text-xl">📊</span>
-                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-nu-teal">
+                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-theme-primary">
                                         Admin Panel
                                     </span>
                                 </Link>
                             )}
                             {[
                                 { name: 'Home', path: '/', icon: '🏠' },
+                                { name: 'News', path: '/news', icon: '📰' },
                                 { name: 'Features', path: '/features', icon: '⚔️' },
                                 { name: 'About', path: '/about', icon: '💎' },
                                 { name: 'FAQ', path: '/faq', icon: '❓' },
@@ -151,7 +178,7 @@ export default function MainLayout({ children }) {
                                     style={{ transitionDelay: `${i * 50}ms` }}
                                 >
                                     <span className="text-xl group-hover:scale-120 transition-transform">{link.icon}</span>
-                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/60 group-hover:text-nu-teal transition-colors">
+                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/60 transition-colors group-hover:text-theme-primary">
                                         {link.name}
                                     </span>
                                 </Link>
@@ -165,7 +192,7 @@ export default function MainLayout({ children }) {
                                     setIsSidebarOpen(false);
                                     setIsModalOpen(true);
                                 }}
-                                className="w-full py-4 bg-nu-teal text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-nu-teal-dark transition-all shadow-lg shadow-nu-teal/20"
+                                className="w-full py-4 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all bg-theme-primary shadow-theme-primary"
                             >
                                 Get The App Now
                             </button>
@@ -190,8 +217,8 @@ export default function MainLayout({ children }) {
             </main>
 
             {/* Persistent Premium Footer */}
-            <footer className="bg-nu-indigo py-24 px-6 text-white border-t border-white/5 relative overflow-hidden mt-auto">
-                <div className="absolute top-0 right-0 w-96 h-96 bg-nu-teal/10 rounded-full blur-[100px] pointer-events-none"></div>
+            <footer className="py-24 px-6 text-white border-t border-white/5 relative overflow-hidden mt-auto" style={{ backgroundColor: footerColor }}>
+                <div className="absolute top-0 right-0 w-96 h-96 rounded-full blur-[100px] pointer-events-none bg-theme-primary-10"></div>
                 <div className="max-w-7xl mx-auto relative z-10">
                     <div className="grid lg:grid-cols-2 gap-20 mb-20 items-center">
                         <div>
@@ -199,7 +226,7 @@ export default function MainLayout({ children }) {
                                 <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center p-1.5 shadow-lg overflow-hidden">
                                     <img src="/images/logo.png" className="w-full h-full object-contain" alt="Logo" />
                                 </div>
-                                <span className="font-serif font-black text-2xl uppercase tracking-widest text-nu-teal">Muslim Level Up</span>
+                                <span className="font-serif font-black text-2xl uppercase tracking-widest text-theme-primary">Muslim Level Up</span>
                             </div>
                             <p className="text-white/60 text-sm font-medium leading-relaxed max-w-sm mb-8">
                                 Infrastruktur spiritual digital masa depan untuk ummah. Ekosistem kebaikan tanpa distraksi iklan.
@@ -210,9 +237,9 @@ export default function MainLayout({ children }) {
                             </div>
                         </div>
                         <div className="flex flex-wrap gap-12 lg:gap-24 lg:justify-end">
-                            {[{ t: 'Produk', l: ['Features', 'FAQ'] }, { t: 'Legal', l: ['Privacy', 'About'] }].map(g => (
+                            {[{ t: 'Produk', l: ['News', 'Features', 'FAQ'] }, { t: 'Legal', l: ['Privacy', 'About'] }].map(g => (
                                 <div key={g.t}>
-                                    <h5 className="text-[10px] font-black uppercase tracking-widest mb-6 text-nu-teal">{g.t}</h5>
+                                    <h5 className="text-[10px] font-black uppercase tracking-widest mb-6 text-theme-primary">{g.t}</h5>
                                     <ul className="space-y-4">
                                         {g.l.map(link => (
                                             <li key={link}>
@@ -236,6 +263,19 @@ export default function MainLayout({ children }) {
             <style dangerouslySetInnerHTML={{
                 __html: `
                 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@900&family=Outfit:wght@300;500;900&display=swap');
+                :root {
+                    --color-nu-teal: ${primaryColor} !important;
+                    --color-nu-teal-dark: ${hexToRgba(primaryColor, 0.8)} !important;
+                    --color-nu-indigo: ${footerColor} !important;
+                    --color-primary: ${primaryColor};
+                }
+                .text-theme-primary { color: var(--color-primary) !important; }
+                .bg-theme-primary { background-color: var(--color-primary) !important; }
+                .border-theme-primary { border-color: var(--color-primary) !important; }
+                .bg-theme-primary-10 { background-color: ${hexToRgba(primaryColor, 0.1)} !important; }
+                .border-theme-primary-20 { border-color: ${hexToRgba(primaryColor, 0.2)} !important; }
+                .shadow-theme-primary { box-shadow: 0 10px 15px -3px ${hexToRgba(primaryColor, 0.2)} !important; }
+                
                 .font-serif { font-family: 'Cinzel', serif; }
                 .font-sans { font-family: 'Outfit', sans-serif; }
             `}} />
