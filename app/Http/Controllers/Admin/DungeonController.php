@@ -29,7 +29,8 @@ class DungeonController extends Controller
     {
         $types = \App\Models\DungeonType::all();
         $rankTiers = \App\Models\RankTier::all();
-        return view('admin.dungeons.create', compact('types', 'rankTiers'));
+        $categories = \App\Models\Category::where('type', 'dungeon')->get();
+        return view('admin.dungeons.create', compact('types', 'rankTiers', 'categories'));
     }
 
     public function store(Request $request)
@@ -38,7 +39,8 @@ class DungeonController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
-            'rank_category_id' => 'nullable|exists:categories,id',
+            'dungeon_type_id' => 'required|exists:dungeon_types,id',
+            'rank_tier_id' => 'nullable|exists:rank_tiers,id',
             'min_level_requirement' => 'required|integer|min:1',
             'reward_exp' => 'required|integer|min:0',
             'required_players' => 'required|integer|min:1',
@@ -46,10 +48,6 @@ class DungeonController extends Controller
             'objective_target' => 'nullable|integer|min:0',
             'loot_pool' => 'nullable|array',
         ]);
-
-        // Fix: Provide legacy NOT NULL fields if schema hasn't been migrated to nullable yet
-        $validated['dungeon_type_id'] = 1; // Default to first type
-        $validated['rank_tier_id'] = 1; // Default to first tier
 
         try {
             Dungeon::create($validated);
@@ -72,7 +70,8 @@ class DungeonController extends Controller
     {
         $types = \App\Models\DungeonType::all();
         $rankTiers = \App\Models\RankTier::all();
-        return view('admin.dungeons.edit', compact('dungeon', 'types', 'rankTiers'));
+        $categories = \App\Models\Category::where('type', 'dungeon')->get();
+        return view('admin.dungeons.edit', compact('dungeon', 'types', 'rankTiers', 'categories'));
     }
 
     public function update(Request $request, Dungeon $dungeon)
@@ -81,7 +80,8 @@ class DungeonController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
-            'rank_category_id' => 'nullable|exists:categories,id',
+            'dungeon_type_id' => 'required|exists:dungeon_types,id',
+            'rank_tier_id' => 'nullable|exists:rank_tiers,id',
             'min_level_requirement' => 'required|integer|min:1',
             'reward_exp' => 'required|integer|min:0',
             'required_players' => 'required|integer|min:1',

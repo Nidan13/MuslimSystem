@@ -186,8 +186,8 @@
                 <span>Grup Circle</span>
             </a>
 
-            <a href="{{ route('admin.headlines.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.headlines.*') ? 'active' : '' }}">
-                <i class="fas fa-newspaper w-5 {{ request()->routeIs('admin.headlines.*') ? 'icon-glow' : '' }}"></i>
+            <a href="{{ route('admin.landing-page.news.index') }}" class="sidebar-link flex items-center gap-4 px-5 py-3 text-sm font-bold {{ request()->routeIs('admin.landing-page.news.*') ? 'active' : '' }}">
+                <i class="fas fa-newspaper w-5 {{ request()->routeIs('admin.landing-page.news.*') ? 'icon-glow' : '' }}"></i>
                 <span>Berita Utama</span>
             </a>
 

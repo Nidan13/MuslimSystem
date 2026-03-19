@@ -46,7 +46,7 @@ class UserController extends Controller
         $validated['level'] = $validated['level'] ?? 1;
         $validated['current_exp'] = $validated['current_exp'] ?? 0;
         $validated['soul_points'] = $validated['soul_points'] ?? 0;
-        $validated['job_class'] = $validated['job_class'] ?? 'Initiate';
+        unset($validated['job_class']);
 
         $this->hunterService->store($validated);
 
@@ -74,10 +74,14 @@ class UserController extends Controller
 
         $hunter->load(['rankTier']);
         // ... rest of spiritual stats logic ...
-        $totalSurah = DB::table('user_quran_progress')
-            ->where('user_id', $hunter->id)
-            ->where('is_completed', true)
-            ->count();
+        try {
+            $totalSurah = DB::table('user_quran_progress')
+                ->where('user_id', $hunter->id)
+                ->where('is_completed', true)
+                ->count();
+        } catch (\Exception $e) {
+            $totalSurah = 0;
+        }
 
         // 2. Total Sholat (Using User Model Accessor)
         $totalSholat = $hunter->sholat_count;
@@ -146,37 +150,45 @@ class UserController extends Controller
         }
 
         // --- USER ACTIVITY DATA (Engagement Tracking) ---
-        $userActivities = \App\Models\UserActivity::where('user_id', $hunter->id)
-            ->orderBy('active_date', 'desc')
-            ->take(30)
-            ->get();
+        try {
+            $userActivities = \App\Models\UserActivity::where('user_id', $hunter->id)
+                ->orderBy('active_date', 'desc')
+                ->take(30)
+                ->get();
 
-        $topUserPages = \App\Models\UserActivity::where('user_id', $hunter->id)
-            ->select('page_name', DB::raw('SUM(seconds_spent) as total_seconds'))
-            ->groupBy('page_name')
-            ->orderBy('total_seconds', 'desc')
-            ->take(5)
-            ->get();
+            $topUserPages = \App\Models\UserActivity::where('user_id', $hunter->id)
+                ->select('page_name', DB::raw('SUM(seconds_spent) as total_seconds'))
+                ->groupBy('page_name')
+                ->orderBy('total_seconds', 'desc')
+                ->take(5)
+                ->get();
 
-        $totalSecondsSpent = \App\Models\UserActivity::where('user_id', $hunter->id)
-            ->sum('seconds_spent');
+            $totalSecondsSpent = \App\Models\UserActivity::where('user_id', $hunter->id)
+                ->sum('seconds_spent');
 
-        // Calculate average per active day
-        $avgDailySeconds = DB::table(function($query) use ($hunter) {
-                $query->from('user_activities')
-                    ->where('user_id', $hunter->id)
-                    ->select('active_date', DB::raw('SUM(seconds_spent) as daily_total'))
-                    ->groupBy('active_date');
-            }, 'daily_stats')
-            ->avg('daily_total') ?? 0;
+            // Calculate average per active day
+            $avgDailySeconds = DB::table(function($query) use ($hunter) {
+                    $query->from('user_activities')
+                        ->where('user_id', $hunter->id)
+                        ->select('active_date', DB::raw('SUM(seconds_spent) as daily_total'))
+                        ->groupBy('active_date');
+                }, 'daily_stats')
+                ->avg('daily_total') ?? 0;
 
-        // Daily activity for the last 7 days (trend)
-        $dailyActivityTrend = \App\Models\UserActivity::where('user_id', $hunter->id)
-            ->where('active_date', '>=', now()->subDays(7)->toDateString())
-            ->select('active_date', DB::raw('SUM(seconds_spent) as total_seconds'))
-            ->groupBy('active_date')
-            ->orderBy('active_date', 'asc')
-            ->get();
+            // Daily activity for the last 7 days (trend)
+            $dailyActivityTrend = \App\Models\UserActivity::where('user_id', $hunter->id)
+                ->where('active_date', '>=', now()->subDays(7)->toDateString())
+                ->select('active_date', DB::raw('SUM(seconds_spent) as total_seconds'))
+                ->groupBy('active_date')
+                ->orderBy('active_date', 'asc')
+                ->get();
+        } catch (\Exception $e) {
+            $userActivities = collect();
+            $topUserPages = collect();
+            $totalSecondsSpent = 0;
+            $avgDailySeconds = 0;
+            $dailyActivityTrend = collect();
+        }
 
         return view('admin.hunters.show', [
             'user' => $hunter,

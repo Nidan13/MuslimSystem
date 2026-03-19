@@ -36,6 +36,16 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Category -->
+                    <div class="space-y-3">
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Kategori Rift Utama</label>
+                        <select name="category_id" required class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-cyan-400 focus:outline-none text-sm font-black transition-all appearance-none cursor-pointer uppercase tracking-widest text-teal-900">
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}" {{ $dungeon->category_id == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
                     <!-- Tipe & Rank -->
                     <div class="space-y-3">
                         <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Klasifikasi Gate</label>

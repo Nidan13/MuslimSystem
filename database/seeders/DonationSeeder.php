@@ -71,17 +71,19 @@ class DonationSeeder extends Seeder
 
         foreach ($campaigns as $camp) {
             $cat = Category::where('slug', $camp['category_slug'])->first();
-            DonationCampaign::create([
-                'organizer_id' => $organizer->id,
-                'category_id' => $cat->id ?? null,
-                'title' => $camp['title'],
-                'slug' => Str::slug($camp['title']),
-                'description' => $camp['description'],
-                'target_amount' => $camp['target_amount'],
-                'collected_amount' => $camp['collected_amount'],
-                'status' => $camp['status'],
-                'image' => $camp['image']
-            ]);
+            DonationCampaign::updateOrCreate(
+                ['slug' => Str::slug($camp['title'])],
+                [
+                    'organizer_id' => $organizer->id,
+                    'category_id' => $cat->id ?? null,
+                    'title' => $camp['title'],
+                    'description' => $camp['description'],
+                    'target_amount' => $camp['target_amount'],
+                    'collected_amount' => $camp['collected_amount'],
+                    'status' => $camp['status'],
+                    'image' => $camp['image']
+                ]
+            );
         }
     }
 }

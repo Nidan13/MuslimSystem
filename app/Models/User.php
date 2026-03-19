@@ -191,10 +191,14 @@ class User extends Authenticatable
 
     public function getLectureCountAttribute()
     {
-        return DB::table('user_lecture_logs')
-            ->where('user_id', $this->id)
-            ->distinct('islamic_video_id')
-            ->count('islamic_video_id');
+        try {
+            return DB::table('user_lecture_logs')
+                ->where('user_id', $this->id)
+                ->distinct('islamic_video_id')
+                ->count('islamic_video_id');
+        } catch (\Exception $e) {
+            return 0;
+        }
     }
 
     public function getWawasanCountAttribute()

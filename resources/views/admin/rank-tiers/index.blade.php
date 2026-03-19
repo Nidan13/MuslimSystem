@@ -111,10 +111,17 @@
                 </div>
 
                 <!-- Action Bar -->
-                <div class="mt-auto p-4 flex gap-3 z-10">
+                <div class="mt-auto p-4 flex gap-2 z-10 w-full">
                     <a href="{{ route('admin.rank-tiers.edit', $tier) }}" class="flex-1 py-3.5 bg-white/80 backdrop-blur-md border border-slate-200 rounded-2xl text-[9px] text-center font-black text-teal-900 uppercase tracking-[0.2em] hover:bg-white hover:border-cyan-400 hover:text-cyan-600 transition-all shadow-sm active:scale-95">
-                        Edit Pangkat
+                        Edit
                     </a>
+                    <form action="{{ route('admin.rank-tiers.destroy', $tier) }}" method="POST" class="flex-1 m-0 p-0" onsubmit="return confirm('Apakah Anda yakin ingin menghapus Rank Tier ini?')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="w-full h-full py-3.5 bg-red-50/80 backdrop-blur-md border border-red-200 rounded-2xl text-[9px] text-center font-black text-red-600 uppercase tracking-[0.2em] hover:bg-red-500 hover:border-red-600 hover:text-white transition-all shadow-sm active:scale-95">
+                            Hapus
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

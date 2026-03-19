@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class HunterService
 {
@@ -15,6 +16,7 @@ class HunterService
     {
         return DB::transaction(function () use ($data) {
             $data['password'] = Hash::make($data['password']);
+            $data['referral_code'] = $data['referral_code'] ?? strtoupper(Str::random(8));
             
             $user = User::create($data);
             
